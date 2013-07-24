@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension type="component" version="2.5" method="upgrade">
+	<name>com_wissensmatrix</name>
+	<author>Thomas Hunziker</author>
+	<creationDate>2013-02-04</creationDate>
+	<copyright>(C) 2013</copyright>
+	<authorEmail>thomi.hunziker@sbb.ch</authorEmail>
+	<authorUrl>http://www.bakual.ch</authorUrl>
+	<version>3.0</version>
+	<license>http://www.gnu.org/licenses/gpl.html</license>
+	<description>COM_WISSENSMATRIX_DESCRIPTION</description>
+	<scriptfile>script.php</scriptfile>
+	<install>
+		<sql>
+			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+		</sql>
+	</install>
+	<uninstall>
+		<sql>
+			<file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+		</sql>
+	</uninstall>
+	<update>
+		<schemas>
+			<schemapath type="mysql">sql/updates/mysql</schemapath>
+		</schemas>
+	</update>
+
+	<files folder="site">
+		<filename>router.php</filename>
+		<filename>wissensmatrix.php</filename>
+		<filename>controller.php</filename>
+		<filename>index.html</filename>
+		<folder>controllers</folder>
+		<folder>helpers</folder>
+		<folder>views</folder>
+		<folder>models</folder>
+		<folder>language</folder>
+	</files>
+	<media destination="com_wissensmatrix" folder="media">
+		<folder>css</folder>
+		<folder>images</folder>
+	</media>
+	<administration>
+		<menu img="components/com_wissensmatrix/images/fwis-16.png">COM_WISSENSMATRIX</menu>
+		<submenu>
+			<menu img="components/com_wissensmatrix/images/fwis-16.png" view="fwis">COM_WISSENSMATRIX_MENU_FWIS</menu>
+			<menu img="components/com_wissensmatrix/images/fwigs-16.png" view="fwigs">COM_WISSENSMATRIX_MENU_FWIGS</menu>
+			<menu img="components/com_wissensmatrix/images/wbis-16.png" view="wbis">COM_WISSENSMATRIX_MENU_WBIS</menu>
+			<menu img="components/com_wissensmatrix/images/wbigs-16.png" view="wbigs">COM_WISSENSMATRIX_MENU_WBIGS</menu>
+			<menu img="components/com_wissensmatrix/images/worker-16.png" view="workers">COM_WISSENSMATRIX_MENU_WORKERS</menu>
+			<menu img="components/com_wissensmatrix/images/teams-16.png" link="option=com_categories&amp;extension=com_wissensmatrix">COM_WISSENSMATRIX_MENU_CATEGORY_TEAMS</menu>
+			<menu img="components/com_wissensmatrix/images/level_green-16.png" view="levels">COM_WISSENSMATRIX_MENU_LEVELS</menu>
+		</submenu>
+		<files folder="admin">
+			<filename>config.xml</filename>
+			<filename>access.xml</filename>
+			<filename>wissensmatrix.php</filename>
+			<filename>wissensmatrix.css</filename>
+			<filename>controller.php</filename>
+			<filename>index.html</filename>
+			<folder>controllers</folder>
+			<folder>images</folder>
+			<folder>models</folder>
+			<folder>sql</folder>
+			<folder>tables</folder>
+			<folder>helpers</folder>
+			<folder>language</folder>
+			<folder>views</folder>
+		</files>
+	</administration>
+	<tables>
+		<table>#__wissensmatrix_mitarbeiter</table>
+		<table>#__wissensmatrix_weiterbildung</table>
+		<table>#__wissensmatrix_weiterbildunggruppe</table>
+		<table>#__wissensmatrix_fachwissen</table>
+		<table>#__wissensmatrix_fachwissengruppe</table>
+		<table>#__wissensmatrix_mit_fwi</table>
+		<table>#__wissensmatrix_mit_wbi</table>
+	</tables>
+</extension>

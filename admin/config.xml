@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<fieldset name="component"
+		addfieldpath="/administrator/components/com_wissensmatrix/models/fields"
+		label="COM_WISSENSMATRIX_FIELDSET_COMPONENT_LABEL" >
+		<field name="date_format" 
+			type="dateformat" 
+			default="DATE_FORMAT_LC4" 
+			label="JGLOBAL_DATE_FORMAT_LABEL" 
+			description="COM_WISSENSMATRIX_FIELD_DATE_FORMAT_DESC">
+		</field>
+		<field name="filter_field"
+			type="radio"
+			class="btn-group"
+			default="0"
+			label="JGLOBAL_FILTER_FIELD_LABEL"
+			description="COM_WISSENSMATRIX_FILTER_FIELD_DESC">
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+		</field>
+
+		<field name="show_pagination_limit"
+			type="radio"
+			class="btn-group"
+			default="1"
+			label="JGLOBAL_DISPLAY_SELECT_LABEL"
+			description="JGLOBAL_DISPLAY_SELECT_DESC">
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+		</field>
+
+		<field name="show_pagination"
+			type="list"
+			default="1"
+			label="JGLOBAL_PAGINATION_LABEL"
+			description="JGLOBAL_PAGINATION_DESC">
+				<option value="0">JHIDE</option>
+				<option value="2">JGLOBAL_AUTO</option>
+		</field>
+		<field name="show_pagination_results"
+			type="radio"
+			class="btn-group"
+			default="1"
+			label="JGLOBAL_PAGINATION_RESULTS_LABEL"
+			description="JGLOBAL_PAGINATION_RESULTS_DESC">
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+		</field>
+	</fieldset>
+	<fieldset name="category"
+		label="JCATEGORY">
+		<field name="show_category_title"
+			type="radio"
+			class="btn-group"
+			label="JGLOBAL_SHOW_CATEGORY_TITLE"
+			description="JGLOBAL_SHOW_CATEGORY_TITLE_DESC"
+			default="1">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="show_description"
+			type="radio"
+			class="btn-group"
+			label="JGLOBAL_SHOW_CATEGORY_DESCRIPTION_LABEL"
+			description="JGLOBAL_SHOW_CATEGORY_DESCRIPTION_DESC"
+			default="1">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="show_description_image" type="radio"
+			class="btn-group"
+			label="JGLOBAL_SHOW_CATEGORY_IMAGE_LABEL"
+			description="JGLOBAL_SHOW_CATEGORY_IMAGE_DESC"
+			default="0">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="maxLevel" type="list"
+			label="JGLOBAL_MAXIMUM_CATEGORY_LEVELS_LABEL"
+			description="JGLOBAL_MAXIMUM_CATEGORY_LEVELS_DESC"
+			default="-1">
+			<option value="0">JNONE</option>
+			<option value="-1">JALL</option>
+			<option value="1">J1</option>
+			<option value="2">J2</option>
+			<option value="3">J3</option>
+			<option value="4">J4</option>
+			<option value="5">J5</option>
+		</field>
+		<field name="show_empty_categories" type="radio"
+			class="btn-group"
+			label="JGLOBAL_SHOW_EMPTY_CATEGORIES_LABEL"
+			description="COM_WISSENSMATRIX_SHOW_EMPTY_CATEGORIES_DESC"
+			default="0">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="show_subcat_desc" type="radio"
+			class="btn-group"
+			label="JGLOBAL_SHOW_SUBCATEGORIES_DESCRIPTION_LABEL"
+			description="JGLOBAL_SHOW_SUBCATEGORIES_DESCRIPTION_DESC"
+			default="1">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="show_cat_num_items" type="radio"
+			class="btn-group"
+			label="COM_WISSENSMATRIX_NUMBER_CATEGORY_ITEMS_LABEL"
+			description="COM_WISSENSMATRIX_NUMBER_CATEGORY_ITEMS_DESC"
+			default="1">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="show_subcategory_content" type="list"
+			label="JGLOBAL_SHOW_SUBCATEGORY_CONTENT_LABEL"
+			description="JGLOBAL_SHOW_SUBCATEGORY_CONTENT_DESC"
+			default="0">
+			<option value="0">JNONE</option>
+			<option value="-1">JALL</option>
+			<option value="1">J1</option>
+			<option value="2">J2</option>
+			<option value="3">J3</option>
+			<option value="4">J4</option>
+			<option value="5">J5</option>
+		</field>
+	</fieldset>
+	<fieldset name="permissions"
+		label="JCONFIG_PERMISSIONS_LABEL"
+		description="JCONFIG_PERMISSIONS_DESC" >
+		<field name="rules"
+			type="rules"
+			label="JCONFIG_PERMISSIONS_LABEL"
+			class="inputbox"
+			validate="rules"
+			filter="rules"
+			component="com_wissensmatrix"
+			section="component"
+		/>
+	</fieldset>
+</config>

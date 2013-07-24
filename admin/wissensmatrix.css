@@ -1,0 +1,10 @@
+/** header icons **/
+.icon-48-fwis 		{ background-image: url(images/fwis.png); }
+.icon-48-wbis	 	{ background-image: url(images/wbis.png); }
+.icon-48-fwigs 		{ background-image: url(images/fwigs.png); }
+.icon-48-wbigs 		{ background-image: url(images/wbigs.png); }
+.icon-48-workers	{ background-image: url(images/worker.png); }
+
+.clr{
+	clear:both;
+}

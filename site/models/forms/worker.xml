@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset name="general"
+		addfieldpath="/administrator/components/com_categories/models/fields" >
+		<field name="vorname" type="text"
+			label="COM_WISSENSMATRIX_FIELD_VORNAME_LABEL" description="COM_WISSENSMATRIX_FIELD_VORNAME_DESC"
+			required="true" />
+
+		<field name="name" type="text"
+			label="COM_WISSENSMATRIX_FIELD_NAME_LABEL" description="COM_WISSENSMATRIX_FIELD_NAME_DESC"
+			required="true" />
+
+		<field name="alias" type="text"
+			label="JFIELD_ALIAS_LABEL" description="JFIELD_ALIAS_DESC" />
+
+		<field name="catid" type="categoryedit"
+			label="COM_WISSENSMATRIX_FIELD_CATID_LABEL" description="COM_WISSENSMATRIX_FIELD_CATID_DESC"
+			extension="com_wissensmatrix"
+			class="input-xlarge"
+			required="true" />
+
+		<field name="state" type="list"
+			label="JSTATUS" description="JFIELD_PUBLISHED_DESC"
+			size="1"
+			default="1" >
+			<option value="1">JPUBLISHED</option>
+			<option value="0">JUNPUBLISHED</option>
+			<option value="2">JARCHIVED</option>
+			<option value="-2">JTRASH</option>
+		</field>
+
+		<field name="language" type="contentlanguage"
+			label="JFIELD_LANGUAGE_LABEL" description="COM_SERMONSPEAKER_FIELD_LANGUAGE_DESC" >
+			<option value="*">JALL</option>
+		</field>
+
+	</fieldset>
+
+	<fieldset name="info">
+		<field name="id" type="text"
+			label="JGLOBAL_FIELD_ID_LABEL" description ="JGLOBAL_FIELD_ID_DESC"
+			size="10"
+			default="0"
+			required="true"
+			class="readonly"
+			readonly="true" />
+
+		<field name="created_by" type="user"
+			label="JGLOBAL_FIELD_CREATED_BY_LABEL" description="JGLOBAL_FIELD_CREATED_BY_DESC" />
+
+		<field name="created" type="calendar"
+			label="JGLOBAL_FIELD_CREATED_LABEL" description="JGLOBAL_FIELD_CREATED_DESC"
+			format="%Y-%m-%d %H:%M:%S"
+			filter="user_utc"
+			class="readonly"
+			readonly="true" />
+
+		<field name="modified_by" type="user"
+			label="JGLOBAL_FIELD_MODIFIED_BY_LABEL"
+			class="readonly"
+			readonly="true"
+			filter="unset" />
+
+		<field name="modified" type="calendar"
+			label="JGLOBAL_FIELD_MODIFIED_LABEL" description="COM_SERMONSPEAKER_FIELD_MODIFIED_DESC"
+			format="%Y-%m-%d %H:%M:%S"
+			filter="user_utc"
+			class="readonly"
+			readonly="true" />
+
+		<field name="hits" type="hits"
+			label="JGLOBAL_HITS" description="COM_SERMONSPEAKER_FIELD_HITS_DESC"
+			class="readonly"
+			readonly="true" />
+
+	</fieldset>
+
+	<fieldset name="detail">
+		<field name="uid" type="text"
+			label="COM_WISSENSMATRIX_FIELD_UID_LABEL" description="COM_WISSENSMATRIX_FIELD_UID_DESC"
+			required="true" />
+
+		<field name="geb" type="calendar"
+			label="COM_WISSENSMATRIX_FIELD_GEB_LABEL" description="COM_WISSENSMATRIX_FIELD_GEB_DESC" />
+
+		<field name="eintritt" type="calendar"
+			label="COM_WISSENSMATRIX_FIELD_EINTRITT_LABEL" description="COM_WISSENSMATRIX_FIELD_EINTRITT_DESC" />
+
+		<field name="template_id" type="sql"
+			label="COM_WISSENSMATRIX_FIELD_TEMPLATE_LABEL" description="COM_WISSENSMATRIX_FIELD_TEMPLATE_DESC"
+			query="SELECT mit.id, CONCAT(name, ' ', vorname) AS text FROM #__wissensmatrix_mitarbeiter AS mit LEFT JOIN #__categories AS cat ON mit.catid = cat.id WHERE cat.title LIKE 'Template%' ORDER BY mit.name, mit.vorname"
+			value_field="text"
+			key_field="id" >
+			<option value="">COM_WISSENSMATRIX_FIELD_TEMPLATE_UID_SELECT</option>
+		</field>
+	</fieldset>
+
+	<fieldset name="metadata"
+		label="JGLOBAL_FIELDSET_METADATA_OPTIONS" >
+		<field name="metadesc" type="textarea"
+			label="JFIELD_META_DESCRIPTION_LABEL" description="JFIELD_META_DESCRIPTION_DESC"
+			rows="3"
+			cols="30" />
+
+		<field name="metakey" type="textarea"
+			label="JFIELD_META_KEYWORDS_LABEL" description="JFIELD_META_KEYWORDS_DESC"
+			rows="3"
+			cols="30" />
+	</fieldset>
+</form>

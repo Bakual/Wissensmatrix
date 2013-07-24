@@ -1,0 +1,12 @@
+/* Text abschneiden mittels CSS. Theoretisch möglich für Worker -> WBI mittels class ellipsis und span9 */
+.ellipsis
+{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+ul.list-condensed strong
+{
+  min-height:auto !important;
+}
