@@ -1,12 +1,11 @@
 <?php
-// No direct access.
 defined('_JEXEC') or die;
 
 /**
  * Fachwissen Zwischentabelle model.
  *
  */
-class WissensmatrixModelZfwigform extends JModelForm
+class WissensmatrixModelZfwigform extends JModelAdmin
 {
 	/**
 	 * @var		string	The prefix to use with controller messages.
@@ -22,30 +21,28 @@ class WissensmatrixModelZfwigform extends JModelForm
 	 */
 	protected function canDelete($record)
 	{
-		if (!empty($record->id)) {
+		if (!$record->mit_id)
+		{
+			return false;
+		}
+
+		$db		= JFactory::getDbo();
+		$query	= $db->getQuery(true);
+
+		$query->select('catid');
+		$query->from('#__wissensmatrix_mitarbeiter');
+		$query->where('id = '.$record->mit_id);
+		$db->setQuery($query);
+		$catid	= $db->loadResult();
+
+		if ($catid)
+		{
 			$user	= JFactory::getUser();
-
-			if (!$record->mit_id)
-			{
-				return;
-			}
-
-			$db		= JFactory::getDbo();
-			$query	= $db->getQuery(true);
-
-			$query->select('catid');
-			$query->from('#__wissensmatrix_mitarbeiter');
-			$query->where('id = '.$record->mit_id);
-			$db->setQuery($query);
-			$catid	= $db->loadResult();
-
-			if ($catid) {
-				// Use edit rights for this
-				return $user->authorise('core.worker.edit', 'com_wissensmatrix.category.'.(int) $catid);
-			}
-			else {
-				return parent::canDelete($record);
-			}
+			return $user->authorise('core.edit.worker', 'com_wissensmatrix.category.'.(int) $catid);
+		}
+		else
+		{
+			return false;
 		}
 	}
 
@@ -290,6 +287,84 @@ class WissensmatrixModelZfwigform extends JModelForm
 				$result = $db->execute();
 			}
 		}
+
+		return true;
+	}
+
+	/**
+	 * Method to delete a fachwissen group from zfwi.
+	 *
+	 * @param   array  $data  The form data.
+	 *
+	 * @return  boolean  True on success, False on error.
+	 *
+	 * @since   12.2
+	 */
+	public function delete($pks)
+	{
+		$pks = (array) $pks;
+
+		// Iterate the items to delete each one.
+		foreach ($pks as $i => $pk)
+		{
+
+			if ($item = $this->getItem($pk))
+			{
+
+				if ($this->canDelete($item))
+				{
+
+					$db		= JFactory::getDbo();
+					$query	= $db->getQuery(true);
+					$query->delete();
+					$query->from('#__wissensmatrix_mit_fwi');
+					$query->where('mit_id = '.(int)$item->mit_id);
+
+					// get fwi for fwig
+					$subquery	= $db->getQuery(true);
+					$subquery->select('id');
+					$subquery->from('#__wissensmatrix_fachwissen');
+					$subquery->where('fwig_id = '.(int)$item->fwig_id);
+
+					$query->where('fwi_id IN ('.$subquery.')');
+
+					$db->setQuery($query);
+
+					try {
+						$result = $db->execute();
+					} catch (Exception $e) {
+						$this->setError($e);
+						return false;
+					}
+				}
+				else
+				{
+
+					// Prune items that you can't change.
+					unset($pks[$i]);
+					$error = $this->getError();
+					if ($error)
+					{
+						JLog::add($error, JLog::WARNING, 'jerror');
+						return false;
+					}
+					else
+					{
+						JLog::add(JText::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'), JLog::WARNING, 'jerror');
+						return false;
+					}
+				}
+
+			}
+			else
+			{
+				$this->setError(JText::_('JGLOBAL_RESOURCE_NOT_FOUND'));
+				return false;
+			}
+		}
+
+		// Clear the component's cache
+		$this->cleanCache();
 
 		return true;
 	}
