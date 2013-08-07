@@ -194,7 +194,7 @@ $this->document->addScriptDeclaration('jQuery(function() {
 			</a>
 			<div class="clearfix"></div>
 			<span class="pull-right">&nbsp;</span>
-			<span class="input-mini center pull-right badge badge-info"><?php echo JText::_('COM_WISSENSMATRIX_SOLl'); ?></span>
+			<span class="input-mini center pull-right badge badge-info"><?php echo JText::_('COM_WISSENSMATRIX_SOLL'); ?></span>
 			<span class="input-mini center pull-right badge badge-info"><?php echo JText::_('COM_WISSENSMATRIX_IST'); ?></span>
 			<div class="fwig">
 				<?php $fwig = ''; ?>
