@@ -94,7 +94,7 @@ $listDirn	= $this->state->get('list.direction');
 									endif;
 									if ($canEdit or $user->authorise('core.edit.worker', 'com_wissensmatrix.category.'.$item->catid)) : ?>
 										<span class="list-edit pull-left">
-											<?php echo JHtml::_('icon.edit', $item, $this->params, array('type' => 'worker')); ?>
+											<?php echo JHtml::_('icon.edit', $item, $this->params, array('type' => 'worker', 'hide_text' => true)); ?>
 										</span>
 									<?php endif; ?>
 									<?php if (!$item->state) : ?>

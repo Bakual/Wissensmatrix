@@ -89,7 +89,10 @@ class JHtmlIcon
 
 		$icon	= $item->state ? 'edit' : 'eye-close';
 		$text	= '<i class="hasTip icon-'.$icon.' tip" title="'.JText::_('COM_WISSENSMATRIX_EDIT_ITEM').' :: '.$overlib.'"></i>';
-		$text	.= ' '.JText::_('JGLOBAL_EDIT');
+		if (empty($attribs['hide_text']))
+		{
+			$text	.= ' '.JText::_('JGLOBAL_EDIT');
+		}
 
 		$output = JHtml::_('link', JRoute::_($url), $text).' &nbsp;';
 
