@@ -59,16 +59,20 @@ $listDirn	= $this->w_state->get('list.direction');
 									if (!$level->value) :
 										continue;
 									endif; ?>
-									<th><?php echo $level->title; ?></th>
+									<th>
+										<?php echo $level->title; ?><br/>
+									</th>
 								<?php endforeach; ?>
 							</tr>
 						</thead>
 						<tbody>
-							<?php foreach ($this->teams as $team) :
-								?>
+							<?php $tooltip = JText::_('COM_WISSENSMATRIX_IST').' / '.JText::_('COM_WISSENSMATRIX_SOLL'); ?>
+							<?php foreach ($this->teams as $team) : ?>
 								<tr>
 									<td>
-										<?php echo $team->title; ?>
+										<a href="<?php echo JRoute::_('index.php?view=reportfwiglevels&id='.$this->items[0]->fwig_id.'&teamid='.$team->id); ?>">
+											<?php echo $team->title; ?>
+										</a>
 									</td>
 									<td>
 										<?php echo $team->numitems; ?>
@@ -81,7 +85,7 @@ $listDirn	= $this->w_state->get('list.direction');
 										$soll = $this->model->getWorkerCount($item->id, $team->id, $level->value, false);
 										$class = WissensmatrixHelperWissensmatrix::getDiffClass($ist, $soll); ?>
 										<td>
-											<span class="label label-<?php echo $class; ?>"><?php echo $ist.' / '.$soll; ?></span>
+											<span class="label label-<?php echo $class; ?>" rel="tooltip" title="<?php echo $tooltip; ?>"><?php echo $ist.' / '.$soll; ?></span>
 										</td>
 									<?php endforeach; ?>
 									<td>
