@@ -138,7 +138,7 @@ class WissensmatrixViewWorker extends JViewLegacy
 		return array(
 			'title' => JText::_('JGLOBAL_TITLE'),
 			'zwbi.date' => JText::_('JDATE'),
-			'zwbi.state' => JText::_('JSTATUS'),
+			'zwbi.status_id' => JText::_('JSTATUS'),
 		);
 	}
 }
