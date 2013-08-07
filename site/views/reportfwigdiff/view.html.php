@@ -4,21 +4,45 @@ jimport( 'joomla.application.component.view');
 /**
  * HTML View class for the Wissensmatrix Component
  */
-class WissensmatrixViewReportsfwigs extends JViewLegacy
+class WissensmatrixViewReportfwigdiff extends JViewLegacy
 {
 	function display($tpl = null)
 	{
+		// Set some states in the model
+		$this->model		= $this->getModel();
+		$this->model->setState('fwig.id', JFactory::getApplication()->input->get('id', 0, 'int'));
+
 		// Get some data from the model
 		$this->state		= $this->get('State');
 		$this->items		= $this->get('Items');
 		$this->pagination	= $this->get('Pagination');
-		// Get Category stuff from model
-/*		$this->category		= $this->get('Category');
-		$children			= $this->get('Children');
-		$this->parent		= $this->get('Parent');
-		$this->children		= array($this->category->id => $children); */
+		$this->levels		= $this->get('Levels');
+
+		// Get Workers for selected teams
+		$this->workermodel = $this->getModel('Workers');
+		$this->workermodel->getState();
+		$this->workermodel->setState('list.start', 0);
+		$this->workermodel->setState('list.limit', 0);
+		$this->workers		= $this->workermodel->getItems();
+		$this->w_state		= $this->workermodel->getState();
+		$this->parent		= $this->workermodel->getParent();
 
 		$this->params		= $this->state->get('params');
+
+		// Get list of teams
+		$this->teams		= array();
+		$this->getTeams($this->workermodel->getCategory());
+		if ($this->w_state->get('list.ordering') == 'category_title')
+		{
+			if ($this->w_state->get('list.direction') == 'asc')
+			{
+				ksort($this->teams);
+			}
+			else
+			{
+				krsort($this->teams);
+			}
+		}
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
@@ -27,35 +51,9 @@ class WissensmatrixViewReportsfwigs extends JViewLegacy
 			return false;
 		}
 
-/*		if ($this->category == false)
-		{
-			return JError::raiseError(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'));
-		}
-		if ($this->parent == false && $this->category->id != 'root')
-		{
-				return JError::raiseError(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'));
-		}
-		if ($this->category->id == 'root'){
-			$this->params->set('show_category_title', 0);
-			$this->cat = '';
-		}
-		else
-		{
-			// Get the category title for backward compatibility
-			$this->cat = $this->category->title;
-		}
-		// Check whether category access level allows access.
-		$user	= JFactory::getUser();
-		$groups	= $user->getAuthorisedViewLevels();
-		if (!in_array($this->category->access, $groups))
-		{
-			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
-		}
-*/
-
 		$js = 'function clear_all(){
-			if(document.id(\'filter_catid\')){
-				document.id(\'filter_catid\').value=0;
+			if(document.id(\'filter_teamid\')){
+				document.id(\'filter_teamid\').value=0;
 			}
 			if(document.id(\'filter-search\')){
 				document.id(\'filter-search\').value="";
@@ -64,7 +62,6 @@ class WissensmatrixViewReportsfwigs extends JViewLegacy
 		$this->document->addScriptDeclaration($js);
 
 		$this->pageclass_sfx	= htmlspecialchars($this->params->get('pageclass_sfx'));
-		$this->maxLevel			= $this->params->get('maxLevel', -1);
 		$this->_prepareDocument();
 		parent::display($tpl);
 	}
@@ -86,7 +83,7 @@ class WissensmatrixViewReportsfwigs extends JViewLegacy
 		}
 		else
 		{
-			$this->params->def('page_heading', JText::_('COM_WISSENSMATRIX_REPORTSFWIGS_TITLE'));
+			$this->params->def('page_heading', JText::_('COM_WISSENSMATRIX_REPORTFWIGLEVELS_TITLE'));
 		}
 		$title = $this->params->get('page_title', '');
 		if (empty($title))
@@ -116,6 +113,22 @@ class WissensmatrixViewReportsfwigs extends JViewLegacy
 		if ($this->params->get('robots'))
 		{
 			$this->document->setMetadata('robots', $this->params->get('robots'));
+		}
+	}
+
+	protected function getTeams($cat)
+	{
+		if ($cat->numitems)
+		{
+			$this->teams[$cat->title]	= $cat;
+		}
+		if ($cat->hasChildren())
+		{
+			$children = $cat->getChildren();
+			foreach ($children as $child)
+			{
+				$this->getTeams($child);
+			}
 		}
 	}
 }
