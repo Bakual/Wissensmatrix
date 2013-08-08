@@ -2,6 +2,7 @@
 defined('_JEXEC') or die;
 
 JHTML::addIncludePath(JPATH_COMPONENT.'/helpers');
+JHtml::stylesheet('com_wissensmatrix/wissensmatrix.css', '', true);
 
 $listOrder	= $this->w_state->get('list.ordering');
 $listDirn	= $this->w_state->get('list.direction');
@@ -34,7 +35,7 @@ $listDirn	= $this->w_state->get('list.direction');
 								<?php $config = array('filter.published' => array(0, 1), 'filter.access' => true);
 								echo JHtml::_('select.options', JHtml::_('wissensmatrixcategory.options', 'com_wissensmatrix', $config), 'value', 'text', $this->state->get('team.id', 0)); ?>
 							</select>
-							<a href="<?php echo JRoute::_('index.php?view=reportfwiglevels&id='.$this->items[0]->fwig_id.'&teamid='.$this->parent->id); ?>" class="btn addon" title="<?php JText::printf('COM_WISSENSMATRIX_GET_PARENT_TEAM', $this->parent->title); ?>"><i class="icon-arrow-up"></i></a>
+							<a href="<?php echo JRoute::_('index.php?view=reportfwigdiff&id='.$this->items[0]->fwig_id.'&teamid='.$this->parent->id); ?>" class="btn addon" title="<?php JText::printf('COM_WISSENSMATRIX_GET_PARENT_TEAM', $this->parent->title); ?>"><i class="icon-arrow-up"></i></a>
 						</div>
 					<?php endif; ?>
 				</div>
@@ -54,32 +55,34 @@ $listDirn	= $this->w_state->get('list.direction');
 								<th class="title">
 									<?php echo JHTML::_('grid.sort', 'COM_WISSENSMATRIX_TEAM', 'category_title', $listDirn, $listOrder); ?>
 								</th>
-								<th><?php echo JText::_('COM_WISSENSMATRIX_MANKO'); ?></th>
-								<th bgcolor='#ffff00'>1</th>
-								<th bgcolor='#ffa500'>2</th>
-								<th bgcolor='#ff0000'>3</th>
-								<th><?php echo JText::_('COM_WISSENSMATRIX_POTENTIAL'); ?></th>
-								<th bgcolor='#D0F5A9'>1</th>
-								<th bgcolor='#81F781'>2</th>
-								<th bgcolor='#01DF01'>3</th>
+								<th class="text-center"><?php echo JText::_('COM_WISSENSMATRIX_MANKO'); ?></th>
+								<th class="text-center diff1">1</th>
+								<th class="text-center diff2">2</th>
+								<th class="text-center diff3">3</th>
+								<th class="text-center"><?php echo JText::_('COM_WISSENSMATRIX_POTENTIAL'); ?></th>
+								<th class="text-center pot1">1</th>
+								<th class="text-center pot2">2</th>
+								<th class="text-center pot3">3</th>
 							</tr>
 						</thead>
 						<tbody>
-							<?php foreach ($this->teams as $team) : ?>
+							<?php 
+							$report	= (count($this->teams) > 1) ? 'reportfwigdiff' : 'reportfwigteam';
+							foreach ($this->teams as $team) : ?>
 								<tr>
 									<td>
-										<a href="<?php echo JRoute::_('index.php?view=reportfwigdiff&id='.$this->items[0]->fwig_id.'&teamid='.$team->id); ?>">
+										<a href="<?php echo JRoute::_('index.php?view='.$report.'&id='.$this->items[0]->fwig_id.'&teamid='.$team->id); ?>">
 											<?php echo $team->title; ?>
 										</a>
 									</td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
+									<td class="text-center"><?php echo $this->model->getDiff($item->id, $team->id); ?></td>
+									<td class="text-center diff1"><?php echo $this->model->getDiff($item->id, $team->id, false, 1); ?></td>
+									<td class="text-center diff2"><?php echo $this->model->getDiff($item->id, $team->id, false, 2); ?></td>
+									<td class="text-center diff3"><?php echo $this->model->getDiff($item->id, $team->id, false, 3); ?></td>
+									<td class="text-center"><?php echo $this->model->getDiff($item->id, $team->id, true); ?></td>
+									<td class="text-center pot1"><?php echo $this->model->getDiff($item->id, $team->id, true, 1); ?></td>
+									<td class="text-center pot2"><?php echo $this->model->getDiff($item->id, $team->id, true, 2); ?></td>
+									<td class="text-center pot3"><?php echo $this->model->getDiff($item->id, $team->id, true, 3); ?></td>
 								</tr>
 							<?php endforeach; ?>
 						</tbody>

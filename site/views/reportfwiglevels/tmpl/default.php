@@ -66,11 +66,12 @@ $listDirn	= $this->w_state->get('list.direction');
 							</tr>
 						</thead>
 						<tbody>
-							<?php $tooltip = JText::_('COM_WISSENSMATRIX_IST').' / '.JText::_('COM_WISSENSMATRIX_SOLL'); ?>
-							<?php foreach ($this->teams as $team) : ?>
+							<?php $tooltip = JText::_('COM_WISSENSMATRIX_IST').' / '.JText::_('COM_WISSENSMATRIX_SOLL');
+							$report	= (count($this->teams) > 1) ? 'reportfwiglevels' : 'reportfwigteam';
+							foreach ($this->teams as $team) : ?>
 								<tr>
 									<td>
-										<a href="<?php echo JRoute::_('index.php?view=reportfwiglevels&id='.$this->items[0]->fwig_id.'&teamid='.$team->id); ?>">
+										<a href="<?php echo JRoute::_('index.php?view='.$report.'&id='.$this->items[0]->fwig_id.'&teamid='.$team->id); ?>">
 											<?php echo $team->title; ?>
 										</a>
 									</td>

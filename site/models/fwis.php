@@ -347,7 +347,7 @@ class WissensmatrixModelFwis extends JModelList
 	 * @mit		int		The id of the Worker
 	 *
 	 * @return	mixed	An array with ist, soll and template soll value.
-	 * @since	1.0
+	 * @since	3.0
 	 */
 	public function getIstSoll($fwi, $mit)
 	{
@@ -399,7 +399,7 @@ class WissensmatrixModelFwis extends JModelList
 	 * @ist		bool	true for 'ist' and false for 'soll'
 	 *
 	 * @return	int		Count
-	 * @since	1.0
+	 * @since	3.0
 	 */
 	public function getWorkerCount($fwi, $team, $erf, $ist)
 	{
@@ -428,13 +428,8 @@ class WissensmatrixModelFwis extends JModelList
 	/**
 	 * Gets the levels
 	 *
-	 * @fwi		int		The id of the Fachwissen
-	 * @team	int		The id of the team (category)
-	 * @erf		int		The id of the level
-	 * @ist		bool	true for 'ist' and false for 'soll'
-	 *
-	 * @return	int		Count
-	 * @since	1.0
+	 * @return	array	objects
+	 * @since	3.0
 	 */
 	public function getLevels()
 	{
@@ -456,5 +451,57 @@ class WissensmatrixModelFwis extends JModelList
 		$db->setQuery($query);
 
 		return $db->loadObjectList('id');
+	}
+
+	/**
+	 * Gets the diff
+	 *
+	 * @fwi		int		The id of the Fachwissen
+	 * @team	int		The id of the team (category)
+	 * @pot		bool	true for potential, false for manko
+	 * @delta	int		The delta to search for
+	 *
+	 * @return	int		Count
+	 * @since	1.0
+	 */
+	public function getDiff($fwi, $team, $pot = false, $delta = false)
+	{
+		// Create a new query object.
+		$db		= $this->getDbo();
+		$query	= $db->getQuery(true);
+
+		$query->select('COUNT(DISTINCT zfwi.mit_id)');
+		$query->from('#__wissensmatrix_mit_fwi AS zfwi');
+		$query->join('LEFT', '#__wissensmatrix_mitarbeiter AS mit ON mit.id = zfwi.mit_id');
+		$query->join('LEFT', '#__wissensmatrix_erfahrung AS istlevel ON istlevel.id = zfwi.ist');
+		$query->join('LEFT', '#__wissensmatrix_erfahrung AS solllevel ON solllevel.id = zfwi.soll');
+		$query->where('mit.catid = '.(int)$team);
+		$query->where('zfwi.fwi_id = '.(int)$fwi);
+		if ($delta)
+		{
+			if ($pot)
+			{
+				$query->where('istlevel.value - solllevel.value = '.(int)$delta);
+			}
+			else
+			{
+				$query->where('solllevel.value - istlevel.value = '.(int)$delta);
+			}
+		}
+		else
+		{
+			if ($pot)
+			{
+				$query->where('istlevel.value > solllevel.value');
+			}
+			else
+			{
+				$query->where('istlevel.value < solllevel.value');
+			}
+		}
+
+		$db->setQuery($query);
+
+		return $db->loadResult();
 	}
 }

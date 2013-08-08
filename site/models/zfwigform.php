@@ -300,7 +300,7 @@ class WissensmatrixModelZfwigform extends JModelAdmin
 	 *
 	 * @since   12.2
 	 */
-	public function delete($pks)
+	public function delete(&$pks)
 	{
 		$pks = (array) $pks;
 
