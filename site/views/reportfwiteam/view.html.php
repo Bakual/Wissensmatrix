@@ -4,22 +4,25 @@ jimport( 'joomla.application.component.view');
 /**
  * HTML View class for the Wissensmatrix Component
  */
-class WissensmatrixViewReportsfwis extends JViewLegacy
+class WissensmatrixViewReportfwiteam extends JViewLegacy
 {
 	function display($tpl = null)
 	{
-		// Set some states in the model
+		// Get the model
 		$this->model		= $this->getModel();
-		$this->model->setState('fwig.id', JFactory::getApplication()->input->get('id', 0, 'int'));
 
+		// Get some data from the model
 		$this->state		= $this->get('State');
-		$this->items		= $this->get('Items');
-		$this->pagination	= $this->get('Pagination');
-		$this->parent		= JCategories::getInstance('Wissensmatrix')->get($this->state->get('team.id', 'root'))->getParent();
+		$this->item			= $this->get('Item');
 
-		// Get Fwigs for dropdown and add "- select fwig -"
-		$fwigsmodel		= $this->getModel('Fwigs');
-		$this->fwigs	= $fwigsmodel->getItems();
+		// Get Workers for selected teams
+		$this->workermodel = $this->getModel('Workers');
+		$this->workermodel->getState();
+		$this->workermodel->setState('list.start', 0);
+		$this->workermodel->setState('list.limit', 0);
+		$this->workers		= $this->workermodel->getItems();
+		$this->w_state		= $this->workermodel->getState();
+		$this->parent		= $this->workermodel->getParent();
 
 		$this->params		= $this->state->get('params');
 
@@ -30,35 +33,9 @@ class WissensmatrixViewReportsfwis extends JViewLegacy
 			return false;
 		}
 
-/*		if ($this->category == false)
-		{
-			return JError::raiseError(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'));
-		}
-		if ($this->parent == false && $this->category->id != 'root')
-		{
-				return JError::raiseError(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'));
-		}
-		if ($this->category->id == 'root'){
-			$this->params->set('show_category_title', 0);
-			$this->cat = '';
-		}
-		else
-		{
-			// Get the category title for backward compatibility
-			$this->cat = $this->category->title;
-		}
-		// Check whether category access level allows access.
-		$user	= JFactory::getUser();
-		$groups	= $user->getAuthorisedViewLevels();
-		if (!in_array($this->category->access, $groups))
-		{
-			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
-		}
-*/
-
 		$js = 'function clear_all(){
-			if(document.id(\'filter_catid\')){
-				document.id(\'filter_catid\').value=0;
+			if(document.id(\'filter_teamid\')){
+				document.id(\'filter_teamid\').value=0;
 			}
 			if(document.id(\'filter-search\')){
 				document.id(\'filter-search\').value="";
@@ -67,7 +44,6 @@ class WissensmatrixViewReportsfwis extends JViewLegacy
 		$this->document->addScriptDeclaration($js);
 
 		$this->pageclass_sfx	= htmlspecialchars($this->params->get('pageclass_sfx'));
-		$this->maxLevel			= $this->params->get('maxLevel', -1);
 		$this->_prepareDocument();
 		parent::display($tpl);
 	}
@@ -89,7 +65,7 @@ class WissensmatrixViewReportsfwis extends JViewLegacy
 		}
 		else
 		{
-			$this->params->def('page_heading', JText::_('COM_WISSENSMATRIX_REPORTSFWIGS_TITLE'));
+			$this->params->def('page_heading', JText::_('COM_WISSENSMATRIX_REPORTFWIGTEAM_TITLE'));
 		}
 		$title = $this->params->get('page_title', '');
 		if (empty($title))

@@ -5,15 +5,12 @@ JHTML::addIncludePath(JPATH_COMPONENT.'/helpers');
 
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
-JHtml::_('formbehavior.chosen', 'select');
 
 $user		= JFactory::getUser();
 $canEdit	= $user->authorise('core.edit', 'com_wissensmatrix');
 $canEditOwn	= $user->authorise('core.edit.own', 'com_wissensmatrix');
 $listOrder	= $this->state->get('list.ordering');
 $listDirn	= $this->state->get('list.direction');
-
-$teamid		= $this->state->get('team.id', 0);
 ?>
 <div class="category-list<?php echo $this->pageclass_sfx;?> wm-reportsfwigs-container<?php echo $this->pageclass_sfx; ?>">
 	<?php if ($this->params->get('show_page_heading', 1)) : ?>
@@ -26,25 +23,30 @@ $teamid		= $this->state->get('team.id', 0);
 	<?php endif; ?>
 	<div class="cat-items">
 		<form action="<?php echo htmlspecialchars(JUri::getInstance()->toString()); ?>" method="post" id="adminForm" name="adminForm">
-			<?php if ($this->params->get('filter_field') or $this->params->get('show_pagination_limit')) : ?>
+			<?php if ($this->params->get('filter_field')) : ?>
 				<div id="filter-bar" class="filters btn-toolbar">
-					<?php if ($this->params->get('filter_field')) : ?>
-						<div class="filter-search btn-group input-append pull-left">
-							<label class="filter-search-lbl element-invisible" for="filter-search">
-								<span class="label label-warning"><?php echo JText::_('JUNPUBLISHED'); ?></span>
-								<?php echo JText::_('JGLOBAL_FILTER_LABEL').'&#160;'; ?>
-							</label>
-							<input type="text" name="filter-search" id="filter-search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" class="input-medium" onchange="document.adminForm.submit();" title="<?php echo JText::_('COM_WISSENSMATRIX_FILTER_SEARCH_DESC'); ?>" placeholder="<?php echo JText::_('COM_WISSENSMATRIX_FILTER_SEARCH_DESC'); ?>" />
-							<button class="btn tip hidden-phone hidden-tablet" type="button" onclick="clear_all();this.form.submit();" rel="tooltip" title="<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>"><i class="icon-remove"></i></button>
-						</div>
-						<div class="btn-group filter-select">
-							<select name="teamid" id="filter_teamid" class="input-xlarge" onchange="this.form.submit()">
-								<option value="0"><?php echo JText::_('COM_WISSENSMATRIX_SELECT_TEAM'); ?></option>
-								<?php $config = array('filter.published' => array(0, 1), 'filter.access' => true);
-								echo JHtml::_('select.options', JHtml::_('wissensmatrixcategory.options', 'com_wissensmatrix', $config), 'value', 'text', $teamid); ?>
-							</select>
-						</div>
-					<?php endif; ?>
+					<div class="filter-search btn-group input-append pull-left">
+						<label class="filter-search-lbl element-invisible" for="filter-search">
+							<span class="label label-warning"><?php echo JText::_('JUNPUBLISHED'); ?></span>
+							<?php echo JText::_('JGLOBAL_FILTER_LABEL').'&#160;'; ?>
+						</label>
+						<input type="text" name="filter-search" id="filter-search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" class="input-medium" onchange="document.adminForm.submit();" title="<?php echo JText::_('COM_WISSENSMATRIX_FILTER_SEARCH_DESC'); ?>" placeholder="<?php echo JText::_('COM_WISSENSMATRIX_FILTER_SEARCH_DESC'); ?>" />
+						<button class="btn tip hidden-phone hidden-tablet" type="button" onclick="clear_all();this.form.submit();" rel="tooltip" title="<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>"><i class="icon-remove"></i></button>
+					</div>
+					<div class="btn-group filter-select input-append">
+						<select name="teamid" id="filter_teamid" class="input-xlarge" onchange="this.form.submit()">
+							<option value="0"><?php echo JText::_('COM_WISSENSMATRIX_SELECT_TEAM'); ?></option>
+							<?php $config = array('filter.published' => array(0, 1), 'filter.access' => true);
+							echo JHtml::_('select.options', JHtml::_('wissensmatrixcategory.options', 'com_wissensmatrix', $config), 'value', 'text', $this->state->get('team.id', 0)); ?>
+						</select>
+						<a href="<?php echo JRoute::_('index.php?view=reportsfwis&teamid='.$this->parent->id); ?>" class="btn addon" title="<?php JText::printf('COM_WISSENSMATRIX_GET_PARENT_TEAM', $this->parent->title); ?>"><i class="icon-arrow-up"></i></a>
+					</div>
+				</div>
+				<div class="btn-group filter-select">
+					<select name="id" id="filter_id" class="input-xlarge" onchange="this.form.submit()">
+						<option value="0"><?php echo JText::_('COM_WISSENSMATRIX_FIELD_FWIG_ID_SELECT'); ?></option>
+						<?php echo JHtmlSelect::options($this->fwigs, 'id', 'title', $this->state->get('fwig.id')); ?>
+					</select>
 				</div>
 			<?php endif; ?>
 			<div class="clearfix"></div>
@@ -55,9 +57,6 @@ $teamid		= $this->state->get('team.id', 0);
 					<thead><tr>
 						<th class="title">
 							<?php echo JHTML::_('grid.sort', 'JGLOBAL_TITLE', 'title', $listDirn, $listOrder); ?>
-						</th>
-						<th class="reports">
-							<?php echo JText::_('COM_WISSENSMATRIX_TEAM'); ?>
 						</th>
 						<th class="reports">
 							<?php echo JText::_('COM_WISSENSMATRIX_TEAMS'); ?>
@@ -74,12 +73,7 @@ $teamid		= $this->state->get('team.id', 0);
 									<?php endif; ?>
 								</td>
 								<td class="reports">
-									<a href="&teamid=<?php echo $teamid; ?>"><img src="media/com_wissensmatrix/images/black_view.gif"></a>
-									<a href="&teamid=<?php echo $teamid; ?>"><img src="media/com_wissensmatrix/images/icon_download.gif"></a>
-								</td>
-								<td class="reports">
-									<a href=""><img src="media/com_wissensmatrix/images/black_view.gif"></a>
-									<a href=""><img src="media/com_wissensmatrix/images/icon_download.gif"></a>
+									<a href="<?php echo JRoute::_('index.php?view=reportfwiteam&id='.$item->id); ?>"><img src="media/com_wissensmatrix/images/black_view.gif"></a>
 								</td>
 							</tr>
 						<?php endforeach; ?>
