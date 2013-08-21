@@ -5,7 +5,6 @@ JHTML::addIncludePath(JPATH_COMPONENT.'/helpers');
 
 // loading PHPExcel (http://www.codeplex.com/PHPExcel)
 require_once JPATH_COMPONENT.'/libraries/PHPExcel.php';
-require_once JPATH_COMPONENT.'/libraries/PHPExcel/IOFactory.php';
 
 $xls = new PHPExcel();
 
