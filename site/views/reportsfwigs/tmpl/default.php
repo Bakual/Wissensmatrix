@@ -74,7 +74,7 @@ $listDirn	= $this->state->get('list.direction');
 								</td>
 								<td class="reports">
 									<a href="<?php echo JRoute::_('index.php?view=reportfwigteam&id='.$item->id); ?>"><img src="media/com_wissensmatrix/images/black_view.gif"></a>
-									<a href=""><img src="media/com_wissensmatrix/images/icon_download.gif"></a>
+									<a href="<?php echo JRoute::_('index.php?view=reportfwigteam&format=xls&id='.$item->id); ?>"><img src="media/com_wissensmatrix/images/icon_download.gif"></a>
 								</td>
 								<td class="reports">
 									<a href="<?php echo JRoute::_('index.php?view=reportfwiglevels&id='.$item->id); ?>"><img src="media/com_wissensmatrix/images/black_view.gif"></a>

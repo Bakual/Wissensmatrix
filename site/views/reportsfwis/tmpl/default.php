@@ -42,7 +42,7 @@ $listDirn	= $this->state->get('list.direction');
 						<a href="<?php echo JRoute::_('index.php?view=reportsfwis&teamid='.$this->parent->id); ?>" class="btn addon" title="<?php JText::printf('COM_WISSENSMATRIX_GET_PARENT_TEAM', $this->parent->title); ?>"><i class="icon-arrow-up"></i></a>
 					</div>
 				</div>
-				<div class="btn-group filter-select">
+				<div class="btn-group filter-select pull-left">
 					<select name="id" id="filter_id" class="input-xlarge" onchange="this.form.submit()">
 						<option value="0"><?php echo JText::_('COM_WISSENSMATRIX_FIELD_FWIG_ID_SELECT'); ?></option>
 						<?php echo JHtmlSelect::options($this->fwigs, 'id', 'title', $this->state->get('fwig.id')); ?>

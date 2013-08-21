@@ -2,7 +2,7 @@
 /**
  * PHPExcel
  *
- * Copyright (c) 2006 - 2010 PHPExcel
+ * Copyright (c) 2006 - 2013 PHPExcel
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,34 +20,17 @@
  *
  * @category   PHPExcel
  * @package    PHPExcel_Shared
- * @copyright  Copyright (c) 2006 - 2010 PHPExcel (http://www.codeplex.com/PHPExcel)
+ * @copyright  Copyright (c) 2006 - 2013 PHPExcel (http://www.codeplex.com/PHPExcel)
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
- * @version    1.7.2, 2010-01-11
+ * @version    1.7.9, 2013-06-02
  */
-
-/** PHPExcel root directory */
-if (!defined('PHPEXCEL_ROOT')) {
-	/**
-	 * @ignore
-	 */
-	define('PHPEXCEL_ROOT', dirname(__FILE__) . '/../../');
-}
-
-/** PHPExcel_Cell */
-require_once PHPEXCEL_ROOT . 'PHPExcel/Cell.php';
-
-/** PHPExcel_Shared_Drawing */
-require_once PHPEXCEL_ROOT . 'PHPExcel/Shared/Drawing.php';
-
-/** PHPExcel_Shared_Font */
-require_once PHPEXCEL_ROOT . 'PHPExcel/Shared/Font.php';
 
 /**
  * PHPExcel_Shared_Excel5
  *
  * @category   PHPExcel
  * @package    PHPExcel_Shared
- * @copyright  Copyright (c) 2006 - 2010 PHPExcel (http://www.codeplex.com/PHPExcel)
+ * @copyright  Copyright (c) 2006 - 2013 PHPExcel (http://www.codeplex.com/PHPExcel)
  */
 class PHPExcel_Shared_Excel5
 {
@@ -57,7 +40,7 @@ class PHPExcel_Shared_Excel5
 	 * This holds for Arial 10
 	 *
 	 * @param PHPExcel_Worksheet $sheet The sheet
-	 * @param integer $col The column
+	 * @param string $col The column
 	 * @return integer The width in pixels
 	*/
 	public static function sizeCol($sheet, $col = 'A')
@@ -153,9 +136,9 @@ class PHPExcel_Shared_Excel5
 	 *
 	 * @param PHPExcel_Worksheet $sheet
 	 * @param string $startColumn
-	 * @param integer $startOffset Offset within start cell measured in 1/1024 of the cell width
+	 * @param integer $startOffsetX Offset within start cell measured in 1/1024 of the cell width
 	 * @param string $endColumn
-	 * @param integer $endOffset Offset within end cell measured in 1/1024 of the cell width
+	 * @param integer $endOffsetX Offset within end cell measured in 1/1024 of the cell width
 	 * @return integer Horizontal measured in pixels
 	 */
 	public static function getDistanceX(PHPExcel_Worksheet $sheet, $startColumn = 'A', $startOffsetX = 0, $endColumn = 'A', $endOffsetX = 0)
@@ -183,10 +166,10 @@ class PHPExcel_Shared_Excel5
 	 * The distanceY is found as sum of all the spanning rows minus two offsets
 	 *
 	 * @param PHPExcel_Worksheet $sheet
-	 * @param string $startRow (1-based)
-	 * @param integer $startOffset Offset within start cell measured in 1/256 of the cell height
-	 * @param string $endRow (1-based)
-	 * @param integer $endOffset Offset within end cell measured in 1/256 of the cell height
+	 * @param integer $startRow (1-based)
+	 * @param integer $startOffsetY Offset within start cell measured in 1/256 of the cell height
+	 * @param integer $endRow (1-based)
+	 * @param integer $endOffsetY Offset within end cell measured in 1/256 of the cell height
 	 * @return integer Vertical distance measured in pixels
 	 */
 	public static function getDistanceY(PHPExcel_Worksheet $sheet, $startRow = 1, $startOffsetY = 0, $endRow = 1, $endOffsetY = 0)
@@ -264,7 +247,7 @@ class PHPExcel_Shared_Excel5
 		list($column, $row) = PHPExcel_Cell::coordinateFromString($coordinates);
 		$col_start = PHPExcel_Cell::columnIndexFromString($column) - 1;
 		$row_start = $row - 1;
-		
+
 		$x1 = $offsetX;
 		$y1 = $offsetY;
 

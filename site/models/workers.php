@@ -52,7 +52,7 @@ class WissensmatrixModelWorkers extends JModelList
 			$this->getState(
 				'list.select',
 				'workers.id, workers.catid, ' .
-				'workers.vorname, workers.name, ' .
+				'workers.vorname, workers.name, workers.uid, ' .
 				'CASE WHEN CHAR_LENGTH(workers.alias) THEN CONCAT_WS(\':\', workers.id, workers.alias) ELSE workers.id END as slug, ' .
 				'workers.hits, workers.alias, workers.checked_out, workers.checked_out_time,' .
 				'workers.state, workers.ordering, workers.created, workers.created_by'

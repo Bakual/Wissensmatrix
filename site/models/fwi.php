@@ -150,7 +150,7 @@ class WissensmatrixModelFwi extends JModelItem
 		$item	= $db->loadAssoc();
 		if (!$item)
 		{
-			$item	= array('ist' => '', 'ist_id' => 0, 'soll' => '', 'soll_id' => 0);
+			$item	= array('ist' => 0, 'ist_id' => 0, 'ist_title' => '-', 'soll' => 0, 'soll_id' => 0, 'soll_title' => '-');
 		}
 
 		$query	= $db->getQuery(true);

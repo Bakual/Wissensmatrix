@@ -18,42 +18,43 @@ class WissensmatrixController extends JControllerLegacy
 
 		// Add additional models
 		$viewName		= $this->input->get('view', $this->default_view);
+		$format			= $this->input->get('format', 'html');
 		switch ($viewName)
 		{
 			case 'worker':
 				$viewLayout = $this->input->get('layout', 'default');
-				$view = $this->getView($viewName, 'html', '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
+				$view = $this->getView($viewName, $format, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
 				$view->setModel($this->getModel('wbis'));
 				$view->setModel($this->getModel('fwis'));
 				break;
 			case 'reportsfwigs':
 				$viewLayout = $this->input->get('layout', 'default');
-				$view = $this->getView($viewName, 'html', '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
+				$view = $this->getView($viewName, $format, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
 				$view->setModel($this->getModel('fwigs'), true);
 				break;
 			case 'reportfwigteam':
 			case 'reportfwiglevels':
 			case 'reportfwigdiff':
 				$viewLayout = $this->input->get('layout', 'default');
-				$view = $this->getView($viewName, 'html', '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
+				$view = $this->getView($viewName, $format, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
 				$view->setModel($this->getModel('fwis'), true);
 				$view->setModel($this->getModel('workers'));
 				break;
 			case 'reportfwiteam':
 				$viewLayout = $this->input->get('layout', 'default');
-				$view = $this->getView($viewName, 'html', '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
+				$view = $this->getView($viewName, $format, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
 				$view->setModel($this->getModel('fwi'), true);
 				$view->setModel($this->getModel('workers'));
 				break;
 			case 'reportsfwis':
 				$viewLayout = $this->input->get('layout', 'default');
-				$view = $this->getView($viewName, 'html', '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
+				$view = $this->getView($viewName, $format, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
 				$view->setModel($this->getModel('fwis'), true);
 				$view->setModel($this->getModel('fwigs'));
 				break;
 			case 'zfwigform':
 				$viewLayout = $this->input->get('layout', 'default');
-				$view = $this->getView($viewName, 'html', '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
+				$view = $this->getView($viewName, $format, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
 				$view->setModel($this->getModel('fwis'));
 				break;
 		}

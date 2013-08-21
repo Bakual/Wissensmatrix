@@ -2,7 +2,7 @@
 /**
  * PHPExcel
  *
- * Copyright (c) 2006 - 2010 PHPExcel
+ * Copyright (c) 2006 - 2013 PHPExcel
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,9 +20,9 @@
  *
  * @category   PHPExcel
  * @package    PHPExcel_Calculation
- * @copyright  Copyright (c) 2006 - 2010 PHPExcel (http://www.codeplex.com/PHPExcel)
+ * @copyright  Copyright (c) 2006 - 2013 PHPExcel (http://www.codeplex.com/PHPExcel)
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
- * @version    1.7.2, 2010-01-11
+ * @version    1.7.9, 2013-06-02
  */
 
 
@@ -49,23 +49,12 @@ PARTLY BASED ON:
 	http://ewbi.blogs.com/develops/2004/12/excel_formula_p.html
 */
 
-/** PHPExcel root directory */
-if (!defined('PHPEXCEL_ROOT')) {
-	/**
-	 * @ignore
-	 */
-	define('PHPEXCEL_ROOT', dirname(__FILE__) . '/../../');
-}
-
-/** PHPExcel_Calculation_FormulaToken */
-require_once PHPEXCEL_ROOT . 'PHPExcel/Calculation/FormulaToken.php';
-
 /**
  * PHPExcel_Calculation_FormulaParser
  *
  * @category   PHPExcel
  * @package    PHPExcel_Calculation
- * @copyright  Copyright (c) 2006 - 2010 PHPExcel (http://www.codeplex.com/PHPExcel)
+ * @copyright  Copyright (c) 2006 - 2013 PHPExcel (http://www.codeplex.com/PHPExcel)
  */
 class PHPExcel_Calculation_FormulaParser {
 	/* Character constants */
@@ -104,13 +93,13 @@ class PHPExcel_Calculation_FormulaParser {
      * Create a new PHPExcel_Calculation_FormulaParser
      *
      * @param 	string		$pFormula	Formula to parse
-     * @throws 	Exception
+     * @throws 	PHPExcel_Calculation_Exception
      */
     public function __construct($pFormula = '')
     {
     	// Check parameters
     	if (is_null($pFormula)) {
-    		throw new Exception("Invalid parameter passed: formula");
+    		throw new PHPExcel_Calculation_Exception("Invalid parameter passed: formula");
     	}
 
     	// Initialise values
@@ -133,13 +122,13 @@ class PHPExcel_Calculation_FormulaParser {
      *
      * @param 	int		$pId	Token id
      * @return	string
-     * @throws  Exception
+     * @throws  PHPExcel_Calculation_Exception
      */
     public function getToken($pId = 0) {
     	if (isset($this->_tokens[$pId])) {
     		return $this->_tokens[$pId];
     	} else {
-    		throw new Exception("Token with id $pId does not exist.");
+    		throw new PHPExcel_Calculation_Exception("Token with id $pId does not exist.");
     	}
     }
 

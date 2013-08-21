@@ -36,6 +36,7 @@
 		<folder>views</folder>
 		<folder>models</folder>
 		<folder>language</folder>
+		<folder>libraries</folder>
 	</files>
 	<media destination="com_wissensmatrix" folder="media">
 		<folder>css</folder>
