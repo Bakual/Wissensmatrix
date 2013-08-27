@@ -78,11 +78,11 @@ $listDirn	= $this->state->get('list.direction');
 								</td>
 								<td class="reports">
 									<a href="<?php echo JRoute::_('index.php?view=reportfwiglevels&id='.$item->id); ?>"><img src="media/com_wissensmatrix/images/black_view.gif"></a>
-									<a href=""><img src="media/com_wissensmatrix/images/icon_download.gif"></a>
+									<a href="<?php echo JRoute::_('index.php?view=reportfwiglevels&format=xls&id='.$item->id); ?>"><img src="media/com_wissensmatrix/images/icon_download.gif"></a>
 								</td>
 								<td class="reports">
 									<a href="<?php echo JRoute::_('index.php?view=reportfwigdiff&id='.$item->id); ?>"><img src="media/com_wissensmatrix/images/black_view.gif"></a>
-									<a href=""><img src="media/com_wissensmatrix/images/icon_download.gif"></a>
+									<a href="<?php echo JRoute::_('index.php?view=reportfwigdiff&format=xls&id='.$item->id); ?>"><img src="media/com_wissensmatrix/images/icon_download.gif"></a>
 								</td>
 							</tr>
 						<?php endforeach; ?>
