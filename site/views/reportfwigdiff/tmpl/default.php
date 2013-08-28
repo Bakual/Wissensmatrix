@@ -30,7 +30,7 @@ $listDirn	= $this->w_state->get('list.direction');
 							<button class="btn tip hidden-phone hidden-tablet" type="button" onclick="clear_all();this.form.submit();" title="<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>"><i class="icon-remove"></i></button>
 						</div>
 						<div class="btn-group filter-select input-append">
-							<select name="teamid" id="filter_teamid" class="input-xlarge" onchange="this.form.submit()">
+							<select name="teamid" id="filter_teamid" class="input-xlarge" onchange="this.form.submit();">
 								<option value="0"><?php echo JText::_('COM_WISSENSMATRIX_SELECT_TEAM'); ?></option>
 								<?php $config = array('filter.published' => array(0, 1), 'filter.access' => true);
 								echo JHtml::_('select.options', JHtml::_('wissensmatrixcategory.options', 'com_wissensmatrix', $config), 'value', 'text', $this->state->get('team.id', 0)); ?>

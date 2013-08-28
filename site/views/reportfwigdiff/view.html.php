@@ -31,6 +31,7 @@ class WissensmatrixViewReportfwigdiff extends JViewLegacy
 
 		// Get list of teams
 		$this->teams		= array();
+		$this->exclude		= $this->params->get('exclude_cat');
 		$this->getTeams($this->workermodel->getCategory());
 		if ($this->w_state->get('list.ordering') == 'category_title')
 		{
@@ -118,6 +119,10 @@ class WissensmatrixViewReportfwigdiff extends JViewLegacy
 
 	protected function getTeams($cat)
 	{
+		if ($cat->id && ($cat->id == $this->exclude))
+		{
+			return;
+		}
 		if ($cat->numitems)
 		{
 			$this->teams[$cat->title]	= $cat;

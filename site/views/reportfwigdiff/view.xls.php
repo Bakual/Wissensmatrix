@@ -4,7 +4,7 @@ jimport( 'joomla.application.component.view');
 /**
  * HTML View class for the Wissensmatrix Component
  */
-class WissensmatrixViewReportfwiglevels extends JViewLegacy
+class WissensmatrixViewReportfwigdiff extends JViewLegacy
 {
 	function display($tpl = null)
 	{
