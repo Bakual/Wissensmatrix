@@ -9,6 +9,13 @@
 			label="JGLOBAL_DATE_FORMAT_LABEL" 
 			description="COM_WISSENSMATRIX_FIELD_DATE_FORMAT_DESC">
 		</field>
+
+		<field name="exclude_cat" type="category" 
+			label="COM_WISSENSMATRIX_FIELD_EXCLUDE_CAT_LABEL" 
+			description="COM_WISSENSMATRIX_FIELD_EXCLUDE_CAT_DESC" 
+			extension="com_wissensmatrix" 
+		/>
+
 		<field name="filter_field"
 			type="radio"
 			class="btn-group"
