@@ -44,7 +44,15 @@ $listDirn	= $this->w_state->get('list.direction');
 				<div class="no_entries alert alert-error"><?php echo JText::sprintf('COM_WISSENSMATRIX_NO_ENTRIES', JText::_('COM_WISSENSMATRIX_FWIGS')); ?></div>
 			<?php else : ?>
 				<h3><?php echo JText::_('COM_WISSENSMATRIX_FWIG').': '.$this->items[0]->fwig_title; ?></h3>
-				<?php foreach ($this->items as $item) : ?>
+				<?php foreach ($this->items as $item) :
+					$summe_worker = 0;
+					foreach ($this->levels as $level) :
+						if (!$level->value) :
+							continue;
+						endif;
+						$summe[$level->value]['ist']	= 0;
+						$summe[$level->value]['soll']	= 0;
+					endforeach; ?>
 					<a href="<?php echo JRoute::_('index.php?view=reportfwiteam&id='.$item->id); ?>">
 						<h4><?php echo JText::_('COM_WISSENSMATRIX_FWI').': '.$item->title; ?></h4>
 					</a>
@@ -76,14 +84,17 @@ $listDirn	= $this->w_state->get('list.direction');
 										</a>
 									</td>
 									<td>
-										<?php echo $team->numitems; ?>
+										<?php echo $team->numitems;
+										$summe_worker += $team->numitems; ?>
 									</td>
 									<?php foreach ($this->levels as $level) :
 										if (!$level->value) :
 											continue;
 										endif;
 										$ist = $this->model->getWorkerCount($item->id, $team->id, $level->value, true);
+										$summe[$level->value]['ist']	+= $ist;
 										$soll = $this->model->getWorkerCount($item->id, $team->id, $level->value, false);
+										$summe[$level->value]['soll']	+= $soll;
 										$class = WissensmatrixHelperWissensmatrix::getDiffClass($ist, $soll); ?>
 										<td>
 											<span class="label label-<?php echo $class; ?>" rel="tooltip" title="<?php echo $tooltip; ?>"><?php echo $ist.' / '.$soll; ?></span>
@@ -93,6 +104,18 @@ $listDirn	= $this->w_state->get('list.direction');
 									</td>
 								</tr>
 							<?php endforeach; ?>
+							<tr class="info">
+								<td><?php echo JText::_('COM_WISSENSMATRIX_TOTAL'); ?></td>
+								<td><?php echo $summe_worker; ?></td>
+								<?php foreach ($summe as $values) :
+									$class = WissensmatrixHelperWissensmatrix::getDiffClass($values['ist'], $values['soll']); ?>
+									<td>
+										<span class="label label-<?php echo $class; ?>" rel="tooltip" title="<?php echo $tooltip; ?>"><?php echo $values['ist'].' / '.$values['soll']; ?></span>
+									</td>
+								<?php endforeach; ?>
+								<td>
+								</td>
+							</tr>
 						</tbody>
 					</table>
 				<?php endforeach; ?>

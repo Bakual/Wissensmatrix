@@ -76,6 +76,23 @@ foreach ($this->items as $item) :
 			$xls->getActiveSheet()->SetCellValue(chr($column).$j, $soll);
 		endforeach;
 	endforeach;
+	
+	// Calculate Totals
+	$j++;
+	$xls->getActiveSheet()->setCellValue('A'.$j, JText::_('COM_WISSENSMATRIX_TOTAL'));
+	$xls->getActiveSheet()->setCellValue('B'.$j, '=SUM(B2:B'.($j-1).')');
+	$column	= ord('B');
+	foreach ($this->levels as $level) :
+		if (!$level->value) :
+			continue;
+		endif;
+		$column++;
+		$c = chr($column);
+		$xls->getActiveSheet()->SetCellValue($c.$j, '=SUM('.$c.'2:'.$c.($j-1).')');
+		$column++;
+		$c = chr($column);
+		$xls->getActiveSheet()->SetCellValue($c.$j, '=SUM('.$c.'2:'.$c.($j-1).')');
+	endforeach;
 
 	$i++;
 endforeach;

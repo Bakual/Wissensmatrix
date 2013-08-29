@@ -66,7 +66,19 @@ foreach ($this->items as $item) :
 		$xls->getActiveSheet()->SetCellValue('I'.$j, $this->model->getDiff($item->id, $team->id, true, 3));
 	endforeach;
 
-        // Format Cells
+	// Calculate Totals
+	$j++;
+	$xls->getActiveSheet()->setCellValue('A'.$j, JText::_('COM_WISSENSMATRIX_TOTAL'));
+	$xls->getActiveSheet()->setCellValue('B'.$j, '=SUM(B2:B'.($j-1).')');
+	$xls->getActiveSheet()->setCellValue('C'.$j, '=SUM(C2:C'.($j-1).')');
+	$xls->getActiveSheet()->setCellValue('D'.$j, '=SUM(D2:D'.($j-1).')');
+	$xls->getActiveSheet()->setCellValue('E'.$j, '=SUM(E2:E'.($j-1).')');
+	$xls->getActiveSheet()->setCellValue('F'.$j, '=SUM(F2:F'.($j-1).')');
+	$xls->getActiveSheet()->setCellValue('G'.$j, '=SUM(G2:G'.($j-1).')');
+	$xls->getActiveSheet()->setCellValue('H'.$j, '=SUM(H2:H'.($j-1).')');
+	$xls->getActiveSheet()->setCellValue('I'.$j, '=SUM(I2:I'.($j-1).')');
+
+	// Format Cells
 	$xls->getActiveSheet()->getStyle('C0:C'.$j)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
 	$xls->getActiveSheet()->getStyle('C0:C'.$j)->getFill()->getStartColor()->setARGB('FFFFFF00');
 	$xls->getActiveSheet()->getStyle('D0:D'.$j)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
@@ -80,7 +92,7 @@ foreach ($this->items as $item) :
 	$xls->getActiveSheet()->getStyle('I0:I'.$j)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
 	$xls->getActiveSheet()->getStyle('I0:I'.$j)->getFill()->getStartColor()->setARGB('FF01DF01');
 
-        $i++;
+	$i++;
 endforeach;
 
 // Add Footer (Totals)
