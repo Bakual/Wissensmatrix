@@ -77,8 +77,8 @@ header("200 HTTP/1.0 OK");
 header("Pragma: public");
 header("Expires: 0");
 header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-header('Content-Type: application/vnd.ms-excel');
-header('Content-Disposition: attachment;filename="'.JText::_('COM_WISSENSMATRIX_FWIG').'.xls"');
+header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+header('Content-Disposition: attachment;filename="'.JText::_('COM_WISSENSMATRIX_FWIG').'.xlsx"');
 
-$xlsWriter = PHPExcel_IOFactory::createWriter($xls, 'Excel5');
+$xlsWriter = PHPExcel_IOFactory::createWriter($xls, 'Excel2007');
 $xlsWriter->save('php://output');
