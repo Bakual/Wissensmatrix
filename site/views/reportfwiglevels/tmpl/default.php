@@ -17,7 +17,7 @@ $listDirn	= $this->w_state->get('list.direction');
 	<?php endif; ?>
 	<div class="cat-items">
 		<form action="<?php echo htmlspecialchars(JUri::getInstance()->toString()); ?>" method="post" id="adminForm" name="adminForm">
-			<?php if ($this->params->get('filter_field') or $this->params->get('show_pagination_limit')) : ?>
+			<?php if ($this->params->get('filter_field')) : ?>
 				<div id="filter-bar" class="filters btn-toolbar">
 					<?php if ($this->params->get('filter_field')) : ?>
 						<div class="filter-search btn-group input-append pull-left">
@@ -62,12 +62,12 @@ $listDirn	= $this->w_state->get('list.direction');
 								<th class="title">
 									<?php echo JHTML::_('grid.sort', 'COM_WISSENSMATRIX_TEAM', 'category_title', $listDirn, $listOrder); ?>
 								</th>
-								<th><?php echo JText::_('COM_WISSENSMATRIX_WORKERS'); ?></th>
+								<th class="center"><?php echo JText::_('COM_WISSENSMATRIX_WORKERS'); ?></th>
 								<?php foreach ($this->levels as $level) :
 									if (!$level->value) :
 										continue;
 									endif; ?>
-									<th>
+									<th class="center">
 										<?php echo $level->title; ?><br/>
 									</th>
 								<?php endforeach; ?>
@@ -83,7 +83,7 @@ $listDirn	= $this->w_state->get('list.direction');
 											<?php echo $team->title; ?>
 										</a>
 									</td>
-									<td>
+									<td class="center">
 										<?php echo $team->numitems;
 										$summe_worker += $team->numitems; ?>
 									</td>
@@ -96,7 +96,7 @@ $listDirn	= $this->w_state->get('list.direction');
 										$soll = $this->model->getWorkerCount($item->id, $team->id, $level->value, false);
 										$summe[$level->value]['soll']	+= $soll;
 										$class = WissensmatrixHelperWissensmatrix::getDiffClass($ist, $soll); ?>
-										<td>
+										<td class="center">
 											<span class="label label-<?php echo $class; ?>" rel="tooltip" title="<?php echo $tooltip; ?>"><?php echo $ist.' / '.$soll; ?></span>
 										</td>
 									<?php endforeach; ?>
@@ -106,10 +106,10 @@ $listDirn	= $this->w_state->get('list.direction');
 							<?php endforeach; ?>
 							<tr class="info">
 								<td><?php echo JText::_('COM_WISSENSMATRIX_TOTAL'); ?></td>
-								<td><?php echo $summe_worker; ?></td>
+								<td class="center"><?php echo $summe_worker; ?></td>
 								<?php foreach ($summe as $values) :
 									$class = WissensmatrixHelperWissensmatrix::getDiffClass($values['ist'], $values['soll']); ?>
-									<td>
+									<td class="center">
 										<span class="label label-<?php echo $class; ?>" rel="tooltip" title="<?php echo $tooltip; ?>"><?php echo $values['ist'].' / '.$values['soll']; ?></span>
 									</td>
 								<?php endforeach; ?>
@@ -118,18 +118,8 @@ $listDirn	= $this->w_state->get('list.direction');
 							</tr>
 						</tbody>
 					</table>
-				<?php endforeach; ?>
-			<?php endif;
-			if ($this->params->get('show_pagination') and ($this->pagination->get('pages.total') > 1)) : ?>
-				<div class="pagination">
-					<?php if ($this->params->get('show_pagination_results', 1)) : ?>
-						<p class="counter pull-right">
-							<?php echo $this->pagination->getPagesCounter(); ?>
-						</p>
-					<?php endif;
-					echo $this->pagination->getPagesLinks(); ?>
-				</div>
-			<?php endif; ?>
+				<?php endforeach;
+			endif; ?>
 			<input type="hidden" name="task" value="" />
 			<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 			<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />

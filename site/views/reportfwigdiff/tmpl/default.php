@@ -18,7 +18,7 @@ $listDirn	= $this->w_state->get('list.direction');
 	<?php endif; ?>
 	<div class="cat-items">
 		<form action="<?php echo htmlspecialchars(JUri::getInstance()->toString()); ?>" method="post" id="adminForm" name="adminForm">
-			<?php if ($this->params->get('filter_field') or $this->params->get('show_pagination_limit')) : ?>
+			<?php if ($this->params->get('filter_field')) : ?>
 				<div id="filter-bar" class="filters btn-toolbar">
 					<?php if ($this->params->get('filter_field')) : ?>
 						<div class="filter-search btn-group input-append pull-left">
@@ -45,7 +45,15 @@ $listDirn	= $this->w_state->get('list.direction');
 				<div class="no_entries alert alert-error"><?php echo JText::sprintf('COM_WISSENSMATRIX_NO_ENTRIES', JText::_('COM_WISSENSMATRIX_FWIGS')); ?></div>
 			<?php else : ?>
 				<h3><?php echo JText::_('COM_WISSENSMATRIX_FWIG').': '.$this->items[0]->fwig_title; ?></h3>
-				<?php foreach ($this->items as $item) : ?>
+				<?php foreach ($this->items as $item) :
+					$summe['diff']	= 0; 
+					$summe['diff1']	= 0; 
+					$summe['diff2']	= 0; 
+					$summe['diff3']	= 0; 
+					$summe['pot']	= 0; 
+					$summe['pot1']	= 0; 
+					$summe['pot2']	= 0; 
+					$summe['pot3']	= 0; ?>
 					<a href="<?php echo JRoute::_('index.php?view=reportfwiteam&id='.$item->id); ?>">
 						<h4><?php echo JText::_('COM_WISSENSMATRIX_FWI').': '.$item->title; ?></h4>
 					</a>
@@ -75,30 +83,58 @@ $listDirn	= $this->w_state->get('list.direction');
 											<?php echo $team->title; ?>
 										</a>
 									</td>
-									<td class="text-center"><?php echo $this->model->getDiff($item->id, $team->id); ?></td>
-									<td class="text-center diff1"><?php echo $this->model->getDiff($item->id, $team->id, false, 1); ?></td>
-									<td class="text-center diff2"><?php echo $this->model->getDiff($item->id, $team->id, false, 2); ?></td>
-									<td class="text-center diff3"><?php echo $this->model->getDiff($item->id, $team->id, false, 3); ?></td>
-									<td class="text-center"><?php echo $this->model->getDiff($item->id, $team->id, true); ?></td>
-									<td class="text-center pot1"><?php echo $this->model->getDiff($item->id, $team->id, true, 1); ?></td>
-									<td class="text-center pot2"><?php echo $this->model->getDiff($item->id, $team->id, true, 2); ?></td>
-									<td class="text-center pot3"><?php echo $this->model->getDiff($item->id, $team->id, true, 3); ?></td>
+									<td class="text-center diff">
+										<?php $diff	= $this->model->getDiff($item->id, $team->id);
+										$summe['diff']	+= $diff;
+										echo $diff; ?>
+									</td>
+									<td class="text-center diff1">
+										<?php $diff1	= $this->model->getDiff($item->id, $team->id, false, 1);
+										$summe['diff1']	+= $diff1;
+										echo $diff1; ?>
+									</td>
+									<td class="text-center diff2">
+										<?php $diff2	= $this->model->getDiff($item->id, $team->id, false, 2);
+										$summe['diff2']	+= $diff2;
+										echo $diff2; ?>
+									</td>
+									<td class="text-center diff3">
+										<?php $diff3	= $this->model->getDiff($item->id, $team->id, false, 3);
+										$summe['diff3']	+= $diff3;
+										echo $diff3; ?>
+									</td>
+									<td class="text-center pot">
+										<?php $pot		= $this->model->getDiff($item->id, $team->id, true);
+										$summe['pot']	+= $pot;
+										echo $pot; ?>
+									</td>
+									<td class="text-center pot1">
+										<?php $pot1		= $this->model->getDiff($item->id, $team->id, true, 1);
+										$summe['pot1']	+= $pot1;
+										echo $pot1; ?>
+									</td>
+									<td class="text-center pot2">
+										<?php $pot2	= $this->model->getDiff($item->id, $team->id, true, 2);
+										$summe['pot2']	+= $pot2;
+										echo $pot2; ?>
+									</td>
+									<td class="text-center pot3">
+										<?php $pot3	= $this->model->getDiff($item->id, $team->id, true, 3);
+										$summe['pot3']	+= $pot3;
+										echo $pot3; ?>
+									</td>
 								</tr>
 							<?php endforeach; ?>
+							<tr class="info">
+								<td><?php echo JText::_('COM_WISSENSMATRIX_TOTAL'); ?></td>
+								<?php foreach ($summe as $key => $value) : ?>
+									<td class="text-center <?php echo $key; ?>"><?php echo $value; ?></td>
+								<?php endforeach; ?>
+							</tr>
 						</tbody>
 					</table>
-				<?php endforeach; ?>
-			<?php endif;
-			if ($this->params->get('show_pagination') and ($this->pagination->get('pages.total') > 1)) : ?>
-				<div class="pagination">
-					<?php if ($this->params->get('show_pagination_results', 1)) : ?>
-						<p class="counter pull-right">
-							<?php echo $this->pagination->getPagesCounter(); ?>
-						</p>
-					<?php endif;
-					echo $this->pagination->getPagesLinks(); ?>
-				</div>
-			<?php endif; ?>
+				<?php endforeach;
+			endif; ?>
 			<input type="hidden" name="task" value="" />
 			<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 			<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
