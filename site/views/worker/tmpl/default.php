@@ -194,8 +194,8 @@ $this->document->addScriptDeclaration('jQuery(function() {
 			</a>
 			<div class="clearfix"></div>
 			<span class="pull-right">&nbsp;</span>
-			<span class="input-mini center pull-right badge badge-info"><?php echo JText::_('COM_WISSENSMATRIX_SOLL'); ?></span>
-			<span class="input-mini center pull-right badge badge-info"><?php echo JText::_('COM_WISSENSMATRIX_IST'); ?></span>
+			<span class="input-small center pull-right badge badge-info"><?php echo JText::_('COM_WISSENSMATRIX_SOLL'); ?></span>
+			<span class="input-small center pull-right badge badge-info"><?php echo JText::_('COM_WISSENSMATRIX_IST'); ?></span>
 			<div class="fwig">
 				<?php $fwig = ''; ?>
 				<?php foreach($this->fwis as $i => $item) : ?>
@@ -215,10 +215,10 @@ $this->document->addScriptDeclaration('jQuery(function() {
 						<ul class="fwig<?php echo $fwig; ?> list-striped list-condensed">
 					<?php endif; ?>
 					<li id="fwi<?php echo $i; ?>" class="fwi <?php echo ($item->state) ? '': 'system-unpublished '; ?>">
-						<span class="input-mini center zfwi-soll badge pull-right">
+						<span class="input-small center zfwi-soll badge pull-right">
 							<?php echo $item->soll_title; ?>
 						</span>
-						<span class="input-mini center zfwi-ist badge badge-<?php echo WissensmatrixHelperWissensmatrix::getDiffClass($item->ist, $item->soll); ?> pull-right">
+						<span class="input-small center zfwi-ist badge badge-<?php echo WissensmatrixHelperWissensmatrix::getDiffClass($item->ist, $item->soll); ?> pull-right">
 							<?php echo $item->ist_title; ?>
 						</span>
 						<strong class="title"><?php echo $item->title; ?></strong>
