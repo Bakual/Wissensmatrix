@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="3.1" client="site" method="upgrade">
+	<name>mod_wissensmatrix_userreport</name>
+	<author>Thomas Hunziker</author>
+	<creationDate>2013-10-04</creationDate>
+	<copyright>Copyright (C) 2013 Thomas Hunziker</copyright>
+	<license>GNU General Public License version 2</license>
+	<authorEmail>thomi.hunziker@sbb.ch</authorEmail>
+	<version>1.0.0</version>
+	<description>MOD_WISSENSMATRIX_USERREPORT_XML_DESCRIPTION</description>
+	<files>
+		<filename module="mod_wissensmatrix_userreport">mod_wissensmatrix_userreport.php</filename>
+		<folder>tmpl</folder>
+		<folder>language</folder>
+		<filename>index.html</filename>
+		<filename>mod_wissensmatrix_userreport.xml</filename>
+	</files>
+</extension>
