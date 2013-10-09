@@ -39,11 +39,26 @@ class WissensmatrixModelWbis extends JModelList
 
 	protected function getListQuery()
 	{
-		$user	= JFactory::getUser();
-		$groups	= implode(',', $user->getAuthorisedViewLevels());
+		$db	= $this->getDbo();
+		if ($this->getState('userreport'))
+		{
+			// Fake accesslevel for userreports since we don't have a logged-in user here.
+			$query	= $db->getQuery(true)
+				->select('id')
+				->from('#__viewlevels');
+
+			$db->setQuery($query);
+			$levels = $db->loadColumn();
+
+			$groups	= implode(',', $levels);
+		}
+		else
+		{
+			$user	= JFactory::getUser();
+			$groups	= implode(',', $user->getAuthorisedViewLevels());
+		}
 
 		// Create a new query object.
-		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
 
 		// Select required fields from the table.

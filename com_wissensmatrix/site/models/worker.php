@@ -104,6 +104,51 @@ class WissensmatrixModelWorker extends JModelItem
 	}
 
 	/**
+	 * Method to get an worker by uid.
+	 *
+	 * @param	string	The uid of the worker to get.
+	 *
+	 * @return	mixed	Object on success, false on failure.
+	 */
+	public function getWorkerByUid($uid = null)
+	{
+		if (!$uid)
+		{
+			return false;
+		}
+
+		try {
+			$db = $this->getDbo();
+			$query = $db->getQuery(true);
+
+			$query->select('id, uid');
+			$query->from('#__wissensmatrix_mitarbeiter');
+
+			$query->where('uid = '.$db->quote($uid));
+			$query->where('state = 1');
+
+			$db->setQuery($query);
+
+			$worker = $db->loadObject();
+
+			if ($error = $db->getErrorMsg()) {
+				throw new Exception($error);
+			}
+
+			if (empty($worker)) {
+				throw new JException(JText::_('JGLOBAL_RESOURCE_NOT_FOUND'), 404);
+			}
+		}
+		catch (JException $e)
+		{
+			$this->setError($e);
+			$worker = false;
+		}
+
+		return $worker;
+	}
+
+	/**
 	 * Method to increment the hit counter for the workers
 	 *
 	 * @param	int		Optional ID of the workers.
