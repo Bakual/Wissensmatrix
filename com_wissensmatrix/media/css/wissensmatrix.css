@@ -35,3 +35,8 @@ ul.list-condensed strong
 .text-center {
 	text-align: center !important;
 }
+
+/* Wbi edit/delete icons */
+ul.wbi span.list-edit.pull-left {
+	margin-right:5px;
+}

@@ -1,7 +1,7 @@
 <?php
 defined('_JEXEC') or die;
 
-JHTML::addIncludePath(JPATH_COMPONENT.'/helpers');
+JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
 JHtml::stylesheet('com_wissensmatrix/wissensmatrix.css', '', true);
 
 $listOrder	= $this->w_state->get('list.ordering');

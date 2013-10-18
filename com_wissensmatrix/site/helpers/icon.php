@@ -132,7 +132,10 @@ class JHtmlIcon
 
 		$icon	= $item->state ? 'edit' : 'eye-close';
 		$text	= '<i class="hasTip icon-'.$icon.' tip" title="'.JText::_('COM_WISSENSMATRIX_EDIT_ITEM').'"></i>';
-		$text	.= ' '.JText::_('JGLOBAL_EDIT');
+		if (empty($attribs['hide_text']))
+		{
+			$text	.= ' '.JText::_('JGLOBAL_EDIT');
+		}
 
 		$output = JHtml::_('link', JRoute::_($url), $text, array('class' => 'modal '.$class, 'rel' => "{handler: 'iframe', size: {x: $width, y: $height}}"));
 
@@ -158,7 +161,10 @@ class JHtmlIcon
 		$url	= 'index.php?option=com_wissensmatrix&task=z'.$attribs['type'].'.delete&mit_id='.$item->mit_id.'&a_id='.$id.'&return='.base64_encode($uri).'&'.$session->getName().'='.$session->getId().'&'.JSession::getFormToken().'=1';
 
 		$text	= '<i class="hasTip icon-remove tip" title="'.JText::_('COM_WISSENSMATRIX_DELETE_ITEM').'"></i>';
-		$text	.= ' '.JText::_('JACTION_DELETE');
+		if (empty($attribs['hide_text']))
+		{
+			$text	.= ' '.JText::_('JACTION_DELETE');
+		}
 
 		$output = JHtml::_('link', JRoute::_($url), $text, array('class' => $class));
 

@@ -1,8 +1,10 @@
 <?php
 defined('_JEXEC') or die;
-JHTML::addIncludePath(JPATH_COMPONENT.'/helpers');
-JHTML::_('behavior.tooltip');
-JHTML::_('behavior.modal');
+JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.modal');
+JHtml::stylesheet('com_wissensmatrix/wissensmatrix.css', '', true);
+
 $user		= JFactory::getUser();
 $canEdit	= ($user->authorise('core.edit.worker', 'com_wissensmatrix') or $user->authorise('core.edit.worker', 'com_wissensmatrix.category.'.$this->item->catid));
 $listOrder	= $this->state_wbi->get('list.ordering');
@@ -142,16 +144,16 @@ $this->document->addScriptDeclaration('jQuery(function() {
 							<span class="zbwi-state badge badge-<?php echo ($item->zwbi_status_id == 2) ? 'success' : 'info'; ?> pull-right" title="<?php echo JText::_('JSTATUS'); ?>">
 								<?php echo JText::_('COM_WISSENSMATRIX_ZWBI_STATE_'.$item->zwbi_status_id); ?>
 							</span>
-							<?php if ($canEdit and !$this->print) : ?>
-								<span class="list-edit pull-left">
-									<?php echo JHtml::_('icon.editz', $item, $this->params, array('type' => 'wbi')); ?>
-									<br />
-									<?php echo JHtml::_('icon.deletez', $item, $this->params, array('type' => 'wbi')); ?>
-								</span>
-							<?php endif; ?>
 							<strong class="title">
 								<?php echo $item->title; ?>
 							</strong>
+							<?php if ($canEdit and !$this->print) : ?>
+								<span class="list-edit pull-left">
+									<?php echo JHtml::_('icon.editz', $item, $this->params, array('type' => 'wbi', 'hide_text' => true)); ?>
+									<br />
+									<?php echo JHtml::_('icon.deletez', $item, $this->params, array('type' => 'wbi', 'hide_text' => true)); ?>
+								</span>
+							<?php endif; ?>
 							<?php if (!$item->state) : ?>
 								<span class="label label-warning"><?php echo JText::_('JUNPUBLISHED'); ?></span>
 							<?php endif; ?>
