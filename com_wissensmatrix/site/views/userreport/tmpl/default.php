@@ -44,12 +44,7 @@ $this->document->addScriptDeclaration('jQuery(function() {
 	</div>
 	<?php endif; ?>
 	<div class="page-header">
-		<h2>
-			<?php if ($this->item->state == 0): ?>
-				<span class="label label-warning"><?php echo JText::_('JUNPUBLISHED'); ?></span>
-			<?php endif;
-			echo $this->escape($this->item->title); ?>
-		</h2>
+		<h2><?php echo $this->escape($this->item->title); ?></h2>
 	</div>
 	<div class="article-info muted">
 		<dl class="article-info">
@@ -57,9 +52,7 @@ $this->document->addScriptDeclaration('jQuery(function() {
 			<dd>
 				<div class="category-name">
 					<i class="icon-users"></i> <?php echo JText::_('COM_WISSENSMATRIX_TEAM'); ?>:
-					<a href="<?php echo JRoute::_(WissensmatrixHelperRoute::getWorkersRoute($this->item->catslug)); ?>">
-						<?php echo $this->escape($this->item->category_title); ?>
-					</a>
+					<?php echo $this->escape($this->item->category_title); ?>
 				</div>
 			</dd>
 			<dd>

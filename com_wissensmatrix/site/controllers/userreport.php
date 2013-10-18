@@ -11,63 +11,6 @@ class WissensmatrixControllerUserreport extends JControllerLegacy
 	 *
 	 * @since	1.0
 	 */
-	public function display($cachable = false, $urlparams = array())
-	{
-		$app	= JFactory::getApplication();
-
-		// Get and sanitize hash
-		$hash	= $this->input->get->get('hash');
-		if (!$hash || !preg_match('/^[0-9a-f]{32}$/', $hash))
-		{
-			$app->redirect(JURI::root(), JText::_('COM_WISSENSMATRIX_USERREPORT_HASH_INVALID'), 'error');
-		}
-		// Get and sanitize uid
-		$uid	= strtoupper($this->input->get->get('mit'));
-		if (!$uid || !preg_match('/^U\d{6}/', $uid))
-		{
-			$app->redirect(JURI::root(), JText::sprintf('COM_WISSENSMATRIX_USERREPORT_USERID_INVALID', $uid), 'error');
-		}
-
-		// Validate hash and userid
-		$db		= JFactory::getDbo();
-
-		$query	= $db->getQuery(true);
-		$query->select('id, uid, hash, date');
-		$query->from($db->quoteName('#__wissensmatrix_userreport'));
-		$query->where($db->quoteName('hash').' = '.$db->quote($hash));
-		$query->where($db->quoteName('uid').' = '.$db->quote($uid));
-		$query->where($db->quoteName('state').' = 1');
-		$query->order($db->quoteName('date').' DESC');
-
-		$db->setQuery($query, 0, 1);
-		$row	= $db->loadObject();
-
-		if (!$row)
-		{
-			$app->redirect(JURI::root(), JText::_('JGLOBAL_RESSOURCE_NOT_FOUND'), 'error');
-		}
-
-		if (strtotime($row['date']) < strtotime('-1 week'))
-		{
-			// Link timed out
-			$query	= $db->getQuery(true);
-			$query->update($db->quoteName('tbl_user_report'));
-			$query->set($db->quoteName('state').' = 0');
-			$query->where($db->quoteName('date').' < (DATE_SUB(NOW(), INTERVAL 1 WEEK)');
-
-			$db->setQuery($query);
-			$db->execute();
-			$app->redirect(JURI::root(), JText::_('COM_WISSENSMATRIX_USERREPORT_LINK_TIMED_OUT'), 'error');
-		}
-
-		return parent::display($cachable = false, $urlparams = array());
-	}
-
-	/**
-	 * Method to request a userreport.
-	 *
-	 * @since	1.0
-	 */
 	public function request()
 	{
 		$uid	= strtoupper($this->input->post->get('uid'));
