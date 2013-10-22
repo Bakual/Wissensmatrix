@@ -78,6 +78,25 @@ abstract class WissensmatrixHelperRoute
 		return $link;
 	}
 
+	public static function getReportsWbisRoute($id)
+	{
+		$needles = array(
+			'id' => array((int)$id)
+		);
+		//Create the link
+		$link = 'index.php?option=com_wissensmatrix&view=reportswbis&id='.$id;
+
+		if ($item = self::_findItem($needles)) {
+			$link .= '&Itemid='.$item;
+		} elseif ($item = self::_findItem()) {
+			$link .= '&Itemid='.$item;
+		} elseif ($item = self::_findItem(array('reportswbigs'=>array(0)))) {
+			$link .= '&Itemid='.$item;
+		}
+
+		return $link;
+	}
+
 	protected static function _findItem($needles = null)
 	{
 		$app	= JFactory::getApplication();

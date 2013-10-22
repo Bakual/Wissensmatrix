@@ -47,9 +47,17 @@ class WissensmatrixModelWbigs extends JModelList
 	{
 		// Initialise variables.
 		$app = JFactory::getApplication();
+		$params	= $app->getParams();
+		$this->setState('params', $params);
+		$jinput	= $app->input;
+
+		// Category filter (priority on request so subcategories work)
+		// Team in this case, not used but selection has to be saved in userstate
+		$teamid = $this->getUserStateFromRequest('com_wissensmatrix.team.id', 'teamid', $params->get('teamid', 0), 'int');
+		$this->setState('team.id', $teamid);
 
 		// Load the filter state.
-		$search = $app->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$search = $app->getUserStateFromRequest($this->context.'.filter.search', 'filter-search');
 		$this->setState('filter.search', $search);
 
 		$published = $app->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
@@ -61,12 +69,8 @@ class WissensmatrixModelWbigs extends JModelList
 		$language = $this->getUserStateFromRequest($this->context.'.filter.language', 'filter_language', '');
 		$this->setState('filter.language', $language);
 
-		// Load the parameters.
-		$params	= JComponentHelper::getParams('com_wissensmatrix');
-		$this->setState('params', $params);
-
 		// List state information.
-		parent::populateState('wbigs.ordering', 'asc');
+		parent::populateState('title', 'asc');
 	}
 
 	/**
@@ -108,6 +112,7 @@ class WissensmatrixModelWbigs extends JModelList
 			$this->getState(
 				'list.select',
 				'wbigs.id, wbigs.catid, wbigs.language, '.
+				'CASE WHEN CHAR_LENGTH(wbigs.alias) THEN CONCAT_WS(\':\', wbigs.id, wbigs.alias) ELSE wbigs.id END as slug, ' .
 				'wbigs.checked_out, wbigs.checked_out_time, '.
 				'wbigs.alias, wbigs.created, wbigs.created_by, '.
 				'wbigs.state, wbigs.ordering, wbigs.hits'

@@ -116,7 +116,7 @@ class WissensmatrixModelWbis extends JModelList
 		if (!empty($search))
 		{
 			$search = $db->Quote('%'.$db->escape($search, true).'%');
-			$query->where('(wbis.title LIKE '.$search.')');
+			$query->where('(wbis.title_'.$lang.' LIKE '.$search.')');
 		}
 
 		// Filter by state
@@ -124,6 +124,17 @@ class WissensmatrixModelWbis extends JModelList
 		if (is_numeric($state))
 		{
 			$query->where('wbis.state = '.(int) $state);
+		}
+
+		// Join over Wbigs.
+		$query->select('wbigs.title_'.$lang.' AS wbig_title, wbigs.id AS wbig_id');
+		$query->select('CASE WHEN CHAR_LENGTH(wbigs.alias) THEN CONCAT_WS(\':\', wbigs.id, wbigs.alias) ELSE wbigs.id END as wbigslug');
+		$query->join('LEFT', '#__wissensmatrix_weiterbildunggruppe AS wbigs ON wbigs.id = wbis.wbig_id');
+
+		// Filter by wbig (needed in reportswbis view)
+		if ($wbigId = $this->getState('wbig.id'))
+		{
+			$query->where('wbigs.id = '.(int)$wbigId);
 		}
 
 		// Filter by worker (needed in worker view)
@@ -167,6 +178,11 @@ class WissensmatrixModelWbis extends JModelList
 		$params	= $app->getParams();
 		$this->setState('params', $params);
 		$jinput	= $app->input;
+
+		// Category filter (priority on request so subcategories work)
+		// Team in this case, not used but selection has to be saved in userstate
+		$teamid = $this->getUserStateFromRequest('com_wissensmatrix.team.id', 'teamid', $params->get('teamid', 0), 'int');
+		$this->setState('team.id', $teamid);
 
 		// Category filter (priority on request so subcategories work)
 		// We don't use userstate here as the category is not used as team but category.
