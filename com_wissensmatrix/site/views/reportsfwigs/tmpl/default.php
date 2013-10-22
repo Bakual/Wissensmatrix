@@ -38,6 +38,14 @@ $listDirn	= $this->state->get('list.direction');
 							</select>
 							<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportsfwigs&teamid='.$this->parent->id); ?>" class="btn addon" title="<?php JText::printf('COM_WISSENSMATRIX_GET_PARENT_TEAM', $this->parent->title); ?>"><i class="icon-arrow-up"></i></a>
 						</div>
+					<?php endif;
+					if ($this->params->get('show_pagination_limit')) : ?>
+						<div class="btn-group pull-right">
+							<label class="element-invisible">
+								<?php echo JText::_('JGLOBAL_DISPLAY_NUM'); ?>
+							</label>
+							<?php echo $this->pagination->getLimitBox(); ?>
+						</div>
 					<?php endif; ?>
 				</div>
 			<?php endif; ?>
@@ -86,6 +94,21 @@ $listDirn	= $this->state->get('list.direction');
 								</td>
 							</tr>
 						<?php endforeach; ?>
+						<tr class="cat-list-row<?php echo $i++ % 2; ?> info">
+							<td class="title"><?php echo JText::_('COM_WISSENSMATRIX_SUMMARY'); ?></td>
+							<td class="reports">
+								<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwigteam'); ?>"><img src="media/com_wissensmatrix/images/black_view.gif"></a>
+								<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwigteam&format=xls'); ?>"><img src="media/com_wissensmatrix/images/icon_download.gif"></a>
+							</td>
+							<td class="reports">
+								<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwiglevels'); ?>"><img src="media/com_wissensmatrix/images/black_view.gif"></a>
+								<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwiglevels&format=xls'); ?>"><img src="media/com_wissensmatrix/images/icon_download.gif"></a>
+							</td>
+							<td class="reports">
+								<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwigdiff'); ?>"><img src="media/com_wissensmatrix/images/black_view.gif"></a>
+								<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwigdiff&format=xls'); ?>"><img src="media/com_wissensmatrix/images/icon_download.gif"></a>
+							</td>
+						</tr>
 					</tbody>
 				</table>
 			<?php endif;

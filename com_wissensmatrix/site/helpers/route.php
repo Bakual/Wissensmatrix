@@ -20,77 +20,155 @@ jimport('joomla.application.categories');
  */
 abstract class WissensmatrixHelperRoute
 {
-	protected static $lookup;
+	protected static $lookup = array();
+	protected static $langs;
 
-	public static function getWorkersRoute($catid = 0)
+	public static function getWorkersRoute($teamid = 0, $language = 0)
 	{
 		$needles = array(
 			'workers' => array(0)
 		);
 		//Create the link
 		$link = 'index.php?option=com_wissensmatrix&view=workers';
-		if ($catid){
-			$link .= '&teamid='.$catid;
+		if ($teamid){
+			$link .= '&teamid='.$teamid;
 		}
 
-		if ($item = WissensmatrixHelperRoute::_findItem($needles)) {
+		if ($language && $language != "*" && JLanguageMultilang::isEnabled())
+		{
+			if (!isset(self::$langs))
+			{
+				self::_getLanguages();
+			}
+			foreach (self::$langs as $lang)
+			{
+				if ($language == $lang->lang_code)
+				{
+					$link .= '&lang='.$lang->sef;
+					$needles['language'] = $language;
+				}
+			}
+		}
+
+		if ($item = self::_findItem($needles))
+		{
 			$link .= '&Itemid='.$item;
-		};
+		}
+		elseif ($item = self::_findItem())
+		{
+			$link .= '&Itemid='.$item;
+		}
 
 		return $link;
 	}
 
-	public static function getWorkerRoute($id)
+	public static function getWorkerRoute($id, $language = 0)
 	{
 		$needles = array(
-			'worker' => array((int)$id)
+			'worker' => array((int)$id),
+			'workers' => array(0)
 		);
 		//Create the link
 		$link = 'index.php?option=com_wissensmatrix&view=worker&id='.$id;
 
-		if ($item = self::_findItem($needles)) {
+		if ($language && $language != "*" && JLanguageMultilang::isEnabled())
+		{
+			if (!isset(self::$langs))
+			{
+				self::_getLanguages();
+			}
+			foreach (self::$langs as $lang)
+			{
+				if ($language == $lang->lang_code)
+				{
+					$link .= '&lang='.$lang->sef;
+					$needles['language'] = $language;
+				}
+			}
+		}
+
+		if ($item = self::_findItem($needles))
+		{
 			$link .= '&Itemid='.$item;
-		} elseif ($item = self::_findItem()) {
-			$link .= '&Itemid='.$item;
-		} elseif ($item = self::_findItem(array('workers'=>array(0)))) {
+		}
+		elseif ($item = self::_findItem())
+		{
 			$link .= '&Itemid='.$item;
 		}
 
 		return $link;
 	}
 
-	public static function getReportsFwisRoute($id)
+	public static function getReportsFwisRoute($id, $language = 0)
 	{
 		$needles = array(
-			'id' => array((int)$id)
+			'reportsfwis' => array((int)$id),
+			'reportsfwis' => array(0),
+			'reportsfwigs' => array(0)
 		);
 		//Create the link
 		$link = 'index.php?option=com_wissensmatrix&view=reportsfwis&id='.$id;
 
-		if ($item = self::_findItem($needles)) {
+		if ($language && $language != "*" && JLanguageMultilang::isEnabled())
+		{
+			if (!isset(self::$langs))
+			{
+				self::_getLanguages();
+			}
+			foreach (self::$langs as $lang)
+			{
+				if ($language == $lang->lang_code)
+				{
+					$link .= '&lang='.$lang->sef;
+					$needles['language'] = $language;
+				}
+			}
+		}
+
+		if ($item = self::_findItem($needles))
+		{
 			$link .= '&Itemid='.$item;
-		} elseif ($item = self::_findItem()) {
-			$link .= '&Itemid='.$item;
-		} elseif ($item = self::_findItem(array('reportsfwigs'=>array(0)))) {
+		}
+		elseif ($item = self::_findItem())
+		{
 			$link .= '&Itemid='.$item;
 		}
 
 		return $link;
 	}
 
-	public static function getReportsWbisRoute($id)
+	public static function getReportsWbisRoute($id, $language = 0)
 	{
 		$needles = array(
-			'id' => array((int)$id)
+			'reportswbis' => array((int)$id),
+			'reportswbis' => array(0),
+			'reportswbigs' => array(0)
 		);
 		//Create the link
 		$link = 'index.php?option=com_wissensmatrix&view=reportswbis&id='.$id;
 
-		if ($item = self::_findItem($needles)) {
+		if ($language && $language != "*" && JLanguageMultilang::isEnabled())
+		{
+			if (!isset(self::$langs))
+			{
+				self::_getLanguages();
+			}
+			foreach (self::$langs as $lang)
+			{
+				if ($language == $lang->lang_code)
+				{
+					$link .= '&lang='.$lang->sef;
+					$needles['language'] = $language;
+				}
+			}
+		}
+
+		if ($item = self::_findItem($needles))
+		{
 			$link .= '&Itemid='.$item;
-		} elseif ($item = self::_findItem()) {
-			$link .= '&Itemid='.$item;
-		} elseif ($item = self::_findItem(array('reportswbigs'=>array(0)))) {
+		}
+		elseif ($item = self::_findItem())
+		{
 			$link .= '&Itemid='.$item;
 		}
 
@@ -99,48 +177,107 @@ abstract class WissensmatrixHelperRoute
 
 	protected static function _findItem($needles = null)
 	{
-		$app	= JFactory::getApplication();
-		$menus	= $app->getMenu('site');
+		$app		= JFactory::getApplication();
+		$menus		= $app->getMenu('site');
+		$language	= isset($needles['language']) ? $needles['language'] : '*';
 
 		// Prepare the reverse lookup array.
-		if (self::$lookup === null) {
-			self::$lookup = array();
+		if (!isset(self::$lookup[$language]))
+		{
+			self::$lookup[$language] = array();
 
 			$component	= JComponentHelper::getComponent('com_wissensmatrix');
-			$items		= $menus->getItems('component_id', $component->id);
-			if ($items){ // Populate static $lookup with Wissensmatrix menu entries: $lookup[view][id]
-				foreach ($items as $item) {
-					if (isset($item->query) && isset($item->query['view'])) {
-						$view = $item->query['view'];
-						if (!isset(self::$lookup[$view])) {
-							self::$lookup[$view] = array();
+
+			$attributes = array('component_id');
+			$values = array($component->id);
+
+			if ($language != '*')
+			{
+				$attributes[] = 'language';
+				$values[] = array($needles['language'], '*');
+			}
+
+			$items		= $menus->getItems($attributes, $values);
+
+			foreach ($items as $item)
+			{
+				if (isset($item->query) && isset($item->query['view']))
+				{
+					$view = $item->query['view'];
+					if (!isset(self::$lookup[$language][$view]))
+					{
+						self::$lookup[$language][$view] = array();
+					}
+					if (isset($item->query['id']))
+					{
+						if (!isset(self::$lookup[$language][$view][$item->query['id']]) || $item->language != '*')
+						{
+							self::$lookup[$language][$view][$item->query['id']] = $item->id;
 						}
-						if (isset($item->query['id'])) {
-							self::$lookup[$view][$item->query['id']] = $item->id;
-						} else {
-							self::$lookup[$view][] = $item->id;
+					}
+					else
+					{
+						if (!isset(self::$lookup[$language][$view][0]) || $item->language != '*')
+						{
+							self::$lookup[$language][$view][0] = $item->id;
 						}
 					}
 				}
-			}
-		}
-		if ($needles) {
-			foreach ($needles as $view => $ids) { // Search $lookup for matching menu entry
-				if (isset(self::$lookup[$view])) {
-					foreach($ids as $id) {
-						if (isset(self::$lookup[$view][(int)$id])) {
-							return self::$lookup[$view][(int)$id];
-						}
-					}
-				}
-			}
-		} else { // Check if active menu entry is from Wissensmatrix
-			$active = $menus->getActive();
-			if ($active && $active->component == 'com_wissensmatrix') {
-				return $active->id;
 			}
 		}
 
-		return null;
+		if ($needles)
+		{
+			foreach ($needles as $view => $ids)
+			{
+				if (isset(self::$lookup[$language][$view]))
+				{
+					foreach($ids as $id)
+					{
+						if (isset(self::$lookup[$language][$view][(int) $id]))
+						{
+							return self::$lookup[$language][$view][(int) $id];
+						}
+					}
+				}
+			}
+		}
+
+		// Check for an active Wissensmatrix menuitem
+		$active = $menus->getActive();
+		if ($active && $active->component == 'com_wissensmatrix' && ($active->language == '*' || !JLanguageMultilang::isEnabled()))
+		{
+			return $active->id;
+		}
+
+		if (!$needles)
+		{
+			// Get first Wissensmatrix menuitem found
+			if (isset(self::$lookup[$language]))
+			{
+				$first	= self::$lookup[$language];
+				return reset($first);
+			}
+
+			// if not found in second try, return language specific home link
+			$default = $menus->getDefault($language);
+			return !empty($default->id) ? $default->id : null;
+		}
+
+		return;
+	}
+
+	protected static function _getLanguages()
+	{
+		$db		= JFactory::getDbo();
+		$query	= $db->getQuery(true)
+			->select('a.sef AS sef')
+			->select('a.lang_code AS lang_code')
+			->from('#__languages AS a');
+
+		$db->setQuery($query);
+		self::$langs = $db->loadObjectList();
+
+		return;
 	}
 }

@@ -8,23 +8,20 @@ class WissensmatrixViewReportswbis extends JViewLegacy
 {
 	function display($tpl = null)
 	{
-		// Set some states in the model
-		$this->model		= $this->getModel();
-		$this->model->setState('wbig.id', JFactory::getApplication()->input->get('id', 0, 'int'));
-
 		$this->state		= $this->get('State');
+		$this->state->set('wbig.id', JFactory::getApplication()->input->get('id', 0, 'int'));
 		$this->items		= $this->get('Items');
 		$this->pagination	= $this->get('Pagination');
 		$this->pagination->setAdditionalUrlParam('teamid', $this->state->get('team.id'));
-//		$this->pagination->setAdditionalUrlParam('id', $this->state->get('wbig.id'));
+		$this->pagination->setAdditionalUrlParam('id', $this->state->get('wbig.id'));
 		$this->parent		= JCategories::getInstance('Wissensmatrix')->get($this->state->get('team.id', 'root'))->getParent();
 
 		// Get Wbigs for dropdown and add "- select wbig -"
 		$wbigsmodel		= $this->getModel('Wbigs');
-		$wbigsmodel->getState('filter.search'); // Init populateState()
-		$wbigsmodel->setState('filter.search', '');
-		$wbigsmodel->setState('list.limit', 0);
-		$wbigsmodel->setState('list.start', 0);
+		$wbig_state		= $wbigsmodel->getState();
+		$wbig_state->set('filter.search', '');
+		$wbig_state->set('list.limit', 0);
+		$wbig_state->set('list.start', 0);
 		$this->wbigs	= $wbigsmodel->getItems();
 
 		$this->params		= $this->state->get('params');

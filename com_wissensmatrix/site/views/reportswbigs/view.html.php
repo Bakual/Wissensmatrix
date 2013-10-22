@@ -12,6 +12,7 @@ class WissensmatrixViewReportswbigs extends JViewLegacy
 		$this->state		= $this->get('State');
 		$this->items		= $this->get('Items');
 		$this->pagination	= $this->get('Pagination');
+		$this->pagination->setAdditionalUrlParam('teamid', $this->state->get('team.id'));
 		$this->parent		= JCategories::getInstance('Wissensmatrix')->get($this->state->get('team.id', 'root'))->getParent();
 
 		$this->params		= $this->state->get('params');

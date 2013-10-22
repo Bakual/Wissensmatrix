@@ -98,7 +98,7 @@ class WissensmatrixModelWorkers extends JModelList
 		$search = $this->getState('filter.search');
 		if (!empty($search)) {
 			$search = $db->Quote('%'.$db->escape($search, true).'%');
-			$query->where('(workers.name LIKE '.$search.') OR (workers.vorname LIKE '.$search.')');
+			$query->where('((workers.name LIKE '.$search.') OR (workers.vorname LIKE '.$search.'))');
 		}
 
 		// Filter by state

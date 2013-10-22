@@ -17,11 +17,10 @@ class WissensmatrixViewReportfwiteam extends JViewLegacy
 
 		// Get Workers for selected teams
 		$this->workermodel = $this->getModel('Workers');
-		$this->workermodel->getState();
-		$this->workermodel->setState('list.start', 0);
-		$this->workermodel->setState('list.limit', 0);
-		$this->workers		= $this->workermodel->getItems();
 		$this->w_state		= $this->workermodel->getState();
+		$this->w_state->set('list.start', 0);
+		$this->w_state->set('list.limit', 0);
+		$this->workers		= $this->workermodel->getItems();
 		$this->parent		= $this->workermodel->getParent();
 
 		$this->params		= $this->state->get('params');

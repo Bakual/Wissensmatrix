@@ -20,14 +20,6 @@ $listDirn	= $this->w_state->get('list.direction');
 			<?php if ($this->params->get('filter_field') or $this->params->get('show_pagination_limit')) : ?>
 				<div id="filter-bar" class="filters btn-toolbar">
 					<?php if ($this->params->get('filter_field')) : ?>
-						<div class="filter-search btn-group input-append pull-left">
-							<label class="filter-search-lbl element-invisible" for="filter-search">
-								<span class="label label-warning"><?php echo JText::_('JUNPUBLISHED'); ?></span>
-								<?php echo JText::_('JGLOBAL_FILTER_LABEL').'&#160;'; ?>
-							</label>
-							<input type="text" name="filter-search" id="filter-search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" class="input-medium" onchange="document.adminForm.submit();" title="<?php echo JText::_('COM_WISSENSMATRIX_FILTER_SEARCH_DESC'); ?>" placeholder="<?php echo JText::_('COM_WISSENSMATRIX_FILTER_SEARCH_DESC'); ?>" />
-							<button class="btn tip hidden-phone hidden-tablet" type="button" onclick="clear_all();this.form.submit();" title="<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>"><i class="icon-remove"></i></button>
-						</div>
 						<div class="btn-group filter-select input-append">
 							<select name="teamid" id="filter_teamid" class="input-xlarge" onchange="this.form.submit()">
 								<option value="0"><?php echo JText::_('COM_WISSENSMATRIX_SELECT_TEAM'); ?></option>
@@ -35,6 +27,14 @@ $listDirn	= $this->w_state->get('list.direction');
 								echo JHtml::_('select.options', JHtml::_('wissensmatrixcategory.options', 'com_wissensmatrix', $config), 'value', 'text', $this->state->get('team.id', 0)); ?>
 							</select>
 							<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwigteam&id='.$this->items[0]->fwig_id.'&teamid='.$this->parent->id); ?>" class="btn addon" title="<?php JText::printf('COM_WISSENSMATRIX_GET_PARENT_TEAM', $this->parent->title); ?>"><i class="icon-arrow-up"></i></a>
+						</div>
+					<?php endif;
+					if ($this->params->get('show_pagination_limit')) : ?>
+						<div class="btn-group pull-right">
+							<label class="element-invisible">
+								<?php echo JText::_('JGLOBAL_DISPLAY_NUM'); ?>
+							</label>
+							<?php echo $this->pagination->getLimitBox(); ?>
 						</div>
 					<?php endif; ?>
 				</div>

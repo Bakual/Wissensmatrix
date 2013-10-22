@@ -8,23 +8,21 @@ class WissensmatrixViewReportfwigdiff extends JViewLegacy
 {
 	function display($tpl = null)
 	{
-		// Set some states in the model
-		$this->model		= $this->getModel();
-		$this->model->setState('fwig.id', JFactory::getApplication()->input->get('id', 0, 'int'));
-
 		// Get some data from the model
+		$this->model		= $this->getModel();
 		$this->state		= $this->get('State');
+		$this->state->set('fwig.id', JFactory::getApplication()->input->get('id', 0, 'int'));
+		$this->state->set('list.start', 0);
+		$this->state->set('list.limit', 0);
 		$this->items		= $this->get('Items');
-		$this->pagination	= $this->get('Pagination');
 		$this->levels		= $this->get('Levels');
 
 		// Get Workers for selected teams
 		$this->workermodel = $this->getModel('Workers');
-		$this->workermodel->getState();
-		$this->workermodel->setState('list.start', 0);
-		$this->workermodel->setState('list.limit', 0);
-		$this->workers		= $this->workermodel->getItems();
 		$this->w_state		= $this->workermodel->getState();
+		$this->w_state->set('list.start', 0);
+		$this->w_state->set('list.limit', 0);
+		$this->workers		= $this->workermodel->getItems();
 		$this->parent		= $this->workermodel->getParent();
 
 		$this->params		= $this->state->get('params');

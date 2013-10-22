@@ -38,6 +38,14 @@ $listDirn	= $this->state->get('list.direction');
 							</select>
 							<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportswbigs&teamid='.$this->parent->id); ?>" class="btn addon" title="<?php JText::printf('COM_WISSENSMATRIX_GET_PARENT_TEAM', $this->parent->title); ?>"><i class="icon-arrow-up"></i></a>
 						</div>
+					<?php endif;
+					if ($this->params->get('show_pagination_limit')) : ?>
+						<div class="btn-group pull-right">
+							<label class="element-invisible">
+								<?php echo JText::_('JGLOBAL_DISPLAY_NUM'); ?>
+							</label>
+							<?php echo $this->pagination->getLimitBox(); ?>
+						</div>
 					<?php endif; ?>
 				</div>
 			<?php endif; ?>

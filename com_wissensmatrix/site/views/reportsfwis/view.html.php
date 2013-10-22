@@ -8,11 +8,8 @@ class WissensmatrixViewReportsfwis extends JViewLegacy
 {
 	function display($tpl = null)
 	{
-		// Set some states in the model
-		$this->model		= $this->getModel();
-		$this->model->setState('fwig.id', JFactory::getApplication()->input->get('id', 0, 'int'));
-
 		$this->state		= $this->get('State');
+		$this->state->set('fwig.id', JFactory::getApplication()->input->get('id', 0, 'int'));
 		$this->items		= $this->get('Items');
 		$this->pagination	= $this->get('Pagination');
 		$this->pagination->setAdditionalUrlParam('teamid', $this->state->get('team.id'));
@@ -21,10 +18,10 @@ class WissensmatrixViewReportsfwis extends JViewLegacy
 
 		// Get Fwigs for dropdown and add "- select fwig -"
 		$fwigsmodel		= $this->getModel('Fwigs');
-		$fwigsmodel->getState('filter.search'); // Init populateState()
-		$fwigsmodel->setState('filter.search', '');
-		$fwigsmodel->setState('list.limit', 0);
-		$fwigsmodel->setState('list.start', 0);
+		$fwig_state		= $fwigsmodel->getState();
+		$fwig_state->set('filter.search', '');
+		$fwig_state->set('list.limit', 0);
+		$fwig_state->set('list.start', 0);
 		$this->fwigs	= $fwigsmodel->getItems();
 
 		$this->params		= $this->state->get('params');
@@ -35,32 +32,6 @@ class WissensmatrixViewReportsfwis extends JViewLegacy
 			JError::raiseError(500, implode("\n", $errors));
 			return false;
 		}
-
-/*		if ($this->category == false)
-		{
-			return JError::raiseError(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'));
-		}
-		if ($this->parent == false && $this->category->id != 'root')
-		{
-				return JError::raiseError(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'));
-		}
-		if ($this->category->id == 'root'){
-			$this->params->set('show_category_title', 0);
-			$this->cat = '';
-		}
-		else
-		{
-			// Get the category title for backward compatibility
-			$this->cat = $this->category->title;
-		}
-		// Check whether category access level allows access.
-		$user	= JFactory::getUser();
-		$groups	= $user->getAuthorisedViewLevels();
-		if (!in_array($this->category->access, $groups))
-		{
-			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
-		}
-*/
 
 		$js = 'function clear_all(){
 			if(document.id(\'filter_catid\')){

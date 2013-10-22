@@ -49,18 +49,18 @@ class WissensmatrixViewWorker extends JViewLegacy
 
 		// Get wbis data from the wbis model
 		$wbi_model	= $this->getModel('Wbis');
-		$wbi_model->setState('worker.id', $state->get('worker.id'));
 		$this->state_wbi	= $wbi_model->getState();
-		$wbi_model->setState('list.start', 0);
-		$wbi_model->setState('list.limit', 0);
+		$this->state_wbi->set('worker.id', $state->get('worker.id'));
+		$this->state_wbi->set('list.start', 0);
+		$this->state_wbi->set('list.limit', 0);
 		$this->wbis			= $wbi_model->getItems();
 
 		// Get fwis data from the fwis model
 		$fwi_model	= $this->getModel('Fwis');
-		$fwi_model->setState('worker.id', $state->get('worker.id'));
 		$this->state_fwi	= $fwi_model->getState();
-		$fwi_model->setState('list.start', 0);
-		$fwi_model->setState('list.limit', 0);
+		$this->state_fwi->set('worker.id', $state->get('worker.id'));
+		$this->state_fwi->set('list.start', 0);
+		$this->state_fwi->set('list.limit', 0);
 		$this->fwis			= $fwi_model->getItems();
 
 		// Check for errors.

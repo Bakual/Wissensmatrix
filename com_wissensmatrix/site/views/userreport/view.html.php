@@ -72,16 +72,16 @@ class WissensmatrixViewUserreport extends JViewLegacy
 
 		// Get wbis data from the wbis model
 		$wbi_model	= $this->getModel('Wbis');
-		$wbi_model->setState('worker.id', $worker->id);
-		$wbi_model->setState('userreport', 'true');
 		$this->state_wbi	= $wbi_model->getState();
+		$this->state_wbi->set('worker.id', $worker->id);
+		$this->state_wbi->set('userreport', 'true');
 		$this->wbis			= $wbi_model->getItems();
 
 		// Get fwis data from the fwis model
 		$fwi_model	= $this->getModel('Fwis');
-		$fwi_model->setState('worker.id', $worker->id);
-		$fwi_model->setState('userreport', 'true');
 		$this->state_fwi	= $fwi_model->getState();
+		$this->state_fwi->set('worker.id', $worker->id);
+		$this->state_fwi->set('userreport', 'true');
 		$this->fwis			= $fwi_model->getItems();
 
 		// Check for errors.
