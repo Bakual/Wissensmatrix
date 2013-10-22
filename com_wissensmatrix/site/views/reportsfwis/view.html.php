@@ -15,10 +15,16 @@ class WissensmatrixViewReportsfwis extends JViewLegacy
 		$this->state		= $this->get('State');
 		$this->items		= $this->get('Items');
 		$this->pagination	= $this->get('Pagination');
+		$this->pagination->setAdditionalUrlParam('teamid', $this->state->get('team.id'));
+		$this->pagination->setAdditionalUrlParam('id', $this->state->get('fwig.id'));
 		$this->parent		= JCategories::getInstance('Wissensmatrix')->get($this->state->get('team.id', 'root'))->getParent();
 
 		// Get Fwigs for dropdown and add "- select fwig -"
 		$fwigsmodel		= $this->getModel('Fwigs');
+		$fwigsmodel->getState('filter.search'); // Init populateState()
+		$fwigsmodel->setState('filter.search', '');
+		$fwigsmodel->setState('list.limit', 0);
+		$fwigsmodel->setState('list.start', 0);
 		$this->fwigs	= $fwigsmodel->getItems();
 
 		$this->params		= $this->state->get('params');

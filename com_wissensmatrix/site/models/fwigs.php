@@ -71,9 +71,6 @@ class WissensmatrixModelFwigs extends JModelList
 		$this->setState('filter.language', $app->getLanguageFilter());
 
 		// Load the filter state.
-		$search = $app->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
-
 		$published = $app->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
 		$this->setState('filter.state', $published);
 
@@ -81,10 +78,6 @@ class WissensmatrixModelFwigs extends JModelList
 		$this->setState('filter.search', $search);
 
 		parent::populateState('title', 'ASC');
-
-		// Reset limits from parent function
-		$this->setState('list.start', 0);
-		$this->setState('list.limit', 0);
 	}
 
 	/**

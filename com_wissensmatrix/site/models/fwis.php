@@ -218,10 +218,6 @@ class WissensmatrixModelFwis extends JModelList
 		$this->setState('filter.search', $search);
 
 		parent::populateState('title', 'ASC');
-
-		// Reset limits from parent function
-		$this->setState('list.start', 0);
-		$this->setState('list.limit', 0);
 	}
 
 	/**

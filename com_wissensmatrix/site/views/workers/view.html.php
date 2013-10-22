@@ -12,6 +12,7 @@ class WissensmatrixViewWorkers extends JViewLegacy
 		$this->state		= $this->get('State');
 		$this->items		= $this->get('Items');
 		$this->pagination	= $this->get('Pagination');
+		$this->pagination->setAdditionalUrlParam('teamid', $this->state->get('team.id'));
 		// Get Category stuff from model
 		$this->category		= $this->get('Category');
 		$children			= $this->get('Children');
