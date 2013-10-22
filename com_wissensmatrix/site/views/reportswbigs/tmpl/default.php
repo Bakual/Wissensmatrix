@@ -3,12 +3,8 @@ defined('_JEXEC') or die;
 
 JHTML::addIncludePath(JPATH_COMPONENT.'/helpers');
 
-JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
 
-$user		= JFactory::getUser();
-$canEdit	= $user->authorise('core.edit', 'com_wissensmatrix');
-$canEditOwn	= $user->authorise('core.edit.own', 'com_wissensmatrix');
 $listOrder	= $this->state->get('list.ordering');
 $listDirn	= $this->state->get('list.direction');
 ?>
@@ -40,28 +36,14 @@ $listDirn	= $this->state->get('list.direction');
 								<?php $config = array('filter.published' => array(0, 1), 'filter.access' => true);
 								echo JHtml::_('select.options', JHtml::_('wissensmatrixcategory.options', 'com_wissensmatrix', $config), 'value', 'text', $this->state->get('team.id', 0)); ?>
 							</select>
-							<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportswbis&teamid='.$this->parent->id); ?>" class="btn addon" title="<?php JText::printf('COM_WISSENSMATRIX_GET_PARENT_TEAM', $this->parent->title); ?>"><i class="icon-arrow-up"></i></a>
-						</div>
-					<?php endif;
-					if ($this->params->get('show_pagination_limit')) : ?>
-						<div class="btn-group pull-right">
-							<label class="element-invisible">
-								<?php echo JText::_('JGLOBAL_DISPLAY_NUM'); ?>
-							</label>
-							<?php echo $this->pagination->getLimitBox(); ?>
+							<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportswbigs&teamid='.$this->parent->id); ?>" class="btn addon" title="<?php JText::printf('COM_WISSENSMATRIX_GET_PARENT_TEAM', $this->parent->title); ?>"><i class="icon-arrow-up"></i></a>
 						</div>
 					<?php endif; ?>
-				</div>
-				<div class="btn-group filter-select pull-left">
-					<select name="id" id="filter_id" class="input-xlarge" onchange="this.form.submit()">
-						<option value="0"><?php echo JText::_('COM_WISSENSMATRIX_FIELD_WBIG_ID_SELECT'); ?></option>
-						<?php echo JHtmlSelect::options($this->wbigs, 'id', 'title', $this->state->get('wbig.id')); ?>
-					</select>
 				</div>
 			<?php endif; ?>
 			<div class="clearfix"></div>
 			<?php if (!count($this->items)) : ?>
-				<div class="no_entries alert alert-error"><?php echo JText::sprintf('COM_WISSENSMATRIX_NO_ENTRIES', JText::_('COM_WISSENSMATRIX_WBIS')); ?></div>
+				<div class="no_entries alert alert-error"><?php echo JText::sprintf('COM_WISSENSMATRIX_NO_ENTRIES', JText::_('COM_WISSENSMATRIX_WORKERS')); ?></div>
 			<?php else : ?>
 				<table class="table table-striped table-hover table-condensed">
 					<thead><tr>
@@ -77,13 +59,16 @@ $listDirn	= $this->state->get('list.direction');
 						<?php foreach($this->items as $i => $item) : ?>
 							<tr class="<?php echo ($item->state) ? '': 'system-unpublished '; ?>cat-list-row<?php echo $i % 2; ?>">
 								<td class="title">
-									<?php echo $item->title; ?>
+									<a href="<?php echo JRoute::_(WissensmatrixHelperRoute::getReportsWbisRoute($item->slug)); ?>">
+										<?php echo $item->title; ?>
+									</a>
 									<?php if (!$item->state) : ?>
 										<span class="label label-warning"><?php echo JText::_('JUNPUBLISHED'); ?></span>
 									<?php endif; ?>
 								</td>
 								<td class="reports">
-									<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportwbiteam&id='.$item->id); ?>"><img src="media/com_wissensmatrix/images/black_view.gif"></a>
+									<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportwbigteam&id='.$item->id); ?>"><img src="media/com_wissensmatrix/images/black_view.gif"></a>
+									<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportwbigteam&format=xls&id='.$item->id); ?>"><img src="media/com_wissensmatrix/images/icon_download.gif"></a>
 								</td>
 							</tr>
 						<?php endforeach; ?>

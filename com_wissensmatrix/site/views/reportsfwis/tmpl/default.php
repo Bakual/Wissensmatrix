@@ -23,24 +23,34 @@ $listDirn	= $this->state->get('list.direction');
 	<?php endif; ?>
 	<div class="cat-items">
 		<form action="<?php echo htmlspecialchars(JUri::getInstance()->toString()); ?>" method="post" id="adminForm" name="adminForm">
-			<?php if ($this->params->get('filter_field')) : ?>
+			<?php if ($this->params->get('filter_field') or $this->params->get('show_pagination_limit')) : ?>
 				<div id="filter-bar" class="filters btn-toolbar">
-					<div class="filter-search btn-group input-append pull-left">
-						<label class="filter-search-lbl element-invisible" for="filter-search">
-							<span class="label label-warning"><?php echo JText::_('JUNPUBLISHED'); ?></span>
-							<?php echo JText::_('JGLOBAL_FILTER_LABEL').'&#160;'; ?>
-						</label>
-						<input type="text" name="filter-search" id="filter-search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" class="input-medium" onchange="document.adminForm.submit();" title="<?php echo JText::_('COM_WISSENSMATRIX_FILTER_SEARCH_DESC'); ?>" placeholder="<?php echo JText::_('COM_WISSENSMATRIX_FILTER_SEARCH_DESC'); ?>" />
-						<button class="btn tip hidden-phone hidden-tablet" type="button" onclick="clear_all();this.form.submit();" rel="tooltip" title="<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>"><i class="icon-remove"></i></button>
-					</div>
-					<div class="btn-group filter-select input-append">
-						<select name="teamid" id="filter_teamid" class="input-xlarge" onchange="this.form.submit()">
-							<option value="0"><?php echo JText::_('COM_WISSENSMATRIX_SELECT_TEAM'); ?></option>
-							<?php $config = array('filter.published' => array(0, 1), 'filter.access' => true);
-							echo JHtml::_('select.options', JHtml::_('wissensmatrixcategory.options', 'com_wissensmatrix', $config), 'value', 'text', $this->state->get('team.id', 0)); ?>
-						</select>
-						<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportsfwis&teamid='.$this->parent->id); ?>" class="btn addon" title="<?php JText::printf('COM_WISSENSMATRIX_GET_PARENT_TEAM', $this->parent->title); ?>"><i class="icon-arrow-up"></i></a>
-					</div>
+					<?php if ($this->params->get('filter_field')) : ?>
+						<div class="filter-search btn-group input-append pull-left">
+							<label class="filter-search-lbl element-invisible" for="filter-search">
+								<span class="label label-warning"><?php echo JText::_('JUNPUBLISHED'); ?></span>
+								<?php echo JText::_('JGLOBAL_FILTER_LABEL').'&#160;'; ?>
+							</label>
+							<input type="text" name="filter-search" id="filter-search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" class="input-medium" onchange="document.adminForm.submit();" title="<?php echo JText::_('COM_WISSENSMATRIX_FILTER_SEARCH_DESC'); ?>" placeholder="<?php echo JText::_('COM_WISSENSMATRIX_FILTER_SEARCH_DESC'); ?>" />
+							<button class="btn tip hidden-phone hidden-tablet" type="button" onclick="clear_all();this.form.submit();" rel="tooltip" title="<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>"><i class="icon-remove"></i></button>
+						</div>
+						<div class="btn-group filter-select input-append">
+							<select name="teamid" id="filter_teamid" class="input-xlarge" onchange="this.form.submit()">
+								<option value="0"><?php echo JText::_('COM_WISSENSMATRIX_SELECT_TEAM'); ?></option>
+								<?php $config = array('filter.published' => array(0, 1), 'filter.access' => true);
+								echo JHtml::_('select.options', JHtml::_('wissensmatrixcategory.options', 'com_wissensmatrix', $config), 'value', 'text', $this->state->get('team.id', 0)); ?>
+							</select>
+							<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportsfwis&teamid='.$this->parent->id); ?>" class="btn addon" title="<?php JText::printf('COM_WISSENSMATRIX_GET_PARENT_TEAM', $this->parent->title); ?>"><i class="icon-arrow-up"></i></a>
+						</div>
+					<?php endif;
+					if ($this->params->get('show_pagination_limit')) : ?>
+						<div class="btn-group pull-right">
+							<label class="element-invisible">
+								<?php echo JText::_('JGLOBAL_DISPLAY_NUM'); ?>
+							</label>
+							<?php echo $this->pagination->getLimitBox(); ?>
+						</div>
+					<?php endif; ?>
 				</div>
 				<div class="btn-group filter-select pull-left">
 					<select name="id" id="filter_id" class="input-xlarge" onchange="this.form.submit()">
@@ -51,7 +61,7 @@ $listDirn	= $this->state->get('list.direction');
 			<?php endif; ?>
 			<div class="clearfix"></div>
 			<?php if (!count($this->items)) : ?>
-				<div class="no_entries alert alert-error"><?php echo JText::sprintf('COM_WISSENSMATRIX_NO_ENTRIES', JText::_('COM_WISSENSMATRIX_WORKERS')); ?></div>
+				<div class="no_entries alert alert-error"><?php echo JText::sprintf('COM_WISSENSMATRIX_NO_ENTRIES', JText::_('COM_WISSENSMATRIX_FWIS')); ?></div>
 			<?php else : ?>
 				<table class="table table-striped table-hover table-condensed">
 					<thead><tr>
