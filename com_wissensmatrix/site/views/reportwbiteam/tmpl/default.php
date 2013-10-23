@@ -2,6 +2,7 @@
 defined('_JEXEC') or die;
 
 JHTML::addIncludePath(JPATH_COMPONENT.'/helpers');
+JHtml::stylesheet('com_wissensmatrix/wissensmatrix.css', '', true);
 
 $listOrder	= $this->w_state->get('list.ordering');
 $listDirn	= $this->w_state->get('list.direction');
@@ -26,24 +27,31 @@ $listDirn	= $this->w_state->get('list.direction');
 								<?php $config = array('filter.published' => array(0, 1), 'filter.access' => true);
 								echo JHtml::_('select.options', JHtml::_('wissensmatrixcategory.options', 'com_wissensmatrix', $config), 'value', 'text', $this->state->get('team.id', 0)); ?>
 							</select>
-							<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportwbiteam&id='.$this->item->id.'&teamid='.$this->parent->id); ?>" class="btn addon" title="<?php JText::printf('COM_WISSENSMATRIX_GET_PARENT_TEAM', $this->parent->title); ?>"><i class="icon-arrow-up"></i></a>
+							<?php if ($this->parent) : ?>
+								<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportwbiteam&id='.$this->item->id.'&teamid='.$this->parent->id); ?>" class="btn addon" title="<?php JText::printf('COM_WISSENSMATRIX_GET_PARENT_TEAM', $this->parent->title); ?>" rel="tooltip"><i class="icon-arrow-up"></i></a>
+							<?php endif; ?>
 						</div>
-						<div class="btn-group filter-select input-append">
-							<select name="zwbistate" id="filter_zwbistate" class="input-large" onchange="this.form.submit()">
+						<div class="btn-group filter-select">
+							<select name="zwbistate" id="filter_zwbistate" class="input-medium" onchange="this.form.submit()">
 								<option value="0"><?php echo JText::_('COM_WISSENSMATRIX_SELECT_STATE'); ?></option>
 								<?php $options = array(1 => JText::_('COM_WISSENSMATRIX_ZWBI_STATE_1'), 2 => JText::_('COM_WISSENSMATRIX_ZWBI_STATE_2'));
 								echo JHtmlSelect::options($options, 'value', 'text', $this->w_state->get('filter.zwbistate', 0)); ?>
 							</select>
-							<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportwbiteam&id='.$this->item->id.'&teamid='.$this->parent->id); ?>" class="btn addon" title="<?php JText::printf('COM_WISSENSMATRIX_GET_PARENT_TEAM', $this->parent->title); ?>"><i class="icon-arrow-up"></i></a>
 						</div>
 					<?php endif; ?>
 				</div>
 			<?php endif; ?>
 			<div class="clearfix"></div>
+			<h3>
+				<?php echo JText::_('COM_WISSENSMATRIX_WBI').': '.$this->item->title; ?>
+				 <small><?php echo JText::_('COM_WISSENSMATRIX_WBIG'); ?>: <a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportwbigteam&id='.$this->item->wbig_id); ?>"><?php echo $this->item->wbig_title; ?></a></small>
+			</h3>
+			<?php if ($this->item->refresh) : ?>
+				 <div class="well well-small"><?php echo JText::sprintf('COM_WISSENSMATRIX_REFRESH_TEXT', $this->item->refresh); ?></div>
+			<?php endif; ?>
 			<?php if (!count($this->workers)) : ?>
 				<div class="no_entries alert alert-error"><?php echo JText::sprintf('COM_WISSENSMATRIX_NO_ENTRIES', JText::_('COM_WISSENSMATRIX_WORKERS')); ?></div>
 			<?php else : ?>
-				<h3><?php echo JText::_('COM_WISSENSMATRIX_WBI').': '.$this->item->title; ?></h3>
 				<table class="table table-striped table-hover table-condensed">
 					<thead>
 						<tr>
@@ -56,9 +64,15 @@ $listDirn	= $this->w_state->get('list.direction');
 							</th>
 							<th class="center">
 								<?php echo JHTML::_('grid.sort', 'COM_WISSENSMATRIX_STATE', 'zwbi_status_id', $listDirn, $listOrder); ?>
-								<?php echo JText::_('COM_WISSENSMATRIX_STATE'); ?>
 							</th>
-							<th><?php echo JText::_('COM_WISSENSMATRIX_STATE'); ?></th>
+							<th>
+								<?php echo JHTML::_('grid.sort', 'JDATE', 'date', $listDirn, $listOrder); ?>
+							</th>
+							<?php if ($this->item->refresh) : ?>
+								<th>
+									<?php echo JHTML::_('grid.sort', 'COM_WISSENSMATRIX_TARGET_DATE', 'zwbi_refresh', $listDirn, $listOrder); ?>
+								</th>
+							<?php endif; ?>
 						</tr>
 					</thead>
 					<tbody>
@@ -75,7 +89,16 @@ $listDirn	= $this->w_state->get('list.direction');
 										<?php echo JText::_('COM_WISSENSMATRIX_ZWBI_STATE_'.$worker->zwbi_status_id); ?>
 									</span>
 								</td>
-								<td></td>
+								<td><?php echo JHtml::date($worker->date, JText::_('DATE_FORMAT_LC4')); ?></td>
+								<?php if ($this->item->refresh) : ?>
+									<?php $refresh_up = '';
+									if (strtotime($worker->zwbi_refresh) < strtotime(JHtml::date('now', 'Y-m-d'))) :
+										$refresh_up = 'class="label label-important" title="'.JText::_('COM_WISSENSMATRIX_REFRESH_UP').'" rel="tooltip"';
+									endif; ?>
+									<td>
+										<span <?php echo $refresh_up; ?>><?php echo JHtml::date($worker->zwbi_refresh, JText::_('DATE_FORMAT_LC4')); ?></span>
+									</td>
+								<?php endif; ?>
 							</tr>
 						<?php endforeach; ?>
 					</tbody>
