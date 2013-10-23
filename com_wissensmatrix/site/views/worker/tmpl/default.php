@@ -141,7 +141,7 @@ $this->document->addScriptDeclaration('jQuery(function() {
 				<ul class="wbi list-striped list-condensed">
 					<?php foreach($this->wbis as $i => $item) : ?>
 						<li id="wbi<?php echo $i; ?>" class="wbi <?php echo ($item->state) ? '': 'system-unpublished '; ?>cat-list-row<?php echo $i % 2; ?>">
-							<span class="zbwi-state badge badge-<?php echo ($item->zwbi_status_id == 2) ? 'success' : 'info'; ?> pull-right" title="<?php echo JText::_('JSTATUS'); ?>">
+							<span class="zwbi-state badge badge-<?php echo ($item->zwbi_status_id == 2) ? 'success' : 'info'; ?> pull-right" title="<?php echo JText::_('JSTATUS'); ?>">
 								<?php echo JText::_('COM_WISSENSMATRIX_ZWBI_STATE_'.$item->zwbi_status_id); ?>
 							</span>
 							<strong class="title">
