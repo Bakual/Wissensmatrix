@@ -32,6 +32,7 @@ class WissensmatrixModelWorkers extends JModelList
 				'language', 'workers.language',
 				'hits', 'workers.hits',
 				'category_title', 'c_workers.category_title',
+				'zwbi_status_id', 'zwbi.status_id',
 			);
 		}
 
@@ -107,6 +108,20 @@ class WissensmatrixModelWorkers extends JModelList
 			$query->where('workers.state = '.(int) $state);
 		}
 
+		// Filter by wbi (needed in wbi reports)
+		if ($wbiId = $this->getState('wbi.id'))
+		{
+			$query->select('zwbi.id as zwbi_id, zwbi.status_id as zwbi_status_id, zwbi.bemerkung, zwbi.date, mit_id');
+			$query->join('LEFT', '#__wissensmatrix_mit_wbi AS zwbi ON zwbi.mit_id = workers.id');
+			$query->where('wbi_id = '.(int)$wbiId);
+			if ($zwbistate = $this->getState('filter.zwbistate'))
+			{
+				$query->where('zwbi.status_id = '.(int)$zwbistate);
+			}
+			$query->select('CASE WHEN wbis.refresh THEN DATEDIFF(DATE_ADD(zwbi.date, INTERVAL wbis.refresh YEAR), NOW()) ELSE 0 END as zwbi_refresh');
+			$query->join('LEFT', '#__wissensmatrix_weiterbildung AS wbis ON zwbi.wbi_id = wbis.id');
+		}
+
 		// Filter by language
 		if ($this->getState('filter.language')) {
 			$query->where('workers.language in ('.$db->quote(JFactory::getLanguage()->getTag()).','.$db->quote('*').')');
@@ -135,6 +150,9 @@ class WissensmatrixModelWorkers extends JModelList
 		// Team in this case
 		$teamid = $this->getUserStateFromRequest('com_wissensmatrix.team.id', 'teamid', $params->get('teamid', 0), 'int');
 		$this->setState('team.id', $teamid);
+
+		$zwbistate = $app->getUserStateFromRequest($this->context.'.filter.zwbistate', 'zwbistate', 0, 'INT');
+		$this->setState('filter.zwbistate', $zwbistate);
 
 		// Include Subcategories or not
 		$this->setState('filter.subcategories', $params->get('show_subcategory_content', 0));
