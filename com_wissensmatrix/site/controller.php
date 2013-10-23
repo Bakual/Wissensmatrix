@@ -70,6 +70,19 @@ class WissensmatrixController extends JControllerLegacy
 				$view->setModel($this->getModel('wbis'), true);
 				$view->setModel($this->getModel('wbigs'));
 				break;
+			case 'reportwbigteam':
+				$viewLayout = $this->input->get('layout', 'default');
+				$view = $this->getView($viewName, $format, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
+				$view->setModel($this->getModel('wbig'), true);
+				$view->setModel($this->getModel('wbis'));
+				$view->setModel($this->getModel('workers'));
+				break;
+			case 'reportwbiteam':
+				$viewLayout = $this->input->get('layout', 'default');
+				$view = $this->getView($viewName, $format, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
+				$view->setModel($this->getModel('wbi'), true);
+				$view->setModel($this->getModel('workers'));
+				break;
 			case 'zfwigform':
 				$viewLayout = $this->input->get('layout', 'default');
 				$view = $this->getView($viewName, $format, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
