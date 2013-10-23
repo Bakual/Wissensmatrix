@@ -3,9 +3,6 @@ defined('_JEXEC') or die;
 
 JHTML::addIncludePath(JPATH_COMPONENT.'/helpers');
 
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
-
 $user		= JFactory::getUser();
 $canEdit	= $user->authorise('core.edit', 'com_wissensmatrix');
 $canEditOwn	= $user->authorise('core.edit.own', 'com_wissensmatrix');
@@ -40,7 +37,9 @@ $listDirn	= $this->state->get('list.direction');
 								<?php $config = array('filter.published' => array(0, 1), 'filter.access' => true);
 								echo JHtml::_('select.options', JHtml::_('wissensmatrixcategory.options', 'com_wissensmatrix', $config), 'value', 'text', $this->state->get('team.id', 0)); ?>
 							</select>
-							<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportsfwis&teamid='.$this->parent->id); ?>" class="btn addon" title="<?php JText::printf('COM_WISSENSMATRIX_GET_PARENT_TEAM', $this->parent->title); ?>"><i class="icon-arrow-up"></i></a>
+							<?php if ($this->parent) : ?>
+								<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportsfwis&teamid='.$this->parent->id); ?>" class="btn addon" title="<?php JText::printf('COM_WISSENSMATRIX_GET_PARENT_TEAM', $this->parent->title); ?>" rel="tooltip"><i class="icon-arrow-up"></i></a>
+							<?php endif; ?>
 						</div>
 					<?php endif;
 					if ($this->params->get('show_pagination_limit')) : ?>
@@ -77,7 +76,7 @@ $listDirn	= $this->state->get('list.direction');
 						<?php foreach($this->items as $i => $item) : ?>
 							<tr class="<?php echo ($item->state) ? '': 'system-unpublished '; ?>cat-list-row<?php echo $i % 2; ?>">
 								<td class="title">
-									<?php echo $item->title; ?>
+									<span title="<?php echo JText::_('COM_WISSENSMATRIX_FWIG').': '.$item->fwig_title; ?>" rel="tooltip"><?php echo $item->title; ?></span>
 									<?php if (!$item->state) : ?>
 										<span class="label label-warning"><?php echo JText::_('JUNPUBLISHED'); ?></span>
 									<?php endif; ?>

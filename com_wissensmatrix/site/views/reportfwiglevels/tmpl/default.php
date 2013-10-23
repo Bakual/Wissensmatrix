@@ -26,7 +26,9 @@ $listDirn	= $this->w_state->get('list.direction');
 								<?php $config = array('filter.published' => array(0, 1), 'filter.access' => true);
 								echo JHtml::_('select.options', JHtml::_('wissensmatrixcategory.options', 'com_wissensmatrix', $config), 'value', 'text', $this->state->get('team.id', 0)); ?>
 							</select>
-							<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwiglevels&id='.$this->items[0]->fwig_id.'&teamid='.$this->parent->id); ?>" class="btn addon" title="<?php JText::printf('COM_WISSENSMATRIX_GET_PARENT_TEAM', $this->parent->title); ?>"><i class="icon-arrow-up"></i></a>
+							<?php if ($this->parent) : ?>
+								<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwiglevels&id='.$this->items[0]->fwig_id.'&teamid='.$this->parent->id); ?>" class="btn addon" title="<?php JText::printf('COM_WISSENSMATRIX_GET_PARENT_TEAM', $this->parent->title); ?>" rel="tooltip"><i class="icon-arrow-up"></i></a>
+							<?php endif; ?>
 						</div>
 					<?php endif; ?>
 				</div>

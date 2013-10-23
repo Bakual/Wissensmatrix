@@ -34,7 +34,9 @@ $listDirn	= $this->w_state->get('list.direction');
 								<?php $config = array('filter.published' => array(0, 1), 'filter.access' => true);
 								echo JHtml::_('select.options', JHtml::_('wissensmatrixcategory.options', 'com_wissensmatrix', $config), 'value', 'text', $this->state->get('team.id', 0)); ?>
 							</select>
-							<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwiteam&id='.$this->item->id.'&teamid='.$this->parent->id); ?>" class="btn addon" title="<?php JText::printf('COM_WISSENSMATRIX_GET_PARENT_TEAM', $this->parent->title); ?>"><i class="icon-arrow-up"></i></a>
+							<?php if ($this->parent) : ?>
+								<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwiteam&id='.$this->item->id.'&teamid='.$this->parent->id); ?>" class="btn addon" title="<?php JText::printf('COM_WISSENSMATRIX_GET_PARENT_TEAM', $this->parent->title); ?>" rel="tooltip"><i class="icon-arrow-up"></i></a>
+							<?php endif; ?>
 						</div>
 					<?php endif; ?>
 				</div>
@@ -43,7 +45,10 @@ $listDirn	= $this->w_state->get('list.direction');
 			<?php if (!count($this->workers)) : ?>
 				<div class="no_entries alert alert-error"><?php echo JText::sprintf('COM_WISSENSMATRIX_NO_ENTRIES', JText::_('COM_WISSENSMATRIX_WORKERS')); ?></div>
 			<?php else : ?>
-				<h3><?php echo JText::_('COM_WISSENSMATRIX_FWI').': '.$this->item->title; ?></h3>
+				<h3>
+					<?php echo JText::_('COM_WISSENSMATRIX_FWI').': '.$this->item->title; ?>
+					 <small><?php echo JText::_('COM_WISSENSMATRIX_FWIG'); ?>: <a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwigteam&id='.$this->item->fwig_id); ?>"><?php echo $this->item->fwig_title; ?></a></small>
+				</h3>
 				<table class="table table-striped table-hover table-condensed">
 					<thead>
 						<tr>
