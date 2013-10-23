@@ -22,6 +22,8 @@ class WissensmatrixViewReportswbis extends JViewLegacy
 		$wbig_state->set('filter.search', '');
 		$wbig_state->set('list.limit', 0);
 		$wbig_state->set('list.start', 0);
+		$wbig_state->set('list.ordering', 'title');
+		$wbig_state->set('list.direction', 'asc');
 		$this->wbigs	= $wbigsmodel->getItems();
 
 		$this->params		= $this->state->get('params');
