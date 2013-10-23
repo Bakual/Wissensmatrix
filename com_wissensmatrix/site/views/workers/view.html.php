@@ -53,16 +53,6 @@ class WissensmatrixViewWorkers extends JViewLegacy
 			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$js = 'function clear_all(){
-			if(document.id(\'filter_teamid\')){
-				document.id(\'filter_teamid\').value=0;
-			}
-			if(document.id(\'filter-search\')){
-				document.id(\'filter-search\').value="";
-			}
-		}';
-		$this->document->addScriptDeclaration($js);
-
 		$this->pageclass_sfx	= htmlspecialchars($this->params->get('pageclass_sfx'));
 		$this->maxLevel			= $this->params->get('maxLevel', -1);
 		$this->_prepareDocument();

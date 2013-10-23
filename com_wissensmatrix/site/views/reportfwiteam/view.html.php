@@ -32,16 +32,6 @@ class WissensmatrixViewReportfwiteam extends JViewLegacy
 			return false;
 		}
 
-		$js = 'function clear_all(){
-			if(document.id(\'filter_teamid\')){
-				document.id(\'filter_teamid\').value=0;
-			}
-			if(document.id(\'filter-search\')){
-				document.id(\'filter-search\').value="";
-			}
-		}';
-		$this->document->addScriptDeclaration($js);
-
 		$this->pageclass_sfx	= htmlspecialchars($this->params->get('pageclass_sfx'));
 		$this->_prepareDocument();
 		parent::display($tpl);
@@ -64,7 +54,7 @@ class WissensmatrixViewReportfwiteam extends JViewLegacy
 		}
 		else
 		{
-			$this->params->def('page_heading', JText::_('COM_WISSENSMATRIX_REPORTFWIGTEAM_TITLE'));
+			$this->params->def('page_heading', JText::_('COM_WISSENSMATRIX_REPORTFWITEAM_TITLE'));
 		}
 		$title = $this->params->get('page_title', '');
 		if (empty($title))

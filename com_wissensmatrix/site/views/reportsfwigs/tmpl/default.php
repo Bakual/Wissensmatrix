@@ -28,7 +28,7 @@ $listDirn	= $this->state->get('list.direction');
 								<?php echo JText::_('JGLOBAL_FILTER_LABEL').'&#160;'; ?>
 							</label>
 							<input type="text" name="filter-search" id="filter-search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" class="input-medium" onchange="document.adminForm.submit();" title="<?php echo JText::_('COM_WISSENSMATRIX_FILTER_SEARCH_DESC'); ?>" placeholder="<?php echo JText::_('COM_WISSENSMATRIX_FILTER_SEARCH_DESC'); ?>" />
-							<button class="btn tip hidden-phone hidden-tablet" type="button" onclick="clear_all();this.form.submit();" rel="tooltip" title="<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>"><i class="icon-remove"></i></button>
+							<button class="btn tip hidden-phone hidden-tablet" type="button" onclick="document.id('filter-search').value='';this.form.submit();" rel="tooltip" title="<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>"><i class="icon-remove"></i></button>
 						</div>
 						<div class="btn-group filter-select input-append">
 							<select name="teamid" id="filter_teamid" class="input-xlarge" onchange="this.form.submit()">
@@ -94,7 +94,7 @@ $listDirn	= $this->state->get('list.direction');
 								</td>
 							</tr>
 						<?php endforeach; ?>
-						<tr class="cat-list-row<?php echo $i++ % 2; ?> info">
+						<tr class="info">
 							<td class="title"><?php echo JText::_('COM_WISSENSMATRIX_SUMMARY'); ?></td>
 							<td class="reports">
 								<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwigteam'); ?>"><img src="media/com_wissensmatrix/images/black_view.gif"></a>
