@@ -32,7 +32,8 @@ class WissensmatrixModelWorkers extends JModelList
 				'language', 'workers.language',
 				'hits', 'workers.hits',
 				'category_title', 'c_workers.category_title',
-				'zwbi_status_id', 'zwbi.status_id',
+				'zwbi_status_id', 'date', 'zwbi_refresh',
+				'refresh'
 			);
 		}
 
@@ -118,8 +119,18 @@ class WissensmatrixModelWorkers extends JModelList
 			{
 				$query->where('zwbi.status_id = '.(int)$zwbistate);
 			}
-			$query->select('CASE WHEN wbis.refresh THEN DATEDIFF(DATE_ADD(zwbi.date, INTERVAL wbis.refresh YEAR), NOW()) ELSE 0 END as zwbi_refresh');
+			$query->select('wbis.refresh');
+			$query->select('CASE WHEN wbis.refresh THEN DATE_ADD(zwbi.date, INTERVAL wbis.refresh YEAR) ELSE 0 END as zwbi_refresh');
 			$query->join('LEFT', '#__wissensmatrix_weiterbildung AS wbis ON zwbi.wbi_id = wbis.id');
+		}
+		else
+		{
+			// Reset ordering if invalid
+			$invalid	= array('zwbi_status_id', 'date', 'refresh', 'zwbi_refresh');
+			if (in_array($this->getState('list.ordering', 'ordering'), $invalid))
+			{
+				$this->setState('list.ordering', 'ordering');
+			}
 		}
 
 		// Filter by language
@@ -169,6 +180,27 @@ class WissensmatrixModelWorkers extends JModelList
 		$this->setState('filter.search', $search);
 
 		parent::populateState('ordering', 'ASC');
+	}
+
+	/**
+	 * Method to get a store id based on the model configuration state.
+	 *
+	 * This is necessary because the model is used by the component and
+	 * different modules that might need different sets of data or different
+	 * ordering requirements.
+	 *
+	 * @param   string  $id  An identifier string to generate the store id.
+	 *
+	 * @return  string  A store id.
+	 *
+	 * @since   12.2
+	 */
+	protected function getStoreId($id = '')
+	{
+		// Add the wbi id to the store id.
+		$id .= ':' . $this->getState('wbi.id');
+
+		return parent::getStoreId($id);
 	}
 
 	/**

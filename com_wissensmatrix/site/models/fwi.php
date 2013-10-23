@@ -82,6 +82,11 @@ class WissensmatrixModelFwi extends JModelItem
 				$query->select("user.name AS author");
 				$query->join('LEFT', '#__users AS user ON user.id = fwi.created_by');
 
+				// Join over fwig.
+				$query->select('fwig.`id` as fwig_id, fwig.`title_'.$lang.'` AS fwig_title');
+				$query->select('CASE WHEN CHAR_LENGTH(fwig.alias) THEN CONCAT_WS(\':\', fwig.id, fwig.alias) ELSE fwig.id END as fwig_slug');
+				$query->join('LEFT', '#__wissensmatrix_fachwissengruppe AS fwig ON fwig.id = fwi.fwig_id');
+
 				$db->setQuery($query);
 
 				$data = $db->loadObject();

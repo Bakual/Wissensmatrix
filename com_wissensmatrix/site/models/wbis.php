@@ -137,20 +137,29 @@ class WissensmatrixModelWbis extends JModelList
 			$query->where('wbigs.id = '.(int)$wbigId);
 		}
 
-		// Filter by worker (needed in worker view)
+		// Filter by worker (needed in worker and reportwbigteam view)
 		if ($workerId = $this->getState('worker.id'))
 		{
-			$query->select('CASE WHEN wbis.refresh THEN DATEDIFF(DATE_ADD(zwbi.date, INTERVAL wbis.refresh YEAR), NOW()) ELSE 0 END as zwbi_refresh');
-			$query->select('zwbi.id as zwbi_id, zwbi.status_id as zwbi_status_id, zwbi.bemerkung, zwbi.date, mit_id');
+			if (is_array($workerId))
+			{
+				JArrayHelper::toInteger($workerId);
+				$query->where('mit_id IN ('.implode(',', $workerId).')');
+				$query->select('count(1) as mit_count');
+				$query->group('zwbi.wbi_id');
+			}
+			else
+			{
+				$query->select('CASE WHEN wbis.refresh THEN DATEDIFF(DATE_ADD(zwbi.date, INTERVAL wbis.refresh YEAR), NOW()) ELSE 0 END as zwbi_refresh');
+				$query->select('zwbi.id as zwbi_id, zwbi.status_id as zwbi_status_id, zwbi.bemerkung, zwbi.date, mit_id');
+				$query->where('mit_id = '.(int)$workerId);
+			}
 			$query->join('LEFT', '#__wissensmatrix_mit_wbi AS zwbi ON zwbi.wbi_id = wbis.id');
-			$query->where('mit_id = '.(int)$workerId);
 		}
 
-		// Filter by zwbi.status (needed in worker view)
-		$zwbistate = $this->getState('filter.zwbistate');
-		if (is_numeric($zwbistate))
+		// Filter by zwbi.status (needed in worker (?) and reportwbigteam view)
+		if ($zwbistate = $this->getState('filter.zwbistate'))
 		{
-			$query->where('zwbi.status_id = '.(int) $zwbistate);
+			$query->where('zwbi.status_id = '.(int)$zwbistate);
 		}
 
 		// Filter by language

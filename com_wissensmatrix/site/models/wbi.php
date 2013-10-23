@@ -59,7 +59,7 @@ class WissensmatrixModelWbi extends JModelItem
 						'item.select',
 						'wbi.id, wbi.catid, '.
 						'wbi.checked_out, wbi.checked_out_time, wbi.language, '.
-						'wbi.hits, wbi.state, wbi.created, wbi.created_by, '.
+						'wbi.hits, wbi.state, wbi.created, wbi.created_by, wbi.refresh, '.
 						'CASE WHEN CHAR_LENGTH(wbi.alias) THEN CONCAT_WS(\':\', wbi.id, wbi.alias) ELSE wbi.id END as slug'
 					)
 				);
@@ -81,6 +81,11 @@ class WissensmatrixModelWbi extends JModelItem
 				// Join over users for the author names.
 				$query->select("user.name AS author");
 				$query->join('LEFT', '#__users AS user ON user.id = wbi.created_by');
+
+				// Join over wbig.
+				$query->select('wbig.`id` as wbig_id, wbig.`title_'.$lang.'` AS wbig_title');
+				$query->select('CASE WHEN CHAR_LENGTH(wbig.alias) THEN CONCAT_WS(\':\', wbig.id, wbig.alias) ELSE wbig.id END as wbig_slug');
+				$query->join('LEFT', '#__wissensmatrix_weiterbildunggruppe AS wbig ON wbig.id = wbi.wbig_id');
 
 				$db->setQuery($query);
 
