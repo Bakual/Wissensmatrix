@@ -3,6 +3,8 @@ defined('_JEXEC') or die;
 
 class WissensmatrixModelFwigs extends JModelList
 {
+	private $excluded_cats = array();
+
 	/**
 	 * Constructor.
 	 *
@@ -307,5 +309,57 @@ class WissensmatrixModelFwigs extends JModelList
 		}
 
 		return $this->_children;
+	}
+
+	/**
+	 * Gets the excluded categories
+	 * UMaybe move to a helper
+	 *
+	 * @author Thomas Hunziker <thomi.hunziker@sbb.ch>
+	 * @version 1.0
+	 * @access private
+	 */
+	private function getExcludedCats()
+	{
+		$exclude = $this->state->params->get('exclude_cat');
+		$cat 	= JCategories::getInstance('Wissensmatrix')->get($exclude);
+		$children = $cat->getChildren(true);
+		foreach ($children as $cat)
+		{
+			$this->excluded_cats[]	= (int)$cat->id;
+		}
+	}
+
+	/**
+	 * Gets the summary data for each level per fwig
+	 * Used in FwigSummary Report
+	 *
+	 * @author Thomas Hunziker <thomi.hunziker@sbb.ch>
+	 * @version 1.0
+	 * @access public
+	 */
+	public function getLevelSummary($level, $soll = 0)
+	{
+		if (!$this->excluded_cats)
+		{
+			$this->getExcludedCats();
+		}
+
+		$field	= ($soll) ? 'soll' : 'ist';
+		// Create a new query object.
+		$db		= $this->getDbo();
+		$query	= $db->getQuery(true);
+
+		$query->select('fwi.fwig_id, COUNT(1) AS mit_count');
+		$query->from('#__wissensmatrix_mit_fwi AS mit_fwi');
+		$query->join('LEFT', '#__wissensmatrix_fachwissen AS fwi ON mit_fwi.fwi_id = fwi.id');
+		$query->join('LEFT', '#__wissensmatrix_mitarbeiter AS mit ON mit_fwi.mit_id = mit.id');
+		$query->where('mit_fwi.'.$field.' >= '.(int)$level);
+		$query->where('mit.catid NOT IN ('.implode(',', $this->excluded_cats).')');
+		$query->group('fwi.fwig_id');
+
+		$db->setQuery($query);
+
+		return $db->loadObjectList('fwig_id');
 	}
 }

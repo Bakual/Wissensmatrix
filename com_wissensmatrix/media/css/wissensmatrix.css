@@ -35,6 +35,10 @@ ul.list-condensed strong
 .text-center {
 	text-align: center !important;
 }
+/* align table cell */
+.table td.cell-right {
+	text-align: right;
+}
 
 /* Wbi edit/delete icons */
 ul.wbi span.list-edit.pull-left {
