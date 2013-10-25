@@ -34,6 +34,12 @@ class WissensmatrixController extends JControllerLegacy
 				$view->setModel($this->getModel('wbis'));
 				$view->setModel($this->getModel('fwis'));
 				break;
+			case 'reportfwiglevelssummary':
+				$viewLayout = $this->input->get('layout', 'default');
+				$view = $this->getView($viewName, $format, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
+				$view->setModel($this->getModel('fwigs'), true);
+				$view->setModel($this->getModel('fwis'));
+				break;
 			case 'reportsfwigs':
 				$viewLayout = $this->input->get('layout', 'default');
 				$view = $this->getView($viewName, $format, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
@@ -69,6 +75,13 @@ class WissensmatrixController extends JControllerLegacy
 				$view = $this->getView($viewName, $format, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
 				$view->setModel($this->getModel('wbis'), true);
 				$view->setModel($this->getModel('wbigs'));
+				break;
+			case 'reportwbigsummary':
+				$viewLayout = $this->input->get('layout', 'default');
+				$view = $this->getView($viewName, $format, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
+				$view->setModel($this->getModel('wbigs'), true);
+				$view->setModel($this->getModel('wbis'));
+				$view->setModel($this->getModel('workers'));
 				break;
 			case 'reportwbigteam':
 				$viewLayout = $this->input->get('layout', 'default');
