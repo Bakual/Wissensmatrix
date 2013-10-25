@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_WISSENSMATRIX_REPORTSWBIGSUMMARY_VIEW_DEFAULT_TITLE">
+		<message><![CDATA[COM_WISSENSMATRIX_REPORTSWBIGSUMMARY_VIEW_DEFAULT_DESC]]></message>
+	</layout>
+	<fields name="request">
+		<fieldset name="request"
+			addfieldpath="/administrator/components/com_wissensmatrix/models/fields" >
+			<field name="id" type="wbiglist" 
+				label="COM_WISSENSMATRIX_FIELD_WBIG_ID_LABEL" 
+				description="COM_WISSENSMATRIX_FIELD_WBIG_ID_DESC" 
+				required="true" />
+		</fieldset>
+	</fields>
+</metadata>
