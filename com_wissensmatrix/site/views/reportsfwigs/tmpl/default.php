@@ -103,12 +103,12 @@ $listDirn	= $this->state->get('list.direction');
 								<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwigteam&format=xls'); ?>"><img src="media/com_wissensmatrix/images/icon_download.gif"></a>
 							</td>
 							<td class="reports">
-								<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwiglevels'); ?>"><img src="media/com_wissensmatrix/images/black_view.gif"></a>
-								<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwiglevels&format=xls'); ?>"><img src="media/com_wissensmatrix/images/icon_download.gif"></a>
+								<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwiglevelssummary'); ?>"><img src="media/com_wissensmatrix/images/black_view.gif"></a>
+								<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwiglevelssummary&format=xls'); ?>"><img src="media/com_wissensmatrix/images/icon_download.gif"></a>
 							</td>
 							<td class="reports">
-								<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwigdiff'); ?>"><img src="media/com_wissensmatrix/images/black_view.gif"></a>
-								<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwigdiff&format=xls'); ?>"><img src="media/com_wissensmatrix/images/icon_download.gif"></a>
+								<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwigdiffsummary'); ?>"><img src="media/com_wissensmatrix/images/black_view.gif"></a>
+								<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwigdiffsummary&format=xls'); ?>"><img src="media/com_wissensmatrix/images/icon_download.gif"></a>
 							</td>
 						</tr>
 					</tbody>
