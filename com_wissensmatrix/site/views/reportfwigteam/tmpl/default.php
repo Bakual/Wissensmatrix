@@ -42,51 +42,63 @@ $listDirn	= $this->w_state->get('list.direction');
 				</div>
 			<?php endif; ?>
 			<div class="clearfix"></div>
+			<h3>
+				<?php echo JText::_('COM_WISSENSMATRIX_FWIG').': '.$this->items[0]->fwig_title; ?>
+				<button type="button" data-toggle="collapse" data-target=".collapse" class="btn btn-mini pull-right">
+					<span class="icon-plus"></span>
+				</button>
+			</h3>
 			<?php if (!count($this->items)) : ?>
-				<div class="no_entries alert alert-error"><?php echo JText::sprintf('COM_WISSENSMATRIX_NO_ENTRIES', JText::_('COM_WISSENSMATRIX_FWIGS')); ?></div>
+				<div class="no_entries alert alert-error"><?php echo JText::sprintf('COM_WISSENSMATRIX_NO_ENTRIES', JText::_('COM_WISSENSMATRIX_FWIS')); ?></div>
 			<?php else : ?>
-				<h3><?php echo JText::_('COM_WISSENSMATRIX_FWIG').': '.$this->items[0]->fwig_title; ?></h3>
 				<?php foreach ($this->items as $item) : ?>
-					<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwiteam&id='.$item->id); ?>">
-						<h4><?php echo JText::_('COM_WISSENSMATRIX_FWI').': '.$item->title; ?></h4>
-					</a>
-					<table class="table table-striped table-hover table-condensed">
-						<thead>
-							<tr>
-								<th class="title">
-									<?php echo JHTML::_('grid.sort', 'COM_WISSENSMATRIX_VORNAME', 'vorname', $listDirn, $listOrder); ?>
-									<?php echo JHTML::_('grid.sort', 'COM_WISSENSMATRIX_NACHNAME', 'name', $listDirn, $listOrder); ?>
-								</th>
-								<th class="hidden-phone">
-									<?php echo JHTML::_('grid.sort', 'COM_WISSENSMATRIX_TEAM', 'category_title', $listDirn, $listOrder); ?>
-								</th>
-								<th class="span2 center"><?php echo JText::_('COM_WISSENSMATRIX_IST'); ?></th>
-								<th class="span2 center"><?php echo JText::_('COM_WISSENSMATRIX_SOLL'); ?></th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php foreach ($this->workers as $worker) :
-								$istsoll = $this->model->getIstSoll($item->id, $worker->id);
-								if (!$istsoll['ist'] and !$istsoll['soll']) :
-									continue;
-								endif ?>
+					<h4 class="page-header">
+						<button type="button" data-toggle="collapse" data-target="#fwi<?php echo $item->id; ?>" class="btn btn-mini pull-right">
+							<span class="icon-plus"></span>
+						</button>
+						<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwiteam&id='.$item->id); ?>">
+							<?php echo $item->title; ?>
+						</a>
+					</h4>
+					<div id="fwi<?php echo $item->id; ?>" class="collapse">
+						<table class="table table-striped table-hover table-condensed">
+							<thead>
 								<tr>
-									<td>
-										<a href="<?php echo WissensmatrixHelperRoute::getWorkerRoute($worker->slug); ?>"><?php echo $worker->vorname.' '.$worker->name; ?></a>
-									</td>
-									<td>
-										<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwigteam&id='.$item->fwig_id.'&teamid='.$worker->catid); ?>"><?php echo $worker->category_title; ?></a>
-									</td>
-									<td class="center">
-										<span class="btn-block label label-<?php echo WissensmatrixHelperWissensmatrix::getDiffClass($istsoll['ist'], $istsoll['soll']); ?>"><?php echo $istsoll['ist_title']; ?></span>
-									</td>
-									<td class="center">
-										<span class="btn-block label"><?php echo $istsoll['soll_title']; ?></span>
-									</td>
+									<th class="title">
+										<?php echo JHTML::_('grid.sort', 'COM_WISSENSMATRIX_VORNAME', 'vorname', $listDirn, $listOrder); ?>
+										<?php echo JHTML::_('grid.sort', 'COM_WISSENSMATRIX_NACHNAME', 'name', $listDirn, $listOrder); ?>
+									</th>
+									<th class="hidden-phone">
+										<?php echo JHTML::_('grid.sort', 'COM_WISSENSMATRIX_TEAM', 'category_title', $listDirn, $listOrder); ?>
+									</th>
+									<th class="span2 center"><?php echo JText::_('COM_WISSENSMATRIX_IST'); ?></th>
+									<th class="span2 center"><?php echo JText::_('COM_WISSENSMATRIX_SOLL'); ?></th>
 								</tr>
-							<?php endforeach; ?>
-						</tbody>
-					</table>
+							</thead>
+							<tbody>
+								<?php foreach ($this->workers as $worker) :
+									$istsoll = $this->model->getIstSoll($item->id, $worker->id);
+									if (!$istsoll['ist'] and !$istsoll['soll']) :
+										continue;
+									endif ?>
+									<tr>
+										<td>
+											<a href="<?php echo WissensmatrixHelperRoute::getWorkerRoute($worker->slug); ?>"><?php echo $worker->vorname.' '.$worker->name; ?></a>
+										</td>
+										<td>
+											<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwigteam&id='.$item->fwig_id.'&teamid='.$worker->catid); ?>"><?php echo $worker->category_title; ?></a>
+										</td>
+										<td class="center">
+											<span class="btn-block label label-<?php echo WissensmatrixHelperWissensmatrix::getDiffClass($istsoll['ist'], $istsoll['soll']); ?>"><?php echo $istsoll['ist_title']; ?></span>
+										</td>
+										<td class="center">
+											<span class="btn-block label"><?php echo $istsoll['soll_title']; ?></span>
+										</td>
+									</tr>
+								<?php endforeach; ?>
+							</tbody>
+						</table>
+					</div>
 				<?php endforeach; ?>
 			<?php endif;
 			if ($this->params->get('show_pagination') and ($this->pagination->get('pages.total') > 1)) : ?>

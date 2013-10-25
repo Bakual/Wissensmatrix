@@ -31,6 +31,10 @@ class WissensmatrixViewReportwbigteam extends JViewLegacy
 		$this->wbis_state->set('filter.search', '');
 		$this->wbis_state->set('worker.id', $ids);
 		$this->wbis_state->set('filter.zwbistate', $this->w_state->get('filter.zwbistate', 0));
+		// Only wbis with refresh, doing it here so it doesn't affect other views.
+		$wbirefresh = JFactory::getApplication()->getUserStateFromRequest('com_wissensmatrix.filter.wbirefresh', 'wbirefresh', 0, 'INT');
+		$this->wbis_state->set('filter.wbirefresh', $wbirefresh);
+
 		$this->items		= $this->wbismodel->getItems();
 		$this->pagination	= $this->wbismodel->getPagination();
 		$this->pagination->setAdditionalUrlParam('teamid', $this->state->get('team.id'));

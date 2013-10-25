@@ -57,7 +57,7 @@ $listDirn	= $this->w_state->get('list.direction');
 					$summe['pot2']	= 0; 
 					$summe['pot3']	= 0; ?>
 					<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwiteam&id='.$item->id); ?>">
-						<h4><?php echo JText::_('COM_WISSENSMATRIX_FWI').': '.$item->title; ?></h4>
+						<h4><?php echo $item->title; ?></h4>
 					</a>
 					<table class="table table-striped table-hover table-condensed">
 						<thead>

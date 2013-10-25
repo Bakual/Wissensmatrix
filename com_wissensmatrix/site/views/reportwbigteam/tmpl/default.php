@@ -37,6 +37,12 @@ $listDirn	= $this->w_state->get('list.direction');
 								echo JHtmlSelect::options($options, 'value', 'text', $this->w_state->get('filter.zwbistate', 0)); ?>
 							</select>
 						</div>
+						<div class="btn-group filter-checkbox">
+							<select name="wbirefresh" id="filter_wbirefresh" class="input-medium" onchange="this.form.submit()">
+								<?php $options = array(0 => JText::_('JALL'), 1 => JText::_('COM_WISSENSMATRIX_REFRESH'));
+								echo JHtmlSelect::options($options, 'value', 'text', $this->wbis_state->get('filter.wbirefresh', 0)); ?>
+							</select>
+						</div>
 					<?php endif;
 					if ($this->params->get('show_pagination_limit')) : ?>
 						<div class="btn-group pull-right">
@@ -49,75 +55,87 @@ $listDirn	= $this->w_state->get('list.direction');
 				</div>
 			<?php endif; ?>
 			<div class="clearfix"></div>
-			<h3><?php echo JText::_('COM_WISSENSMATRIX_WBIG').': '.$this->item->title; ?></h3>
+			<h3>
+				<?php echo JText::_('COM_WISSENSMATRIX_WBIG').': '.$this->item->title; ?>
+				<button type="button" data-toggle="collapse" data-target=".collapse" class="btn btn-mini pull-right">
+					<span class="icon-plus"></span>
+				</button>
+			</h3>
 			<?php if (!count($this->items)) : ?>
 				<div class="no_entries alert alert-error"><?php echo JText::sprintf('COM_WISSENSMATRIX_NO_ENTRIES', JText::_('COM_WISSENSMATRIX_WBIS')); ?></div>
 			<?php else : ?>
 				<?php foreach ($this->items as $item) : 
 					$this->w_state->set('wbi.id', $item->id);
 					$workers = $this->workermodel->getItems(); ?>
-					<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportwbiteam&id='.$item->id); ?>">
-						<h4><?php echo JText::_('COM_WISSENSMATRIX_WBI').': '.$item->title; ?>
-						 <small class="badge"><?php echo $item->mit_count; ?></small></h4>
-					</a>
-					<?php if ($item->refresh) : ?>
-						 <div class="well well-small"><?php echo JText::sprintf('COM_WISSENSMATRIX_REFRESH_TEXT', $item->refresh); ?></div>
-					<?php endif; ?>
-					<?php if (!count($workers)) : ?>
-						<div class="no_entries alert alert-error"><?php echo JText::sprintf('COM_WISSENSMATRIX_NO_ENTRIES', JText::_('COM_WISSENSMATRIX_WORKERS')); ?></div>
-					<?php else : ?>
-						<table class="table table-striped table-hover table-condensed">
-							<thead>
-								<tr>
-									<th class="title">
-										<?php echo JHTML::_('grid.sort', 'COM_WISSENSMATRIX_VORNAME', 'vorname', $listDirn, $listOrder); ?>
-										<?php echo JHTML::_('grid.sort', 'COM_WISSENSMATRIX_NACHNAME', 'name', $listDirn, $listOrder); ?>
-									</th>
-									<th class="hidden-phone">
-										<?php echo JHTML::_('grid.sort', 'COM_WISSENSMATRIX_TEAM', 'category_title', $listDirn, $listOrder); ?>
-									</th>
-									<th class="center">
-										<?php echo JHTML::_('grid.sort', 'COM_WISSENSMATRIX_STATE', 'zwbi_status_id', $listDirn, $listOrder); ?>
-									</th>
-									<th>
-										<?php echo JHTML::_('grid.sort', 'JDATE', 'date', $listDirn, $listOrder); ?>
-									</th>
-									<?php if ($item->refresh) : ?>
-										<th>
-											<?php echo JHTML::_('grid.sort', 'COM_WISSENSMATRIX_TARGET_DATE', 'zwbi_refresh', $listDirn, $listOrder); ?>
-										</th>
-									<?php endif; ?>
-								</tr>
-							</thead>
-							<tbody>
-								<?php foreach ($workers as $worker) : ?>
+					<h4 class="page-header">
+						<button type="button" data-toggle="collapse" data-target="#wbi<?php echo $item->id; ?>" class="btn btn-mini pull-right">
+							<span class="icon-plus"></span>
+						</button>
+						<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportwbiteam&id='.$item->id); ?>">
+							<?php echo $item->title; ?>
+						</a>
+						<small class="badge"><?php echo $item->mit_count; ?></small>
+					</h4>
+					<div id="wbi<?php echo $item->id; ?>" class="collapse">
+						<?php if ($item->refresh) : ?>
+							 <div class="well well-small"><?php echo JText::sprintf('COM_WISSENSMATRIX_REFRESH_TEXT', $item->refresh); ?></div>
+						<?php endif; ?>
+						<?php if (!count($workers)) : ?>
+							<div class="no_entries alert alert-error"><?php echo JText::sprintf('COM_WISSENSMATRIX_NO_ENTRIES', JText::_('COM_WISSENSMATRIX_WORKERS')); ?></div>
+						<?php else : ?>
+							<table class="table table-striped table-hover table-condensed">
+								<thead>
 									<tr>
-										<td>
-											<a href="<?php echo WissensmatrixHelperRoute::getWorkerRoute($worker->slug); ?>"><?php echo $worker->vorname.' '.$worker->name; ?></a>
-										</td>
-										<td>
-											<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportwbigteam&id='.$item->wbig_id.'&teamid='.$worker->catid); ?>"><?php echo $worker->category_title; ?></a>
-										</td>
-										<td class="center">
-											<span class="zwbi-state badge badge-<?php echo ($worker->zwbi_status_id == 2) ? 'success' : 'info'; ?>">
-												<?php echo JText::_('COM_WISSENSMATRIX_ZWBI_STATE_'.$worker->zwbi_status_id); ?>
-											</span>
-										</td>
-										<td><?php echo JHtml::date($worker->date, JText::_('DATE_FORMAT_LC4')); ?></td>
+										<th class="title">
+											<?php echo JHTML::_('grid.sort', 'COM_WISSENSMATRIX_VORNAME', 'vorname', $listDirn, $listOrder); ?>
+											<?php echo JHTML::_('grid.sort', 'COM_WISSENSMATRIX_NACHNAME', 'name', $listDirn, $listOrder); ?>
+										</th>
+										<th class="hidden-phone">
+											<?php echo JHTML::_('grid.sort', 'COM_WISSENSMATRIX_TEAM', 'category_title', $listDirn, $listOrder); ?>
+										</th>
+										<th class="center">
+											<?php echo JHTML::_('grid.sort', 'COM_WISSENSMATRIX_STATE', 'zwbi_status_id', $listDirn, $listOrder); ?>
+										</th>
+										<th>
+											<?php echo JHTML::_('grid.sort', 'JDATE', 'date', $listDirn, $listOrder); ?>
+										</th>
 										<?php if ($item->refresh) : ?>
-											<?php $refresh_up = '';
-											if (strtotime($worker->zwbi_refresh) < strtotime(JHtml::date('now', 'Y-m-d'))) :
-												$refresh_up = 'class="label label-important" title="'.JText::_('COM_WISSENSMATRIX_REFRESH_UP').'" rel="tooltip"';
-											endif; ?>
-											<td>
-												<span <?php echo $refresh_up; ?>><?php echo JHtml::date($worker->zwbi_refresh, JText::_('DATE_FORMAT_LC4')); ?></span>
-											</td>
+											<th>
+												<?php echo JHTML::_('grid.sort', 'COM_WISSENSMATRIX_TARGET_DATE', 'zwbi_refresh', $listDirn, $listOrder); ?>
+											</th>
 										<?php endif; ?>
 									</tr>
-								<?php endforeach; ?>
-							</tbody>
-						</table>
-					<?php endif; ?>
+								</thead>
+								<tbody>
+									<?php foreach ($workers as $worker) : ?>
+										<tr>
+											<td>
+												<a href="<?php echo WissensmatrixHelperRoute::getWorkerRoute($worker->slug); ?>"><?php echo $worker->vorname.' '.$worker->name; ?></a>
+											</td>
+											<td>
+												<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportwbigteam&id='.$item->wbig_id.'&teamid='.$worker->catid); ?>"><?php echo $worker->category_title; ?></a>
+											</td>
+											<td class="center">
+												<span class="zwbi-state badge badge-<?php echo ($worker->zwbi_status_id == 2) ? 'success' : 'info'; ?>">
+													<?php echo JText::_('COM_WISSENSMATRIX_ZWBI_STATE_'.$worker->zwbi_status_id); ?>
+												</span>
+											</td>
+											<td><?php echo JHtml::date($worker->date, JText::_('DATE_FORMAT_LC4')); ?></td>
+											<?php if ($item->refresh) : ?>
+												<?php $refresh_up = '';
+												if (strtotime($worker->zwbi_refresh) < strtotime(JHtml::date('now', 'Y-m-d'))) :
+													$refresh_up = 'class="label label-important" title="'.JText::_('COM_WISSENSMATRIX_REFRESH_UP').'" rel="tooltip"';
+												endif; ?>
+												<td>
+													<span <?php echo $refresh_up; ?>><?php echo JHtml::date($worker->zwbi_refresh, JText::_('DATE_FORMAT_LC4')); ?></span>
+												</td>
+											<?php endif; ?>
+										</tr>
+									<?php endforeach; ?>
+								</tbody>
+							</table>
+						<?php endif; ?>
+					</div>
 				<?php endforeach; ?>
 			<?php endif;
 			if ($this->params->get('show_pagination') and ($this->pagination->get('pages.total') > 1)) : ?>
