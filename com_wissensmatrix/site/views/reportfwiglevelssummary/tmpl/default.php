@@ -64,6 +64,27 @@ $listDirn	= $this->state->get('list.direction');
 								<?php endforeach; ?>
 							</tr>
 						<?php endforeach; ?>
+						<tr class="info">
+							<td><?php echo JText::_('COM_WISSENSMATRIX_TOTAL'); ?></td>
+							<?php foreach ($this->levels as $key => $level) :
+								if (!$level->value) continue;
+								$ist	= $this->ist_total[$key];
+								$soll	= $this->soll_total[$key];
+								$wert	= ($soll) ? round($ist/$soll*100) : 100;
+								$class	= WissensmatrixHelperWissensmatrix::getPercentClass($wert);
+								?>
+								<td class="cell-right">
+									<span class="label label-<?php echo $class; ?>">
+										<?php echo ($ist or $soll) ? $wert.'%' : 'n/a'; ?> 
+									</span>
+								</td>
+								<td>
+									<span class="text-left label label-<?php echo $class; ?>">
+										<?php echo $ist.' / '.$soll; ?>
+									</span>
+								</td>
+							<?php endforeach; ?>
+						</tr>
 					</tbody>
 				</table>
 			<?php endif; ?>
