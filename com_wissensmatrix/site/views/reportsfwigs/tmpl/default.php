@@ -99,8 +99,6 @@ $listDirn	= $this->state->get('list.direction');
 						<tr class="info">
 							<td class="title"><?php echo JText::_('COM_WISSENSMATRIX_SUMMARY'); ?></td>
 							<td class="reports">
-								<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwigteam'); ?>"><img src="media/com_wissensmatrix/images/black_view.gif"></a>
-								<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwigteam&format=xls'); ?>"><img src="media/com_wissensmatrix/images/icon_download.gif"></a>
 							</td>
 							<td class="reports">
 								<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwiglevelssummary'); ?>"><img src="media/com_wissensmatrix/images/black_view.gif"></a>

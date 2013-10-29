@@ -8,11 +8,17 @@ class WissensmatrixViewReportfwigteam extends JViewLegacy
 {
 	function display($tpl = null)
 	{
+		// Get Fwig Id
+		$id	= JFactory::getApplication()->input->get('id', 0, 'int');
+		if (!$id)
+		{
+			return JError::raiseError(404, JText::_('JGLOBAL_RESOURCE_NOT_FOUND'));
+		}
 
 		// Get some data from the model
 		$this->model		= $this->getModel(); // Used in layout
 		$this->state		= $this->get('State');
-		$this->state->set('fwig.id', JFactory::getApplication()->input->get('id', 0, 'int'));
+		$this->state->set('fwig.id', $id);
 		$this->items		= $this->get('Items');
 		$this->pagination	= $this->get('Pagination');
 		$this->pagination->setAdditionalUrlParam('teamid', $this->state->get('team.id'));
