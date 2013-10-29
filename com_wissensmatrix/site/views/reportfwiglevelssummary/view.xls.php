@@ -4,43 +4,33 @@ jimport( 'joomla.application.component.view');
 /**
  * HTML View class for the Wissensmatrix Component
  */
-class WissensmatrixViewReportfwiglevels extends JViewLegacy
+class WissensmatrixViewReportfwiglevelssummary extends JViewLegacy
 {
 	function display($tpl = null)
 	{
 		// Get some data from the model
 		$this->model		= $this->getModel();
 		$this->state		= $this->get('State');
-		$this->state->set('fwig.id', JFactory::getApplication()->input->get('id', 0, 'int'));
 		$this->state->set('list.start', 0);
 		$this->state->set('list.limit', 0);
 		$this->items		= $this->get('Items');
-		$this->levels		= $this->get('Levels');
 
-		// Get Workers for selected teams
-		$this->workermodel = $this->getModel('Workers');
-		$this->w_state		= $this->workermodel->getState();
-		$this->w_state->set('list.start', 0);
-		$this->w_state->set('list.limit', 0);
-		$this->workers		= $this->workermodel->getItems();
-		$this->parent		= $this->workermodel->getParent();
-
-		$this->params		= $this->state->get('params');
-
-		// Get list of teams
-		$this->teams		= array();
-		$this->exclude		= $this->params->get('exclude_cat');
-		$this->getTeams($this->workermodel->getCategory());
-		if ($this->w_state->get('list.ordering') == 'category_title')
+		$this->fwis_model	= $this->getModel('fwis');
+		$this->fwis_state	= $this->fwis_model->getState();
+		$this->fwis_state->set('list.start', 0);
+		$this->fwis_state->set('list.limit', 0);
+		$this->levels		= $this->fwis_model->getLevels();
+		foreach ($this->levels as $key => $level)
 		{
-			if ($this->w_state->get('list.direction') == 'asc')
-			{
-				ksort($this->teams);
-			}
-			else
-			{
-				krsort($this->teams);
-			}
+			$levels[]	= $key;
+		}
+		$levels = implode(',', $levels);
+
+		foreach ($this->levels as $key => $level)
+		{
+			if (!$level->value) continue;
+			$this->ist[$key]		= $this->model->getLevelSummary($key, $levels, false, true);
+			$this->soll[$key]		= $this->model->getLevelSummary($key, $levels, true, true);
 		}
 
 		// Check for errors.
@@ -53,25 +43,5 @@ class WissensmatrixViewReportfwiglevels extends JViewLegacy
 		$this->setLayout('xls');
 
 		parent::display($tpl);
-	}
-
-	protected function getTeams($cat)
-	{
-		if ($cat->id && ($cat->id == $this->exclude))
-		{
-			return;
-		}
-		if ($cat->numitems)
-		{
-			$this->teams[$cat->title]	= $cat;
-		}
-		if ($cat->hasChildren())
-		{
-			$children = $cat->getChildren();
-			foreach ($children as $child)
-			{
-				$this->getTeams($child);
-			}
-		}
 	}
 }

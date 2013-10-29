@@ -12,92 +12,85 @@ $xls = new PHPExcel();
 $xls->getDefaultStyle()->getFont()->setName('Arial');
 $xls->getDefaultStyle()->getFont()->setSize(10);
 
-$i = '0';
-foreach ($this->items as $item) :
-	// Create and set an active sheet
-	if ($i) :
-		$xls->createSheet();
-	endif;
-	$xls->setActiveSheetIndex($i);
+// Sanitize and shorten $item->title so it can be used as sheet title (max 31 chars allowed)
+$search	= array(':', '\\', '/', '?', '*', '[', ']');
+$title	= str_replace($search, '_', JText::_('COM_WISSENSMATRIX_LEVELS'));
+if (strlen($title) > 31) :
+	$title	= substr($title, 0, 28).'...';
+endif;
+$xls->getActiveSheet()->setTitle($title);
 
-	// Sanitize and shorten $item->title so it can be used as sheet title (max 31 chars allowed)
-	$search	= array(':', '\\', '/', '?', '*', '[', ']');
-	$title	= str_replace($search, '_', $item->title);
-	if (strlen($title) > 31) :
-		$title	= substr($title, 0, 28).'...';
-	endif;
-	$xls->getActiveSheet()->setTitle($title);
+// Format Cells
+$xls->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+$column	= ord('A');
+foreach ($this->levels as $level) :
+	if (!$level->value) continue;
+	$column++;
+	$xls->getActiveSheet()->getColumnDimension(chr($column))->setAutoSize(true);
+	$column++;
+	$xls->getActiveSheet()->getColumnDimension(chr($column))->setAutoSize(true);
+	$column++;
+	$xls->getActiveSheet()->getColumnDimension(chr($column))->setAutoSize(true);
+endforeach;
+$xls->getActiveSheet()->getStyle('A1:'.chr($column).'1')->getFont()->setBold(true);
 
-	// Format Cells
-	$xls->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
-	$xls->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
-	$column	= ord('B');
-	foreach ($this->levels as $level) :
-		if (!$level->value) :
-			continue;
-		endif;
-		$column++;
-		$xls->getActiveSheet()->getColumnDimension(chr($column))->setAutoSize(true);
-		$column++;
-		$xls->getActiveSheet()->getColumnDimension(chr($column))->setAutoSize(true);
-	endforeach;
-	$xls->getActiveSheet()->getStyle('A1:'.chr($column).'1')->getFont()->setBold(true);
-
-	// Adding Header
-	$xls->getActiveSheet()->SetCellValue('A1', JText::_('COM_WISSENSMATRIX_TEAM'));
-	$xls->getActiveSheet()->SetCellValue('B1', JText::_('COM_WISSENSMATRIX_WORKER'));
-	$column	= ord('B');
-	foreach ($this->levels as $level) :
-		if (!$level->value) :
-			continue;
-		endif;
-		$column++;
-		$xls->getActiveSheet()->SetCellValue(chr($column).'1', $level->title.' '.JText::_('COM_WISSENSMATRIX_IST'));
-		$column++;
-		$xls->getActiveSheet()->SetCellValue(chr($column).'1', $level->title.' '.JText::_('COM_WISSENSMATRIX_SOLL'));
-	endforeach;
-
-	// Adding Data
-	$j = 1;
-	foreach ($this->teams as $team) :
-		$j++;
-		$xls->getActiveSheet()->SetCellValue('A'.$j, $team->title);
-		$xls->getActiveSheet()->SetCellValue('B'.$j, $team->numitems);
-		$column	= ord('B');
-		foreach ($this->levels as $level) :
-			if (!$level->value) :
-				continue;
-			endif;
-			$ist	= $this->model->getWorkerCount($item->id, $team->id, $level->value, true);
-			$soll	= $this->model->getWorkerCount($item->id, $team->id, $level->value, false);
-			$column++;
-			$xls->getActiveSheet()->SetCellValue(chr($column).$j, $ist);
-			$column++;
-			$xls->getActiveSheet()->SetCellValue(chr($column).$j, $soll);
-		endforeach;
-	endforeach;
-	
-	// Calculate Totals
-	$j++;
-	$xls->getActiveSheet()->setCellValue('A'.$j, JText::_('COM_WISSENSMATRIX_TOTAL'));
-	$xls->getActiveSheet()->setCellValue('B'.$j, '=SUM(B2:B'.($j-1).')');
-	$column	= ord('B');
-	foreach ($this->levels as $level) :
-		if (!$level->value) :
-			continue;
-		endif;
-		$column++;
-		$c = chr($column);
-		$xls->getActiveSheet()->SetCellValue($c.$j, '=SUM('.$c.'2:'.$c.($j-1).')');
-		$column++;
-		$c = chr($column);
-		$xls->getActiveSheet()->SetCellValue($c.$j, '=SUM('.$c.'2:'.$c.($j-1).')');
-	endforeach;
-
-	$i++;
+// Adding Header
+$xls->getActiveSheet()->SetCellValue('A1', JText::_('COM_WISSENSMATRIX_FWIG'));
+$column	= ord('A');
+foreach ($this->levels as $level) :
+	if (!$level->value) continue;
+	$column++;
+	$xls->getActiveSheet()->SetCellValue(chr($column).'1', $level->title.' '.JText::_('COM_WISSENSMATRIX_IST'));
+	$column++;
+	$xls->getActiveSheet()->SetCellValue(chr($column).'1', $level->title.' '.JText::_('COM_WISSENSMATRIX_SOLL'));
+	$column++;
+	$xls->getActiveSheet()->SetCellValue(chr($column).'1', $level->title.' %');
 endforeach;
 
-// Add Footer (Totals)
+// Adding Data
+$i = 1;
+foreach ($this->items as $item) :
+	$i++;
+	$xls->getActiveSheet()->SetCellValue('A'.$i, $item->title);
+	$column	= ord('A');
+	$perc	= array();
+	foreach ($this->levels as $key => $level) :
+		if (!$level->value) continue;
+		$ist	= (isset($this->ist[$key][$item->id])) ? $this->ist[$key][$item->id]->mit_count : 0;
+		$soll	= (isset($this->soll[$key][$item->id])) ? $this->soll[$key][$item->id]->mit_count : 0;
+		$column++;
+		$xls->getActiveSheet()->SetCellValue(chr($column).$i, $ist);
+		$column++;
+		$xls->getActiveSheet()->SetCellValue(chr($column).$i, $soll);
+		$column++;
+		$xls->getActiveSheet()->SetCellValue(chr($column).$i, '=IF('.chr($column-1).$i.'=0,"n/a",ROUND(('.chr($column-2).$i.'/'.chr($column-1).$i.'), 2))');
+	endforeach;
+endforeach;
+
+// Total is calculated by Excel
+$i++;
+$xls->getActiveSheet()->SetCellValue('A'.$i, JText::_('COM_WISSENSMATRIX_TOTAL'));
+$column	= ord('A');
+foreach ($this->levels as $key => $level) :
+	if (!$level->value) continue;
+	$column++;
+	$c = chr($column);
+	$xls->getActiveSheet()->SetCellValue($c.$i, '=SUM('.$c.'2:'.$c.($i-1).')');
+	$column++;
+	$c = chr($column);
+	$xls->getActiveSheet()->SetCellValue($c.$i, '=SUM('.$c.'2:'.$c.($i-1).')');
+	$column++;
+	$c = chr($column);
+	$xls->getActiveSheet()->SetCellValue($c.$i, '=IF('.chr($column-1).$i.'=0,"n/a",ROUND(('.chr($column-2).$i.'/'.chr($column-1).$i.'), 2))');
+	$perc[]	= $column;
+endforeach;
+
+// Set "total" row to italic and set percent cell format
+$xls->getActiveSheet()->getStyle('A'.$i.':'.chr($column).$i)->getFont()->setItalic(true);
+foreach ($perc as $col)
+{
+	$xls->getActiveSheet()->getStyle(chr($col).'2:'.chr($col).$i)->getNumberFormat()->setFormatCode('0%');
+}
 
 $xls->setActiveSheetIndex(0);
 

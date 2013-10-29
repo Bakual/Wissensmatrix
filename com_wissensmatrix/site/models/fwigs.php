@@ -338,7 +338,7 @@ class WissensmatrixModelFwigs extends JModelList
 	 * @version 1.0
 	 * @access public
 	 */
-	public function getLevelSummary($level, $soll = 0)
+	public function getLevelSummary($level, $levels, $soll = 0, $per_fwig = 0)
 	{
 		if (!$this->excluded_cats)
 		{
@@ -350,16 +350,30 @@ class WissensmatrixModelFwigs extends JModelList
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
 
-		$query->select('fwi.fwig_id, COUNT(1) AS mit_count');
+		$query->select('COUNT(1) AS mit_count');
 		$query->from('#__wissensmatrix_mit_fwi AS mit_fwi');
-		$query->join('LEFT', '#__wissensmatrix_fachwissen AS fwi ON mit_fwi.fwi_id = fwi.id');
 		$query->join('LEFT', '#__wissensmatrix_mitarbeiter AS mit ON mit_fwi.mit_id = mit.id');
-		$query->where('mit_fwi.'.$field.' >= '.(int)$level);
 		$query->where('mit.catid NOT IN ('.implode(',', $this->excluded_cats).')');
-		$query->group('fwi.fwig_id');
+		$query->where('mit_fwi.'.$field.' IN ('.$levels.')');
+		$query->where('mit_fwi.'.$field.' >= '.(int)$level);
+
+		// Join over fwi table
+		if ($per_fwig)
+		{
+			$query->select('fwi.fwig_id');
+			$query->join('LEFT', '#__wissensmatrix_fachwissen AS fwi ON mit_fwi.fwi_id = fwi.id');
+			$query->group('fwi.fwig_id');
+		}
 
 		$db->setQuery($query);
 
-		return $db->loadObjectList('fwig_id');
+		if ($per_fwig)
+		{
+			return $db->loadObjectList('fwig_id');
+		}
+		else
+		{
+			return $db->loadResult();
+		}
 	}
 }

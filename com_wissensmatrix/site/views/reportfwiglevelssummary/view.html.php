@@ -8,7 +8,6 @@ class WissensmatrixViewReportfwiglevelssummary extends JViewLegacy
 {
 	function display($tpl = null)
 	{
-
 		// Get some data from the model
 		$this->model		= $this->getModel();
 		$this->state		= $this->get('State');
@@ -23,12 +22,19 @@ class WissensmatrixViewReportfwiglevelssummary extends JViewLegacy
 		$this->fwis_state->set('list.start', 0);
 		$this->fwis_state->set('list.limit', 0);
 		$this->levels		= $this->fwis_model->getLevels();
+		foreach ($this->levels as $key => $level)
+		{
+			$levels[]	= $key;
+		}
+		$levels = implode(',', $levels);
 
-		foreach($this->levels as $key => $level)
+		foreach ($this->levels as $key => $level)
 		{
 			if (!$level->value) continue;
-			$this->ist[$key]	= $this->model->getLevelSummary($key, false);
-			$this->soll[$key]	= $this->model->getLevelSummary($key, true);
+			$this->ist_total[$key]	= $this->model->getLevelSummary($key, $levels, false, false);
+			$this->soll_total[$key]	= $this->model->getLevelSummary($key, $levels, true, false);
+			$this->ist[$key]		= $this->model->getLevelSummary($key, $levels, false, true);
+			$this->soll[$key]		= $this->model->getLevelSummary($key, $levels, true, true);
 		}
 
 		// Check for errors.
@@ -90,26 +96,6 @@ class WissensmatrixViewReportfwiglevelssummary extends JViewLegacy
 		if ($this->params->get('robots'))
 		{
 			$this->document->setMetadata('robots', $this->params->get('robots'));
-		}
-	}
-
-	protected function getTeams($cat)
-	{
-		if ($cat->id && ($cat->id == $this->exclude))
-		{
-			return;
-		}
-		if ($cat->numitems)
-		{
-			$this->teams[$cat->title]	= $cat;
-		}
-		if ($cat->hasChildren())
-		{
-			$children = $cat->getChildren();
-			foreach ($children as $child)
-			{
-				$this->getTeams($child);
-			}
 		}
 	}
 }
