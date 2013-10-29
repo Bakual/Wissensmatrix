@@ -94,8 +94,6 @@ $listDirn	= $this->w_state->get('list.direction');
 											<span class="label label-<?php echo $class; ?>" rel="tooltip" title="<?php echo $tooltip; ?>"><?php echo $ist.' / '.$soll; ?></span>
 										</td>
 									<?php endforeach; ?>
-									<td>
-									</td>
 								</tr>
 							<?php endforeach; ?>
 							<tr class="info">
@@ -107,8 +105,6 @@ $listDirn	= $this->w_state->get('list.direction');
 										<span class="label label-<?php echo $class; ?>" rel="tooltip" title="<?php echo $tooltip; ?>"><?php echo $values['ist'].' / '.$values['soll']; ?></span>
 									</td>
 								<?php endforeach; ?>
-								<td>
-								</td>
 							</tr>
 						</tbody>
 					</table>
