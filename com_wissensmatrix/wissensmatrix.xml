@@ -39,6 +39,7 @@
 		<folder>libraries</folder>
 	</files>
 	<media destination="com_wissensmatrix" folder="media">
+		<folder>js</folder>
 		<folder>css</folder>
 		<folder>images</folder>
 	</media>

@@ -1,8 +1,63 @@
 <?php
 defined('_JEXEC') or die;
 
-JHTML::addIncludePath(JPATH_COMPONENT.'/helpers');
+JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
 JHtml::stylesheet('com_wissensmatrix/wissensmatrix.css', '', true);
+
+// AmChart Scriptfiles
+JHtml::script('com_wissensmatrix/amcharts/amcharts.js', '', true);
+JHtml::script('com_wissensmatrix/amcharts/radar.js', '', true);
+$js	= 'AmCharts.ready(function () {'
+		.'var chart = new AmCharts.AmRadarChart();'
+
+		.'var chartData = ['
+			.'{'
+				.'"country": "Czech Republic",'
+				.'"litres": 156.9'
+			.'},'
+			.'{'
+				.'"country": "Ireland",'
+				.'"litres": 131.1'
+			.'},'
+			.'{'
+				.'"country": "Germany",'
+				.'"litres": 115.8'
+			.'},'
+			.'{'
+				.'"country": "Australia",'
+				.'"litres": 109.9'
+			.'},'
+			.'{'
+				.'"country": "Austria",'
+				.'"litres": 108.3'
+			.'},'
+			.'{'
+				.'"country": "UK",'
+				.'"litres": 99'
+			.'}'
+		.'];'
+
+		.'chart.dataProvider = chartData;'
+		.'chart.categoryField = "country";'
+		.'chart.startDuration = 2;'
+
+		.'var valueAxis = new AmCharts.ValueAxis();'
+		.'valueAxis.axisAlpha = 0.15;'
+		.'valueAxis.minimum = 0;'
+		.'valueAxis.dashLength = 3;'
+		.'valueAxis.axisTitleOffset = 20;'
+		.'valueAxis.gridCount = 5;'
+		.'chart.addValueAxis(valueAxis);'
+
+		.'var graph = new AmCharts.AmGraph();'
+		.'graph.valueField = "litres";'
+		.'graph.bullet = "round";'
+		.'graph.balloonText = "[[value]] litres of beer per year";'
+		.'chart.addGraph(graph);'
+
+		.'chart.write("chartdiv");'
+	.'});';
+JFactory::getDocument()->addScriptDeclaration($js);
 
 $listOrder	= $this->state->get('list.ordering');
 $listDirn	= $this->state->get('list.direction');
@@ -22,6 +77,9 @@ $listDirn	= $this->state->get('list.direction');
 				<div class="no_entries alert alert-error"><?php echo JText::sprintf('COM_WISSENSMATRIX_NO_ENTRIES', JText::_('COM_WISSENSMATRIX_FWIGS')); ?></div>
 			<?php else : ?>
 				<h3><?php echo JText::_('COM_WISSENSMATRIX_SUMMARY').': '.JText::_('COM_WISSENSMATRIX_LEVELS'); ?></h3>
+				<div id="chartdiv">
+				
+				</div>
 				<table class="table table-striped table-hover table-condensed">
 					<thead>
 						<tr>
