@@ -44,3 +44,7 @@ ul.list-condensed strong
 ul.wbi span.list-edit.pull-left {
 	margin-right:5px;
 }
+
+/* amChart */
+#chartdiv {
+	height: 350px;
