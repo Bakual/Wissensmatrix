@@ -332,7 +332,7 @@ class WissensmatrixModelFwigs extends JModelList
 
 	/**
 	 * Gets the summary data for each level per fwig
-	 * Used in FwigSummary Report
+	 * Used in FwigLevelSummary Report
 	 *
 	 * @author Thomas Hunziker <thomi.hunziker@sbb.ch>
 	 * @version 1.0
@@ -353,9 +353,64 @@ class WissensmatrixModelFwigs extends JModelList
 		$query->select('COUNT(1) AS mit_count');
 		$query->from('#__wissensmatrix_mit_fwi AS mit_fwi');
 		$query->join('LEFT', '#__wissensmatrix_mitarbeiter AS mit ON mit_fwi.mit_id = mit.id');
+		$query->join('LEFT', '#__wissensmatrix_erfahrung AS level ON mit_fwi.'.$field.' = level.id');
 		$query->where('mit.catid NOT IN ('.implode(',', $this->excluded_cats).')');
 		$query->where('mit_fwi.'.$field.' IN ('.$levels.')');
-		$query->where('mit_fwi.'.$field.' >= '.(int)$level);
+		$query->where('level.value >= '.(int)$level);
+
+		// Join over fwi table
+		if ($per_fwig)
+		{
+			$query->select('fwi.fwig_id');
+			$query->join('LEFT', '#__wissensmatrix_fachwissen AS fwi ON mit_fwi.fwi_id = fwi.id');
+			$query->group('fwi.fwig_id');
+		}
+
+		$db->setQuery($query);
+
+		if ($per_fwig)
+		{
+			return $db->loadObjectList('fwig_id');
+		}
+		else
+		{
+			return $db->loadResult();
+		}
+	}
+
+	/**
+	 * Gets the summary data for each delta per fwig
+	 * Used in FwigDiffSummary Report
+	 *
+	 * @author Thomas Hunziker <thomi.hunziker@sbb.ch>
+	 * @version 1.0
+	 * @access public
+	 */
+	public function getDiffSummary($manko_pot = 0, $per_fwig = 0)
+	{
+		if (!$this->excluded_cats)
+		{
+			$this->getExcludedCats();
+		}
+
+		// Create a new query object.
+		$db		= $this->getDbo();
+		$query	= $db->getQuery(true);
+
+		$query->select('COUNT(1) AS mit_count');
+		$query->from('#__wissensmatrix_mit_fwi AS mit_fwi');
+		$query->join('LEFT', '#__wissensmatrix_mitarbeiter AS mit ON mit_fwi.mit_id = mit.id');
+		$query->join('LEFT', '#__wissensmatrix_erfahrung AS ist_level ON mit_fwi.ist = ist_level.id');
+		$query->join('LEFT', '#__wissensmatrix_erfahrung AS soll_level ON mit_fwi.soll = soll_level.id');
+		$query->where('mit.catid NOT IN ('.implode(',', $this->excluded_cats).')');
+		if ($manko_pot == 1)
+		{
+			$query->where('ist_level.value > soll_level.value');
+		}
+		elseif ($manko_pot == 2)
+		{
+			$query->where('ist_level.value < soll_level.value');
+		}
 
 		// Join over fwi table
 		if ($per_fwig)
