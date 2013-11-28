@@ -14,83 +14,54 @@ $xls->getDefaultStyle()->getFont()->setSize(10);
 
 // Sanitize and shorten $item->title so it can be used as sheet title (max 31 chars allowed)
 $search	= array(':', '\\', '/', '?', '*', '[', ']');
-$title	= str_replace($search, '_', JText::_('COM_WISSENSMATRIX_LEVELS'));
+$title	= str_replace($search, '_', JText::_('COM_WISSENSMATRIX_DIFF'));
 if (strlen($title) > 31) :
 	$title	= substr($title, 0, 28).'...';
 endif;
 $xls->getActiveSheet()->setTitle($title);
 
 // Format Cells
+$xls->getActiveSheet()->getStyle('A1:F1')->getFont()->setBold(true);
 $xls->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
-$column	= ord('A');
-foreach ($this->levels as $level) :
-	if (!$level->value) continue;
-	$column++;
-	$xls->getActiveSheet()->getColumnDimension(chr($column))->setAutoSize(true);
-	$column++;
-	$xls->getActiveSheet()->getColumnDimension(chr($column))->setAutoSize(true);
-	$column++;
-	$xls->getActiveSheet()->getColumnDimension(chr($column))->setAutoSize(true);
-endforeach;
-$xls->getActiveSheet()->getStyle('A1:'.chr($column).'1')->getFont()->setBold(true);
+$xls->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+$xls->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+$xls->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+$xls->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+$xls->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
 
 // Adding Header
 $xls->getActiveSheet()->SetCellValue('A1', JText::_('COM_WISSENSMATRIX_FWIG'));
-$column	= ord('A');
-foreach ($this->levels as $level) :
-	if (!$level->value) continue;
-	$column++;
-	$xls->getActiveSheet()->SetCellValue(chr($column).'1', $level->title.' '.JText::_('COM_WISSENSMATRIX_IST'));
-	$column++;
-	$xls->getActiveSheet()->SetCellValue(chr($column).'1', $level->title.' '.JText::_('COM_WISSENSMATRIX_SOLL'));
-	$column++;
-	$xls->getActiveSheet()->SetCellValue(chr($column).'1', $level->title.' %');
-endforeach;
+$xls->getActiveSheet()->SetCellValue('B1', JText::_('COM_WISSENSMATRIX_MANKO'));
+$xls->getActiveSheet()->SetCellValue('C1', '%');
+$xls->getActiveSheet()->SetCellValue('D1', JText::_('COM_WISSENSMATRIX_POTENTIAL'));
+$xls->getActiveSheet()->SetCellValue('E1', '%');
+$xls->getActiveSheet()->SetCellValue('F1', JText::_('COM_WISSENSMATRIX_BASE'));
 
 // Adding Data
 $i = 1;
 foreach ($this->items as $item) :
 	$i++;
 	$xls->getActiveSheet()->SetCellValue('A'.$i, $item->title);
-	$column	= ord('A');
-	$perc	= array();
-	foreach ($this->levels as $key => $level) :
-		if (!$level->value) continue;
-		$ist	= (isset($this->ist[$key][$item->id])) ? $this->ist[$key][$item->id]->mit_count : 0;
-		$soll	= (isset($this->soll[$key][$item->id])) ? $this->soll[$key][$item->id]->mit_count : 0;
-		$column++;
-		$xls->getActiveSheet()->SetCellValue(chr($column).$i, $ist);
-		$column++;
-		$xls->getActiveSheet()->SetCellValue(chr($column).$i, $soll);
-		$column++;
-		$xls->getActiveSheet()->SetCellValue(chr($column).$i, '=IF('.chr($column-1).$i.'=0,"n/a",ROUND(('.chr($column-2).$i.'/'.chr($column-1).$i.'), 2))');
-	endforeach;
+	$xls->getActiveSheet()->SetCellValue('B'.$i, $this->manko[$item->id]->mit_count);
+	$xls->getActiveSheet()->SetCellValue('C'.$i, '=ROUND(B'.$i.'/F'.$i.', 2)');
+	$xls->getActiveSheet()->SetCellValue('D'.$i, $this->potential[$item->id]->mit_count);
+	$xls->getActiveSheet()->SetCellValue('E'.$i, '=ROUND(D'.$i.'/F'.$i.', 2)');
+	$xls->getActiveSheet()->SetCellValue('F'.$i, $this->workers[$item->id]->mit_count);
 endforeach;
 
 // Total is calculated by Excel
 $i++;
 $xls->getActiveSheet()->SetCellValue('A'.$i, JText::_('COM_WISSENSMATRIX_TOTAL'));
-$column	= ord('A');
-foreach ($this->levels as $key => $level) :
-	if (!$level->value) continue;
-	$column++;
-	$c = chr($column);
-	$xls->getActiveSheet()->SetCellValue($c.$i, '=SUM('.$c.'2:'.$c.($i-1).')');
-	$column++;
-	$c = chr($column);
-	$xls->getActiveSheet()->SetCellValue($c.$i, '=SUM('.$c.'2:'.$c.($i-1).')');
-	$column++;
-	$c = chr($column);
-	$xls->getActiveSheet()->SetCellValue($c.$i, '=IF('.chr($column-1).$i.'=0,"n/a",ROUND(('.chr($column-2).$i.'/'.chr($column-1).$i.'), 2))');
-	$perc[]	= $column;
-endforeach;
+$xls->getActiveSheet()->SetCellValue('B'.$i, '=SUM(B2:B'.($i-1).')');
+$xls->getActiveSheet()->SetCellValue('C'.$i, '=ROUND(B'.$i.'/F'.$i.', 2)');
+$xls->getActiveSheet()->SetCellValue('D'.$i, '=SUM(D2:D'.($i-1).')');
+$xls->getActiveSheet()->SetCellValue('E'.$i, '=ROUND(D'.$i.'/F'.$i.', 2)');
+$xls->getActiveSheet()->SetCellValue('F'.$i, '=SUM(F2:F'.($i-1).')');
 
 // Set "total" row to italic and set percent cell format
-$xls->getActiveSheet()->getStyle('A'.$i.':'.chr($column).$i)->getFont()->setItalic(true);
-foreach ($perc as $col)
-{
-	$xls->getActiveSheet()->getStyle(chr($col).'2:'.chr($col).$i)->getNumberFormat()->setFormatCode('0%');
-}
+$xls->getActiveSheet()->getStyle('A'.$i.':F'.$i)->getFont()->setItalic(true);
+$xls->getActiveSheet()->getStyle('C2:C'.$i)->getNumberFormat()->setFormatCode('0%');
+$xls->getActiveSheet()->getStyle('E2:E'.$i)->getNumberFormat()->setFormatCode('0%');
 
 $xls->setActiveSheetIndex(0);
 

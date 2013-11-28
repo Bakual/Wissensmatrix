@@ -15,23 +15,9 @@ class WissensmatrixViewReportfwigdiffsummary extends JViewLegacy
 		$this->state->set('list.limit', 0);
 		$this->items		= $this->get('Items');
 
-		$this->fwis_model	= $this->getModel('fwis');
-		$this->fwis_state	= $this->fwis_model->getState();
-		$this->fwis_state->set('list.start', 0);
-		$this->fwis_state->set('list.limit', 0);
-		$this->levels		= $this->fwis_model->getLevels();
-		foreach ($this->levels as $key => $level)
-		{
-			$levels[]	= $key;
-		}
-		$levels = implode(',', $levels);
-
-		foreach ($this->levels as $key => $level)
-		{
-			if (!$level->value) continue;
-			$this->ist[$key]	= $this->model->getLevelSummary($key, $levels, false, true);
-			$this->soll[$key]	= $this->model->getLevelSummary($key, $levels, true, true);
-		}
+		$this->manko			= $this->model->getDiffSummary(2, true);
+		$this->potential		= $this->model->getDiffSummary(1, true);
+		$this->workers			= $this->model->getDiffSummary(false, true);
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
