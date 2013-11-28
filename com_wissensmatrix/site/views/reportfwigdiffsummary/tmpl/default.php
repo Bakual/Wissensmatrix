@@ -18,7 +18,6 @@ $js	= 'AmCharts.ready(function () {'
 	.'var valueAxis = new AmCharts.ValueAxis();'
 	.'valueAxis.axisAlpha = 0.15;'
 	.'valueAxis.minimum = 0;'
-	.'valueAxis.maximum = 120;'
 	.'valueAxis.fillAlpha = 0.1;'
 	.'valueAxis.fillColor = "#aaaaff";'
 	.'valueAxis.gridType = "circles";'
@@ -32,6 +31,7 @@ $js	= 'AmCharts.ready(function () {'
 	.'graph.valueField = "manko";'
 	.'graph.bullet = "round";'
 	.'graph.balloonText = "[[title]]: [[value]]%";'
+	.'graph.lineColor = "#ff0000";'
 	.'chart.addGraph(graph);'
 	// Graph Potential
 	.'var graph = new AmCharts.AmGraph();'
@@ -39,6 +39,7 @@ $js	= 'AmCharts.ready(function () {'
 	.'graph.valueField = "potential";'
 	.'graph.bullet = "square";'
 	.'graph.balloonText = "[[title]]: [[value]]%";'
+	.'graph.lineColor = "#00ff00";'
 	.'chart.addGraph(graph);'
 	// Legend
 	.'var legend = new AmCharts.AmLegend();'
@@ -81,7 +82,7 @@ $listDirn	= $this->state->get('list.direction');
 								<?php echo JText::_('COM_WISSENSMATRIX_POTENTIAL'); ?>
 							</th>
 							<th class="center">
-								<?php echo JText::_('COM_WISSENSMATRIX_WORKERS'); ?>
+								<?php echo JText::_('COM_WISSENSMATRIX_BASE'); ?>
 							</th>
 						</tr>
 					</thead>
@@ -120,6 +121,7 @@ $listDirn	= $this->state->get('list.direction');
 								</td>
 								<td class="center">
 									<span>
+										<?php echo $workers; ?>
 									</span>
 								</td>
 							</tr>
@@ -133,14 +135,17 @@ $listDirn	= $this->state->get('list.direction');
 							<td><?php echo JText::_('COM_WISSENSMATRIX_TOTAL'); ?></td>
 							<td class="center">
 								<span class="label label-<?php echo ($value_manko > 33) ? 'warning' : 'info'; ?>">
+									<?php echo round($this->manko_total/$this->workers_total*100); ?>% (<?php echo $this->manko_total; ?>)
 								</span>
 							</td>
 							<td class="center">
 								<span class="label label-success">
+									<?php echo round($this->potential_total/$this->workers_total*100); ?>% (<?php echo $this->potential_total; ?>)
 								</span>
 							</td>
 							<td class="center">
 								<span>
+									<?php echo $this->workers_total; ?>
 								</span>
 							</td>
 						</tr>
