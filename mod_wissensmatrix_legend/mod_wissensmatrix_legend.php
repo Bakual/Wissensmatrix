@@ -25,7 +25,10 @@ switch ($view)
 		$layout	= 'default';
 		break;
 	case 'reportfwiglevelssummary':
-		$layout	= 'summary';
+		$layout	= 'levelssummary';
+		break;
+	case 'reportfwigdiffsummary':
+		$layout	= 'diffsummary';
 		break;
 	default:
 		return;
