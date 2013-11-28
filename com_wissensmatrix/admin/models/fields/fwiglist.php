@@ -40,12 +40,17 @@ class JFormFieldFwiglist extends JFormFieldList
 		// Initialize variables.
 		$options = array();
 
+		$user	= JFactory::getUser();
+		$groups	= implode(',', $user->getAuthorisedViewLevels());
+
 		$db		= JFactory::getDbo();
 
 		$query	= $db->getQuery(true);
 		$query->select('fwigs.id AS value');
 		$query->select('fwigs.title_de AS text');
 		$query->from('#__wissensmatrix_fachwissengruppe AS fwigs');
+		$query->join('LEFT', '#__categories AS c_fwigs ON c_fwigs.id = fwigs.catid');
+		$query->where('(fwigs.catid = 0 OR (c_fwigs.access IN ('.$groups.') AND c_fwigs.published = 1))');
 		$query->order('text ASC');
 
 		if ($mit_id = (int)$this->element['mit_id'])
