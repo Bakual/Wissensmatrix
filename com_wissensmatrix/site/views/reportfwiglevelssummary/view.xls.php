@@ -29,8 +29,8 @@ class WissensmatrixViewReportfwiglevelssummary extends JViewLegacy
 		foreach ($this->levels as $key => $level)
 		{
 			if (!$level->value) continue;
-			$this->ist[$key]	= $this->model->getLevelSummary($key, $levels, false, true);
-			$this->soll[$key]	= $this->model->getLevelSummary($key, $levels, true, true);
+			$this->ist[$key]	= $this->model->getLevelSummary($level->value, $levels, false, true);
+			$this->soll[$key]	= $this->model->getLevelSummary($level->value, $levels, true, true);
 		}
 
 		// Check for errors.
