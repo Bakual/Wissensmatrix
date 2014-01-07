@@ -65,15 +65,19 @@ $id	= (JFactory::getApplication()->input->get('reload', false, 'bool')) ? 0 : $t
 							<th><?php echo JText::_('COM_WISSENSMATRIX_FWI'); ?></th>
 							<th><?php echo JText::_('COM_WISSENSMATRIX_IST'); ?></th>
 							<th><?php echo JText::_('COM_WISSENSMATRIX_SOLL'); ?></th>
-							<th><?php echo JText::_('COM_WISSENSMATRIX_FIELD_TEMPLATE_LABEL'); ?></th>
+							<?php if ($id) : ?>
+								<th><?php echo JText::_('COM_WISSENSMATRIX_FIELD_TEMPLATE_LABEL'); ?></th>
+							<?php endif; ?>
 						</tr>
 						<?php foreach ($this->fwis as $fwi):
 							$istsoll	= $this->fwi_model->getIstSoll($fwi->id, $this->item->mit_id); ?>
 							<tr>
 								<td><?php echo $this->escape($fwi->title); ?></td>
-								<td><?php echo JHtml::_('select.genericlist', $this->levels, 'jform[fwis]['.$fwi->id.'][ist]', 'class="input-small"', 'id', 'title', $istsoll['ist_id']); ?></td>
-								<td><?php echo JHtml::_('select.genericlist', $this->levels, 'jform[fwis]['.$fwi->id.'][soll]', 'class="input-small"', 'id', 'title', $istsoll['soll_id']); ?></td>
-								<td><?php echo $istsoll['template']; ?></td>
+								<td><?php echo JHtml::_('select.genericlist', $this->levels, 'jform[fwis]['.$fwi->id.'][ist]', 'class="input-medium"', 'id', 'title', $istsoll['ist_id']); ?></td>
+								<td><?php echo JHtml::_('select.genericlist', $this->levels, 'jform[fwis]['.$fwi->id.'][soll]', 'class="input-medium"', 'id', 'title', ($id) ? $istsoll['soll_id'] : $istsoll['template_id']); ?></td>
+								<?php if ($id) : ?>
+									<td><?php echo $istsoll['template']; ?></td>
+								<?php endif; ?>
 							</tr>
 						<?php endforeach; ?>
 				</div>

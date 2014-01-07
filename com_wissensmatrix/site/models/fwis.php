@@ -388,15 +388,16 @@ class WissensmatrixModelFwis extends JModelList
 		$db->setQuery($query);
 		$template_id	= $db->loadResult();
 
-
 		$query	= $db->getQuery(true);
-		$query->select('soll_level.title as template');
+		$query->select('zfwis.soll as template_id, soll_level.title as template');
 		$query->from('`#__wissensmatrix_mit_fwi` as zfwis');
 		$query->join('LEFT', '#__wissensmatrix_erfahrung AS soll_level ON zfwis.soll = soll_level.id');
 		$query->where('fwi_id = '.(int)$fwi);
 		$query->where('mit_id = '.(int)$template_id);
 		$db->setQuery($query);
-		$item['template']	= $db->loadResult();
+		$template	= $db->loadAssoc();
+		$item['template_id']	= $template['template_id'];
+		$item['template']		= $template['template'];
 
 		return $item;
 	}
