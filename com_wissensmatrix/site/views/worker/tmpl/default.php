@@ -1,7 +1,7 @@
 <?php
 defined('_JEXEC') or die;
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
-JHtml::_('behavior.tooltip');
+JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.modal');
 JHtml::stylesheet('com_wissensmatrix/wissensmatrix.css', '', true);
 
@@ -133,7 +133,7 @@ $this->document->addScriptDeclaration('jQuery(function() {
 						</select>
 					</div>
 				</div>
-				<a href="http://rsdp.sbb.ch/inetawb/app/public/Welcome_home.action?request_locale=<?php echo substr(JFactory::getLanguage()->getTag(), 0, 2); ?>" target="_new" class="btn btn-info btn-small pull-left">
+				<a href="http://rsdp.sbb.ch/inetawb/app/public/Welcome_home.action?request_locale=<?php echo substr(JFactory::getLanguage()->getTag(), 0, 2); ?>" target="_new" class="btn btn-info btn-small pull-left hasTooltip" title="<?php echo JText::_('COM_WISSENSMATRIX_INTRANET_WEITERBILDUNG_TIP'); ?>">
 					<i class="icon-out-2"> </i> <?php echo JText::_('COM_WISSENSMATRIX_INTRANET_WEITERBILDUNG'); ?>
 				</a>
 				<div class="clearfix"></div>
@@ -182,7 +182,7 @@ $this->document->addScriptDeclaration('jQuery(function() {
 					$url	= 'index.php?option=com_wissensmatrix&task=zwbi.add&tmpl=component&return='.base64_encode($uri).'&a_id=0&mit_id='.$this->item->id.'&catid='.$this->item->catid;
 					$text	= '<i class="icon-plus"></i> '.JText::_('JNEW').' &#160;';
 					$button	= JHtml::_('link', JRoute::_($url), $text, array('class' => 'modal btn btn-primary', 'rel' => "{handler: 'iframe', size: {x: 400, y: 400}}")); ?>
-					<span class="hasTip" title="<?php echo JText::_('COM_WISSENSMATRIX_CREATE_WBI'); ?>"><?php echo $button; ?></span>
+					<span class="hasTooltip" title="<?php echo JText::_('COM_WISSENSMATRIX_CREATE_WBI'); ?>"><?php echo $button; ?></span>
 				<?php endif; ?>
 				<input type="hidden" name="task" value="" />
 				<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
@@ -191,7 +191,7 @@ $this->document->addScriptDeclaration('jQuery(function() {
 			</form>
 		</div>
 		<div class="tab-pane" id="tab_fwis">
-			<a href="media/com_wissensmatrix/docs/kriterien_<?php echo substr(JFactory::getLanguage()->getTag(), 0, 1); ?>.pdf" target="_new" class="btn btn-info btn-small pull-left">
+			<a href="media/com_wissensmatrix/docs/kriterien_<?php echo substr(JFactory::getLanguage()->getTag(), 0, 1); ?>.pdf" target="_new" class="btn btn-info btn-small pull-left hasTooltip" title="<?php echo JText::_('COM_WISSENSMATRIX_KRITERIEN_TIP'); ?>">
 				<i class="icon-out-2"> </i> <?php echo JText::_('COM_WISSENSMATRIX_KRITERIEN'); ?>
 			</a>
 			<div class="clearfix"></div>
@@ -237,7 +237,7 @@ $this->document->addScriptDeclaration('jQuery(function() {
 				$url	= 'index.php?option=com_wissensmatrix&task=zfwig.add&tmpl=component&return='.base64_encode($uri).'&a_id=0&mit_id='.$this->item->id.'&catid='.$this->item->catid;
 				$text	= '<i class="icon-plus"></i> '.JText::_('JNEW').' &#160;';
 				$button	= JHtml::_('link', JRoute::_($url), $text, array('class' => 'modal btn btn-primary', 'rel' => "{handler: 'iframe', size: {x: 800, y: 600}}")); ?>
-				<span class="hasTip" title="<?php echo JText::_('COM_WISSENSMATRIX_CREATE_FWI'); ?>"><?php echo $button; ?></span>
+				<span class="hasTooltip" title="<?php echo JText::_('COM_WISSENSMATRIX_CREATE_FWI'); ?>"><?php echo $button; ?></span>
 			<?php endif; ?>
 		</div>
 	</div>
