@@ -40,13 +40,15 @@ class JFormFieldFwilist extends JFormFieldList
 		// Initialize variables.
 		$options = array();
 
+		$lang	= substr(JFactory::getLanguage()->getTag(), 0, 2);
+
 		$db		= JFactory::getDbo();
 
 		$query	= $db->getQuery(true);
 		$query->select('fwis.id AS value');
-		$query->select('fwis.title_de AS text');
+		$query->select('fwis.title_' . $lang . ' AS text');
 		$query->from('#__wissensmatrix_fachwissen AS fwis');
-		$query->select('fwigs.title_de AS fwig_title');
+		$query->select('fwigs.title_' . $lang . ' AS fwig_title');
 		$query->join('LEFT', '#__wissensmatrix_fachwissengruppe AS fwigs ON fwigs.id = fwis.fwig_id');
 		$query->order('fwig_title ASC, text ASC');
 

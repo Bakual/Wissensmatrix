@@ -40,13 +40,15 @@ class JFormFieldWbilist extends JFormFieldList
 		// Initialize variables.
 		$options = array();
 
+		$lang	= substr(JFactory::getLanguage()->getTag(), 0, 2);
+
 		$db		= JFactory::getDbo();
 
 		$query	= $db->getQuery(true);
 		$query->select('wbis.id AS value');
-		$query->select('wbis.title_de AS text');
+		$query->select('wbis.title_' . $lang . ' AS text');
 		$query->from('#__wissensmatrix_weiterbildung AS wbis');
-		$query->select('wbigs.title_de AS wbig_title');
+		$query->select('wbigs.title_' . $lang . ' AS wbig_title');
 		$query->join('LEFT', '#__wissensmatrix_weiterbildunggruppe AS wbigs ON wbigs.id = wbis.wbig_id');
 		if ($mit_id = (int)$this->element['mit_id'])
 		{

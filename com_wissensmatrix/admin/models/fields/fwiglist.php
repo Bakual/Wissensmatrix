@@ -43,11 +43,13 @@ class JFormFieldFwiglist extends JFormFieldList
 		$user	= JFactory::getUser();
 		$groups	= implode(',', $user->getAuthorisedViewLevels());
 
+		$lang	= substr(JFactory::getLanguage()->getTag(), 0, 2);
+
 		$db		= JFactory::getDbo();
 
 		$query	= $db->getQuery(true);
 		$query->select('fwigs.id AS value');
-		$query->select('fwigs.title_de AS text');
+		$query->select('fwigs.title_' . $lang . ' AS text');
 		$query->from('#__wissensmatrix_fachwissengruppe AS fwigs');
 		$query->join('LEFT', '#__categories AS c_fwigs ON c_fwigs.id = fwigs.catid');
 		$query->where('(fwigs.catid = 0 OR (c_fwigs.access IN ('.$groups.') AND c_fwigs.published = 1))');
