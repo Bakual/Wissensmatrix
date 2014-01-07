@@ -16,6 +16,7 @@
 			default="1" >
 			<option value="1">COM_WISSENSMATRIX_ZWBI_STATE_1</option>
 			<option value="2">COM_WISSENSMATRIX_ZWBI_STATE_2</option>
+			<option value="3">COM_WISSENSMATRIX_ZWBI_STATE_3</option>
 		</field>
 
 		<field name="date" type="calendar"
