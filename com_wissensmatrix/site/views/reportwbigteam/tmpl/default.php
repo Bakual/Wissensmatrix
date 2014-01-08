@@ -33,7 +33,7 @@ $listDirn	= $this->w_state->get('list.direction');
 						<div class="btn-group filter-select">
 							<select name="zwbistate" id="filter_zwbistate" class="input-medium" onchange="this.form.submit()">
 								<option value="0"><?php echo JText::_('COM_WISSENSMATRIX_SELECT_STATE'); ?></option>
-								<?php $options = array(1 => JText::_('COM_WISSENSMATRIX_ZWBI_STATE_1'), 2 => JText::_('COM_WISSENSMATRIX_ZWBI_STATE_2'));
+								<?php $options = array(1 => JText::_('COM_WISSENSMATRIX_ZWBI_STATE_1'), 2 => JText::_('COM_WISSENSMATRIX_ZWBI_STATE_2'), 3 => JText::_('COM_WISSENSMATRIX_ZWBI_STATE_3'));
 								echo JHtmlSelect::options($options, 'value', 'text', $this->w_state->get('filter.zwbistate', 0)); ?>
 							</select>
 						</div>
