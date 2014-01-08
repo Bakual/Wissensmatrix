@@ -29,7 +29,7 @@ foreach ($this->items AS $item) :
 	$xls->getActiveSheet()->setTitle($title);
 
 	// Format Cells
-	$xls->getActiveSheet()->getStyle('A1:H1')->getFont()->setBold(true);
+	$xls->getActiveSheet()->getStyle('A1:I1')->getFont()->setBold(true);
 	$xls->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
 	$xls->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
 	$xls->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
@@ -37,34 +37,48 @@ foreach ($this->items AS $item) :
 	$xls->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
 	$xls->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
 	$xls->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
-	$xls->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+	if ($item->refresh) :
+		$xls->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+		$xls->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+	endif;
 
 	// Adding Header
 	$xls->getActiveSheet()->SetCellValue('A1', 'User-ID');
 	$xls->getActiveSheet()->SetCellValue('B1', JText::_('COM_WISSENSMATRIX_NACHNAME'));
 	$xls->getActiveSheet()->SetCellValue('C1', JText::_('COM_WISSENSMATRIX_VORNAME'));
 	$xls->getActiveSheet()->SetCellValue('D1', JText::_('COM_WISSENSMATRIX_TEAM'));
-	$xls->getActiveSheet()->SetCellValue('E1', JText::_('COM_WISSENSMATRIX_IST').' '.JText::_('COM_WISSENSMATRIX_VALUE'));
-	$xls->getActiveSheet()->SetCellValue('F1', JText::_('COM_WISSENSMATRIX_IST'));
-	$xls->getActiveSheet()->SetCellValue('G1', JText::_('COM_WISSENSMATRIX_SOLL').' '.JText::_('COM_WISSENSMATRIX_VALUE'));
-	$xls->getActiveSheet()->SetCellValue('H1', JText::_('COM_WISSENSMATRIX_SOLL'));
+	$xls->getActiveSheet()->SetCellValue('E1', JText::_('COM_WISSENSMATRIX_STATE'));
+	$xls->getActiveSheet()->SetCellValue('F1', JText::_('JDATE'));
+	if ($item->refresh) :
+		$xls->getActiveSheet()->SetCellValue('G1', JText::_('COM_WISSENSMATRIX_REFRESH'));
+		$xls->getActiveSheet()->SetCellValue('H1', JText::_('COM_WISSENSMATRIX_TARGET_DATE'));
+		$xls->getActiveSheet()->SetCellValue('I1', JText::_('COM_WISSENSMATRIX_FIELD_BEMERKUNG_LABEL'));
+	else :
+		$xls->getActiveSheet()->SetCellValue('G1', JText::_('COM_WISSENSMATRIX_FIELD_BEMERKUNG_LABEL'));
+	endif;
+
+
+	// Get Worker per WBI
+	$this->w_state->set('wbi.id', $item->id);
+	$workers = $this->workermodel->getItems();
 
 	// Adding Data
 	$j = 1;
-	foreach ($this->workers AS $worker) :
-		$istsoll = $this->model->getIstSoll($item->id, $worker->id);
-		if (!$istsoll['ist'] and !$istsoll['soll']) :
-			continue;
-		endif;
+	foreach ($workers AS $worker) :
 		$j++;
 		$xls->getActiveSheet()->SetCellValue('A'.$j, $worker->uid);
 		$xls->getActiveSheet()->SetCellValue('B'.$j, $worker->name);
 		$xls->getActiveSheet()->SetCellValue('C'.$j, $worker->vorname);
 		$xls->getActiveSheet()->SetCellValue('D'.$j, $worker->category_title);
-		$xls->getActiveSheet()->SetCellValue('E'.$j, $istsoll['ist']);
-		$xls->getActiveSheet()->SetCellValue('F'.$j, $istsoll['ist_title']);
-		$xls->getActiveSheet()->SetCellValue('G'.$j, $istsoll['soll']);
-		$xls->getActiveSheet()->SetCellValue('H'.$j, $istsoll['soll_title']);
+		$xls->getActiveSheet()->SetCellValue('E'.$j, JText::_('COM_WISSENSMATRIX_ZWBI_STATE_'.$worker->zwbi_status_id));
+		$xls->getActiveSheet()->SetCellValue('F'.$j, $worker->date);
+		if ($item->refresh) :
+			$xls->getActiveSheet()->SetCellValue('G'.$j, $item->refresh);
+			$xls->getActiveSheet()->SetCellValue('H'.$j, $worker->zwbi_refresh);
+			$xls->getActiveSheet()->SetCellValue('I'.$j, $worker->bemerkung);
+		else:
+			$xls->getActiveSheet()->SetCellValue('G'.$j, $worker->bemerkung);
+		endif;
 	endforeach;
 
 	$i++;
