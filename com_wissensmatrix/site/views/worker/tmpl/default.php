@@ -133,7 +133,7 @@ $this->document->addScriptDeclaration('jQuery(function() {
 						</select>
 					</div>
 				</div>
-				<a href="http://rsdp.sbb.ch/inetawb/app/public/Welcome_home.action?request_locale=<?php echo substr(JFactory::getLanguage()->getTag(), 0, 2); ?>" target="_new" class="btn btn-info btn-small pull-left hasTooltip" title="<?php echo JText::_('COM_WISSENSMATRIX_INTRANET_WEITERBILDUNG_TIP'); ?>">
+				<a href="<?php echo $this->params->get('wbi_link') . substr(JFactory::getLanguage()->getTag(), 0, 2); ?>" target="_new" class="btn btn-info btn-small pull-left hasTooltip" title="<?php echo JText::_('COM_WISSENSMATRIX_INTRANET_WEITERBILDUNG_TIP'); ?>">
 					<i class="icon-out-2"> </i> <?php echo JText::_('COM_WISSENSMATRIX_INTRANET_WEITERBILDUNG'); ?>
 				</a>
 				<div class="clearfix"></div>
