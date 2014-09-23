@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<extension type="package" version="3.3.0" method="upgrade">
+	<name>Wissensmatrix Package</name>
+	<author>Thomas Hunziker</author>
+	<creationDate>2014-09-23</creationDate>
+	<copyright>(C) 2014</copyright>
+	<authorEmail>thomi.hunziker@sbb.ch</authorEmail>
+	<authorUrl>http://www.bakual.ch</authorUrl>
+	<version>3.0.0</version>
+	<license>http://www.gnu.org/licenses/gpl.html</license>
+	<packagename>wissensmatrix</packagename>
+	<packager>Thomas Hunziker</packager>
+	<packagerurl>http://www.bakual.net</packagerurl>
+	<description>Wissensmatrix Packages.</description>
+	<files>
+		<file type="component" id="com_wissensmatrix" >com_wissensmatrix.zip</file>
+		<file type="module" id="mod_wissensmatrix_legend" client="site">mod_wissensmatrix_legend.zip</file>
+		<file type="module" id="mod_wissensmatrix_userreport" client="site">mod_wissensmatrix_userreport.zip</file>
+	</files>
+</extension>
