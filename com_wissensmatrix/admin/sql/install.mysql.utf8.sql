@@ -139,8 +139,8 @@ CREATE TABLE `#__wissensmatrix_mit_fwi` (
 	`id` INT(10) NOT NULL AUTO_INCREMENT,
 	`mit_id` INT(10) NOT NULL,
 	`fwi_id` INT(10) NOT NULL DEFAULT '0',
-	`ist_erf_id` INT(10) NOT NULL DEFAULT '0',
-	`soll_erf_id` INT(10) NOT NULL DEFAULT '0',
+	`ist` INT(10) NOT NULL DEFAULT '0',
+	`soll` INT(10) NOT NULL DEFAULT '0',
 	PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 
