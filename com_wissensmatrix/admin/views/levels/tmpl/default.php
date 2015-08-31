@@ -134,7 +134,6 @@ endif;
 					<td class="center">
 						<div class="btn-group">
 							<?php echo JHtml::_('jgrid.published', $item->state, $i, 'levels.', $canChange); ?>
-							<?php echo JHtml::_('wissensmatrixadministrator.bool', $item->bool, $i, $canChange); ?>
 						</div>
 					</td>
 					<td class="nowrap has-context">
