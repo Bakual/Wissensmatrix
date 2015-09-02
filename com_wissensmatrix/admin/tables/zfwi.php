@@ -5,7 +5,7 @@ defined('_JEXEC') or die;
 /**
  * Serie Table class
  *
- * @package		Wissensmatrix.Administrator
+ * @package        Wissensmatrix.Administrator
  */
 class WissensmatrixTableZfwi extends JTable
 {

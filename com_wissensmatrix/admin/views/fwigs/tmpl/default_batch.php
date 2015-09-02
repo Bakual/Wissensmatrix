@@ -7,25 +7,28 @@ $published = $this->state->get('filter.state');
 <div class="modal hide fade" id="collapseModal">
 	<div class="modal-header">
 		<button type="button" role="presentation" class="close" data-dismiss="modal">x</button>
-		<h3><?php echo JText::_('COM_WISSENSMATRIX_BATCH_OPTIONS');?></h3>
+		<h3><?php echo JText::_('COM_WISSENSMATRIX_BATCH_OPTIONS'); ?></h3>
 	</div>
 	<div class="modal-body">
 		<p><?php echo JText::_('COM_WISSENSMATRIX_BATCH_TIP'); ?></p>
+
 		<div class="control-group">
 			<div class="controls">
 				<?php echo JHtml::_('batch.language'); ?>
 			</div>
 		</div>
 		<?php if ($published >= 0) : ?>
-		<div class="control-group">
-			<div class="controls">
-				<?php echo JHtml::_('batch.item', 'com_wissensmatrix');?>
+			<div class="control-group">
+				<div class="controls">
+					<?php echo JHtml::_('batch.item', 'com_wissensmatrix'); ?>
+				</div>
 			</div>
-		</div>
 		<?php endif; ?>
 	</div>
 	<div class="modal-footer">
-		<button class="btn" type="button" onclick="document.id('batch-category-id').value='';document.id('batch-language-id').value=''" data-dismiss="modal">
+		<button class="btn" type="button"
+				onclick="document.id('batch-category-id').value='';document.id('batch-language-id').value=''"
+				data-dismiss="modal">
 			<?php echo JText::_('JCANCEL'); ?>
 		</button>
 		<button class="btn btn-primary" type="submit" onclick="Joomla.submitbutton('fwig.batch');">

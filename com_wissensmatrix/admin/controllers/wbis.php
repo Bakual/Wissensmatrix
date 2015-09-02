@@ -7,7 +7,7 @@ jimport('joomla.application.component.controlleradmin');
 /**
  * Weiterbildungen list controller class.
  *
- * @package		Wissensmatrix.Administrator
+ * @package        Wissensmatrix.Administrator
  */
 class WissensmatrixControllerWbis extends JControllerAdmin
 {
@@ -16,7 +16,7 @@ class WissensmatrixControllerWbis extends JControllerAdmin
 		parent::__construct($config);
 
 		// Define standard task mappings.
-		$this->registerTask('unrelevant',	'relevant');
+		$this->registerTask('unrelevant', 'relevant');
 	}
 
 	/**
@@ -25,6 +25,7 @@ class WissensmatrixControllerWbis extends JControllerAdmin
 	public function &getModel($name = 'Wbi', $prefix = 'WissensmatrixModel', $config = array())
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
+
 		return $model;
 	}
 
@@ -34,14 +35,17 @@ class WissensmatrixControllerWbis extends JControllerAdmin
 		JRequest::checkToken() or die(JText::_('JINVALID_TOKEN'));
 
 		// Get items to podcast from the request.
-		$cid	= JFactory::getApplication()->input->get('cid', array(), 'array');
-		$data	= array('relevant' => 1, 'unrelevant' => 0);
-		$task 	= $this->getTask();
-		$value	= JArrayHelper::getValue($data, $task, 0, 'int');
+		$cid   = JFactory::getApplication()->input->get('cid', array(), 'array');
+		$data  = array('relevant' => 1, 'unrelevant' => 0);
+		$task  = $this->getTask();
+		$value = JArrayHelper::getValue($data, $task, 0, 'int');
 
-		if (empty($cid)) {
-			JError::raiseWarning(500, JText::_($this->text_prefix.'_NO_ITEM_SELECTED'));
-		} else {
+		if (empty($cid))
+		{
+			JError::raiseWarning(500, JText::_($this->text_prefix . '_NO_ITEM_SELECTED'));
+		}
+		else
+		{
 			// Get the model.
 			$model = $this->getModel();
 
@@ -49,31 +53,37 @@ class WissensmatrixControllerWbis extends JControllerAdmin
 			JArrayHelper::toInteger($cid);
 
 			// Relevant the items.
-			if (!$model->relevant($cid, $value)) {
+			if (!$model->relevant($cid, $value))
+			{
 				JError::raiseWarning(500, $model->getError());
-			} else {
-				if ($value == 1) {
-					$ntext = $this->text_prefix.'_N_ITEMS_RELEVANTED';
-				} else if ($value == 0) {
-					$ntext = $this->text_prefix.'_N_ITEMS_UNRELEVANTED';
+			}
+			else
+			{
+				if ($value == 1)
+				{
+					$ntext = $this->text_prefix . '_N_ITEMS_RELEVANTED';
+				}
+				else if ($value == 0)
+				{
+					$ntext = $this->text_prefix . '_N_ITEMS_UNRELEVANTED';
 				}
 				$this->setMessage(JText::plural($ntext, count($cid)));
 			}
 		}
 
-		$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+		$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false));
 	}
 
 	/**
 	 * Method to save the submitted ordering values for records via AJAX.
 	 *
-	 * @return	void
+	 * @return    void
 	 *
 	 * @since   3.0
 	 */
 	public function saveOrderAjax()
 	{
-		$pks = $this->input->post->get('cid', array(), 'array');
+		$pks   = $this->input->post->get('cid', array(), 'array');
 		$order = $this->input->post->get('order', array(), 'array');
 
 		// Sanitize the input

@@ -12,8 +12,7 @@ $params = $this->state->get('params');
 ?>
 
 <script type="text/javascript">
-	Joomla.submitbutton = function(task)
-	{
+	Joomla.submitbutton = function (task) {
 		if (task == 'worker.cancel' || document.formvalidator.isValid(document.id('adminForm'))) {
 			Joomla.submitform(task);
 		} else {
@@ -23,14 +22,15 @@ $params = $this->state->get('params');
 </script>
 <div class="edit item-page<?php echo $this->pageclass_sfx; ?>">
 	<?php if ($params->get('show_page_heading', 1)) : ?>
-	<div class="page-header">
-		<h1>
-			<?php echo $this->escape($params->get('page_heading')); ?>
-		</h1>
-	</div>
+		<div class="page-header">
+			<h1>
+				<?php echo $this->escape($params->get('page_heading')); ?>
+			</h1>
+		</div>
 	<?php endif; ?>
 
-	<form action="<?php echo JRoute::_('index.php?option=com_wissensmatrix&a_id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate form-vertical">
+	<form action="<?php echo JRoute::_('index.php?option=com_wissensmatrix&a_id=' . (int) $this->item->id); ?>"
+		  method="post" name="adminForm" id="adminForm" class="form-validate form-vertical">
 		<div class="btn-toolbar">
 			<div class="btn-group">
 				<button type="button" class="btn btn-primary" onclick="Joomla.submitbutton('worker.save')">
@@ -47,7 +47,8 @@ $params = $this->state->get('params');
 			<ul class="nav nav-tabs">
 				<li class="active"><a href="#editor" data-toggle="tab"><?php echo JText::_('JEDITOR') ?></a></li>
 				<li><a href="#details" data-toggle="tab"><?php echo JText::_('JDETAILS') ?></a></li>
-				<li><a href="#publishing" data-toggle="tab"><?php echo JText::_('COM_WISSENSMATRIX_PUBLISHING') ?></a></li>
+				<li><a href="#publishing" data-toggle="tab"><?php echo JText::_('COM_WISSENSMATRIX_PUBLISHING') ?></a>
+				</li>
 				<li><a href="#language" data-toggle="tab"><?php echo JText::_('JFIELD_LANGUAGE_LABEL') ?></a></li>
 				<li><a href="#metadata" data-toggle="tab"><?php echo JText::_('COM_WISSENSMATRIX_METADATA') ?></a></li>
 			</ul>
@@ -73,18 +74,18 @@ $params = $this->state->get('params');
 					</div>
 
 					<?php if (is_null($this->item->id)): ?>
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $this->form->getLabel('alias'); ?>
+						<div class="control-group">
+							<div class="control-label">
+								<?php echo $this->form->getLabel('alias'); ?>
+							</div>
+							<div class="controls">
+								<?php echo $this->form->getInput('alias'); ?>
+							</div>
 						</div>
-						<div class="controls">
-							<?php echo $this->form->getInput('alias'); ?>
-						</div>
-					</div>
 					<?php endif; ?>
 				</div>
 				<div class="tab-pane" id="details">
-					<?php foreach($this->form->getFieldset('detail') as $field): ?>
+					<?php foreach ($this->form->getFieldset('detail') as $field): ?>
 						<div class="control-group">
 							<div class="control-label">
 								<?php echo $field->label; ?>
@@ -140,11 +141,11 @@ $params = $this->state->get('params');
 							<?php echo $this->form->getInput('metakey'); ?>
 						</div>
 					</div>
-	
-					<input type="hidden" name="task" value="" />
-					<input type="hidden" name="return" value="<?php echo $this->return_page; ?>" />
-					<?php if($this->params->get('enable_category', 0) == 1) :?>
-					<input type="hidden" name="jform[catid]" value="<?php echo $this->params->get('catid', 1); ?>" />
+
+					<input type="hidden" name="task" value=""/>
+					<input type="hidden" name="return" value="<?php echo $this->return_page; ?>"/>
+					<?php if ($this->params->get('enable_category', 0) == 1) : ?>
+						<input type="hidden" name="jform[catid]" value="<?php echo $this->params->get('catid', 1); ?>"/>
 					<?php endif; ?>
 				</div>
 			</div>

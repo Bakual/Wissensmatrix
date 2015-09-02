@@ -5,11 +5,11 @@
 	</layout>
 	<fields name="request">
 		<fieldset name="request"
-			addfieldpath="/administrator/components/com_wissensmatrix/models/fields" >
-			<field name="id" type="fwiglist" 
-				label="COM_WISSENSMATRIX_FIELD_FWIG_ID_LABEL" 
-				description="COM_WISSENSMATRIX_FIELD_FWIG_ID_DESC" 
-				required="true" />
+				  addfieldpath="/administrator/components/com_wissensmatrix/models/fields">
+			<field name="id" type="fwiglist"
+				   label="COM_WISSENSMATRIX_FIELD_FWIG_ID_LABEL"
+				   description="COM_WISSENSMATRIX_FIELD_FWIG_ID_DESC"
+				   required="true" />
 		</fieldset>
 	</fields>
 </metadata>

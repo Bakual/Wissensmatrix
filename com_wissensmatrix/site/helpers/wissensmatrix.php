@@ -21,11 +21,11 @@ class WissensmatrixHelperWissensmatrix
 		{
 			default:
 				return 'default';
-			case 1: 
+			case 1:
 				return 'info';
-			case 2: 
+			case 2:
 				return 'warning';
-			case 3: 
+			case 3:
 				return 'important';
 		}
 	}
@@ -36,7 +36,8 @@ class WissensmatrixHelperWissensmatrix
 	 */
 	public static function getPercentClass($value)
 	{
-		switch ($value){
+		switch ($value)
+		{
 			case 0:
 			case ($value < 50):
 				return 'important';

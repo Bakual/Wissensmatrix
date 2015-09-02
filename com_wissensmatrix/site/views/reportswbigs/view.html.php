@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die;
-jimport( 'joomla.application.component.view');
+jimport('joomla.application.component.view');
+
 /**
  * HTML View class for the Wissensmatrix Component
  */
@@ -9,23 +10,24 @@ class WissensmatrixViewReportswbigs extends JViewLegacy
 	function display($tpl = null)
 	{
 		// Get some data from the model
-		$this->state		= $this->get('State');
-		$this->items		= $this->get('Items');
-		$this->pagination	= $this->get('Pagination');
+		$this->state      = $this->get('State');
+		$this->items      = $this->get('Items');
+		$this->pagination = $this->get('Pagination');
 		$this->pagination->setAdditionalUrlParam('teamid', $this->state->get('team.id'));
-		$this->parent		= JCategories::getInstance('Wissensmatrix')->get($this->state->get('team.id', 'root'))->getParent();
+		$this->parent = JCategories::getInstance('Wissensmatrix')->get($this->state->get('team.id', 'root'))->getParent();
 
-		$this->params		= $this->state->get('params');
+		$this->params = $this->state->get('params');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
 			JError::raiseError(500, implode("\n", $errors));
+
 			return false;
 		}
 
-		$this->pageclass_sfx	= htmlspecialchars($this->params->get('pageclass_sfx'));
-		$this->maxLevel			= $this->params->get('maxLevel', -1);
+		$this->pageclass_sfx = htmlspecialchars($this->params->get('pageclass_sfx'));
+		$this->maxLevel      = $this->params->get('maxLevel', -1);
 		$this->_prepareDocument();
 		parent::display($tpl);
 	}
@@ -35,8 +37,8 @@ class WissensmatrixViewReportswbigs extends JViewLegacy
 	 */
 	protected function _prepareDocument()
 	{
-		$app	= JFactory::getApplication();
-		$menus	= $app->getMenu();
+		$app   = JFactory::getApplication();
+		$menus = $app->getMenu();
 
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself

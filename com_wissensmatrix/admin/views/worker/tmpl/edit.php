@@ -11,7 +11,7 @@ $input = JFactory::getApplication()->input;
 ?>
 
 <script type="text/javascript">
-	Joomla.submitbutton = function(task) {
+	Joomla.submitbutton = function (task) {
 		if (task == 'worker.cancel' || document.formvalidator.isValid(document.id('adminForm'))) {
 			<?php // echo $this->form->getField('series_description')->save(); ?>
 			Joomla.submitform(task, document.getElementById('adminForm'));
@@ -21,14 +21,17 @@ $input = JFactory::getApplication()->input;
 	}
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=com_wissensmatrix&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
+<form action="<?php echo JRoute::_('index.php?option=com_wissensmatrix&layout=edit&id=' . (int) $this->item->id); ?>"
+	  method="post" name="adminForm" id="adminForm" class="form-validate">
 	<div class="row-fluid">
 		<!-- Begin Content -->
 		<div class="span10 form-horizontal">
 			<ul class="nav nav-tabs">
-				<li class="active"><a href="#general" data-toggle="tab"><?php echo JText::_('JDETAILS');?></a></li>
-				<li><a href="#publishing" data-toggle="tab"><?php echo JText::_('JGLOBAL_FIELDSET_PUBLISHING');?></a></li>
-				<li><a href="#metadata" data-toggle="tab"><?php echo JText::_('JGLOBAL_FIELDSET_METADATA_OPTIONS');?></a></li>
+				<li class="active"><a href="#general" data-toggle="tab"><?php echo JText::_('JDETAILS'); ?></a></li>
+				<li><a href="#publishing" data-toggle="tab"><?php echo JText::_('JGLOBAL_FIELDSET_PUBLISHING'); ?></a>
+				</li>
+				<li><a href="#metadata"
+					   data-toggle="tab"><?php echo JText::_('JGLOBAL_FIELDSET_METADATA_OPTIONS'); ?></a></li>
 			</ul>
 
 			<div class="tab-content">
@@ -36,15 +39,15 @@ $input = JFactory::getApplication()->input;
 				<div class="tab-pane active" id="general">
 					<fieldset class="adminform">
 						<div class="control-group form-inline">
-							<?php echo $this->form->getLabel('vorname'); ?> <?php echo $this->form->getInput('vorname'); ?>
-							<?php echo $this->form->getLabel('name'); ?> <?php echo $this->form->getInput('name'); ?>
-							<?php echo $this->form->getLabel('catid'); ?> <?php echo $this->form->getInput('catid'); ?>
+							<?php echo $this->form->getLabel('vorname'); ?><?php echo $this->form->getInput('vorname'); ?>
+							<?php echo $this->form->getLabel('name'); ?><?php echo $this->form->getInput('name'); ?>
+							<?php echo $this->form->getLabel('catid'); ?><?php echo $this->form->getInput('catid'); ?>
 						</div>
 					</fieldset>
 					<div class="row-fluid">
 						<div class="span6">
-							<h4><?php echo JText::_('JDETAILS');?></h4>
-							<?php foreach($this->form->getFieldset('detail') as $field): ?>
+							<h4><?php echo JText::_('JDETAILS'); ?></h4>
+							<?php foreach ($this->form->getFieldset('detail') as $field): ?>
 								<div class="control-group">
 									<?php if (!$field->hidden): ?>
 										<div class="control-label">
@@ -128,7 +131,7 @@ $input = JFactory::getApplication()->input;
 				</div>
 				<div class="tab-pane" id="metadata">
 					<fieldset>
-						<?php foreach($this->form->getFieldset('metadata') as $field): ?>
+						<?php foreach ($this->form->getFieldset('metadata') as $field): ?>
 							<div class="control-group">
 								<?php if (!$field->hidden): ?>
 									<div class="control-label">
@@ -143,19 +146,19 @@ $input = JFactory::getApplication()->input;
 					</fieldset>
 				</div>
 			</div>
-			<input type="hidden" name="task" value="" />
-			<input type="hidden" name="return" value="<?php echo $input->getCmd('return');?>" />
+			<input type="hidden" name="task" value=""/>
+			<input type="hidden" name="return" value="<?php echo $input->getCmd('return'); ?>"/>
 			<?php echo JHtml::_('form.token'); ?>
 		</div>
 		<!-- End Content -->
 		<!-- Begin Sidebar -->
 		<div class="span2">
-			<h4><?php echo JText::_('JDETAILS');?></h4>
-			<hr />
+			<h4><?php echo JText::_('JDETAILS'); ?></h4>
+			<hr/>
 			<fieldset class="form-vertical">
 				<div class="control-group">
 					<div class="controls">
-						<?php echo $this->form->getValue('vorname').' '.$this->form->getValue('name'); ?>
+						<?php echo $this->form->getValue('vorname') . ' ' . $this->form->getValue('name'); ?>
 					</div>
 				</div>
 

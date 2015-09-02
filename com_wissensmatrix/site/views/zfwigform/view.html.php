@@ -17,29 +17,30 @@ class WissensmatrixViewZfwigform extends JViewLegacy
 
 	public function display($tpl = null)
 	{
-		$app		= JFactory::getApplication();
-		$user		= JFactory::getUser();
+		$app  = JFactory::getApplication();
+		$user = JFactory::getUser();
 
 		// Get model data.
-		$this->state		= $this->get('State');
-		$this->item			= $this->get('Item');
-		$this->form			= $this->get('Form');
-		$this->return_page	= $this->get('ReturnPage');
+		$this->state       = $this->get('State');
+		$this->item        = $this->get('Item');
+		$this->form        = $this->get('Form');
+		$this->return_page = $this->get('ReturnPage');
 
 		// Get fwis data from the fwis model
-		$this->fwi_model	= $this->getModel('Fwis');
-		$fwi_state			= $this->fwi_model->getState();
+		$this->fwi_model = $this->getModel('Fwis');
+		$fwi_state       = $this->fwi_model->getState();
 		$fwi_state->set('fwig.id', $this->state->get('zfwig.id'));
 		$fwi_state->set('list.ordering', 'fwis.title_de');
 		$fwi_state->set('list.direction', 'ASC');
-		$this->fwis			= $this->fwi_model->getItems();
-		$this->levels		= $this->fwi_model->getLevels();
+		$this->fwis   = $this->fwi_model->getItems();
+		$this->levels = $this->fwi_model->getLevels();
 
-		$authorised = ($user->authorise('core.edit.worker', 'com_wissensmatrix') || $user->authorise('core.edit.worker', 'com_wissensmatrix.category.'.$this->item->worker_catid));
+		$authorised = ($user->authorise('core.edit.worker', 'com_wissensmatrix') || $user->authorise('core.edit.worker', 'com_wissensmatrix.category.' . $this->item->worker_catid));
 
 		if ($authorised !== true)
 		{
 			JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+
 			return false;
 		}
 
@@ -52,17 +53,18 @@ class WissensmatrixViewZfwigform extends JViewLegacy
 		if (count($errors = $this->get('Errors')))
 		{
 			JError::raiseWarning(500, implode("\n", $errors));
+
 			return false;
 		}
 
 		// Create a shortcut to the parameters.
-		$params	= &$this->state->params;
+		$params = &$this->state->params;
 
 		//Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
 
-		$this->params	= $params;
-		$this->user		= $user;
+		$this->params = $params;
+		$this->user   = $user;
 
 		$this->_prepareDocument();
 		parent::display($tpl);
@@ -73,9 +75,9 @@ class WissensmatrixViewZfwigform extends JViewLegacy
 	 */
 	protected function _prepareDocument()
 	{
-		$app	= JFactory::getApplication();
-		$menus	= $app->getMenu();
-		$title	= null;
+		$app   = JFactory::getApplication();
+		$menus = $app->getMenu();
+		$title = null;
 
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself
@@ -83,15 +85,19 @@ class WissensmatrixViewZfwigform extends JViewLegacy
 		if ($menu)
 		{
 			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
-		} else {
+		}
+		else
+		{
 			$this->params->def('page_heading', JText::_('COM_WISSENSMATRIX_FORM_EDIT_WORKER'));
 		}
 
 		$title = $this->params->def('page_title', JText::_('COM_WISSENSMATRIX_FORM_EDIT_WORKER'));
-		if ($app->getCfg('sitename_pagetitles', 0) == 1) {
+		if ($app->getCfg('sitename_pagetitles', 0) == 1)
+		{
 			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
+		elseif ($app->getCfg('sitename_pagetitles', 0) == 2)
+		{
 			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
 		}
 		$this->document->setTitle($title);

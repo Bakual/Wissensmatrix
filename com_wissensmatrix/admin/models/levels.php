@@ -6,13 +6,15 @@ class WissensmatrixModelLevels extends JModelList
 	/**
 	 * Constructor.
 	 *
-	 * @param	array	An optional associative array of configuration settings.
-	 * @see		JController
-	 * @since	1.6
+	 * @param    array    An optional associative array of configuration settings.
+	 *
+	 * @see        JController
+	 * @since      1.6
 	 */
 	public function __construct($config = array())
 	{
-		if (empty($config['filter_fields'])) {
+		if (empty($config['filter_fields']))
+		{
 			$config['filter_fields'] = array(
 				'id', 'levels.id',
 				'title', 'levels.title',
@@ -37,7 +39,7 @@ class WissensmatrixModelLevels extends JModelList
 	 *
 	 * Note. Calling getState in this method will result in recursion.
 	 *
-	 * @since	1.6
+	 * @since    1.6
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
@@ -45,16 +47,16 @@ class WissensmatrixModelLevels extends JModelList
 		$app = JFactory::getApplication();
 
 		// Load the filter state.
-		$search = $app->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$search = $app->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
 
-		$published = $app->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
+		$published = $app->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string');
 		$this->setState('filter.state', $published);
 
-		$categoryId = $app->getUserStateFromRequest($this->context.'.filter.category_id', 'filter_category_id', '');
+		$categoryId = $app->getUserStateFromRequest($this->context . '.filter.category_id', 'filter_category_id', '');
 		$this->setState('filter.category_id', $categoryId);
 
-		$language = $this->getUserStateFromRequest($this->context.'.filter.language', 'filter_language', '');
+		$language = $this->getUserStateFromRequest($this->context . '.filter.language', 'filter_language', '');
 		$this->setState('filter.language', $language);
 
 		// Load the parameters.
@@ -72,17 +74,18 @@ class WissensmatrixModelLevels extends JModelList
 	 * different modules that might need different sets of data or different
 	 * ordering requirements.
 	 *
-	 * @param	string		$id	A prefix for the store id.
-	 * @return	string		A store id.
-	 * @since	1.6
+	 * @param    string $id A prefix for the store id.
+	 *
+	 * @return    string        A store id.
+	 * @since    1.6
 	 */
 	protected function getStoreId($id = '')
 	{
 		// Compile the store id.
-		$id.= ':' . $this->getState('filter.search');
-		$id.= ':' . $this->getState('filter.state');
-		$id.= ':' . $this->getState('filter.category_id');
-		$id.= ':' . $this->getState('filter.language');
+		$id .= ':' . $this->getState('filter.search');
+		$id .= ':' . $this->getState('filter.state');
+		$id .= ':' . $this->getState('filter.category_id');
+		$id .= ':' . $this->getState('filter.language');
 
 		return parent::getStoreId($id);
 	}
@@ -90,22 +93,22 @@ class WissensmatrixModelLevels extends JModelList
 	/**
 	 * Build an SQL query to load the list data.
 	 *
-	 * @return	JDatabaseQuery
-	 * @since	1.6
+	 * @return    JDatabaseQuery
+	 * @since    1.6
 	 */
 	protected function getListQuery()
 	{
 		// Create a new query object.
-		$db		= $this->getDbo();
-		$query	= $db->getQuery(true);
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true);
 
 		// Select the required fields from the table.
 		$query->select(
 			$this->getState(
 				'list.select',
-				'levels.id, levels.title, levels.value, levels.catid, levels.language, '.
-				'levels.checked_out, levels.checked_out_time, '.
-				'levels.alias, levels.created, levels.created_by, '.
+				'levels.id, levels.title, levels.value, levels.catid, levels.language, ' .
+				'levels.checked_out, levels.checked_out_time, ' .
+				'levels.alias, levels.created, levels.created_by, ' .
 				'levels.state, levels.ordering, levels.hits'
 			)
 		);
@@ -113,7 +116,7 @@ class WissensmatrixModelLevels extends JModelList
 
 		// Join over the language
 		$query->select('l.title AS language_title');
-		$query->join('LEFT', $db->quoteName('#__languages').' AS l ON l.lang_code = levels.language');
+		$query->join('LEFT', $db->quoteName('#__languages') . ' AS l ON l.lang_code = levels.language');
 
 		// Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
@@ -125,41 +128,51 @@ class WissensmatrixModelLevels extends JModelList
 
 		// Filter by published state
 		$published = $this->getState('filter.state');
-		if (is_numeric($published)) {
-			$query->where('levels.state = '.(int) $published);
-		} else if ($published === '') {
+		if (is_numeric($published))
+		{
+			$query->where('levels.state = ' . (int) $published);
+		}
+		else if ($published === '')
+		{
 			$query->where('(levels.state IN (0, 1))');
 		}
 
 		// Filter by category.
 		$categoryId = $this->getState('filter.category_id');
-		if (is_numeric($categoryId)) {
-			$query->where('levels.catid = '.(int) $categoryId);
+		if (is_numeric($categoryId))
+		{
+			$query->where('levels.catid = ' . (int) $categoryId);
 		}
 
 		// Filter by search in title
 		$search = $this->getState('filter.search');
-		if (!empty($search)) {
-			if (stripos($search, 'id:') === 0) {
-				$query->where('levels.id = '.(int) substr($search, 3));
-			} else {
-				$search = $db->Quote('%'.$db->escape($search, true).'%');
-				$query->where('(levels.title_'.$lang.' LIKE '.$search.')');
+		if (!empty($search))
+		{
+			if (stripos($search, 'id:') === 0)
+			{
+				$query->where('levels.id = ' . (int) substr($search, 3));
+			}
+			else
+			{
+				$search = $db->Quote('%' . $db->escape($search, true) . '%');
+				$query->where('(levels.title_' . $lang . ' LIKE ' . $search . ')');
 			}
 		}
 
 		// Filter on the language.
-		if ($language = $this->getState('filter.language')) {
-			$query->where('levels.language = '.$db->quote($language));
+		if ($language = $this->getState('filter.language'))
+		{
+			$query->where('levels.language = ' . $db->quote($language));
 		}
 
 		// Add the list ordering clause.
-		$orderCol	= $this->state->get('list.ordering');
-		$orderDirn	= $this->state->get('list.direction');
-		if ($orderCol == 'levels.ordering' || $orderCol == 'category_title') {
-			$orderCol = 'category_title '.$orderDirn.', levels.ordering';
+		$orderCol  = $this->state->get('list.ordering');
+		$orderDirn = $this->state->get('list.direction');
+		if ($orderCol == 'levels.ordering' || $orderCol == 'category_title')
+		{
+			$orderCol = 'category_title ' . $orderDirn . ', levels.ordering';
 		}
-		$query->order($db->escape($orderCol.' '.$orderDirn));
+		$query->order($db->escape($orderCol . ' ' . $orderDirn));
 
 		return $query;
 	}

@@ -1,40 +1,40 @@
-.menu{
-  display: none;
+.menu {
+	display: none;
 }
 
-.leiste{
-  display: none;
+.leiste {
+	display: none;
 }
 
-.sprache{
-  display: none;
+.sprache {
+	display: none;
 }
 
-#user{
-  display: none;
+#user {
+	display: none;
 }
 
-.back_print{
-  display: none;
+.back_print {
+	display: none;
 }
 
-.screen{
-  display: none;
+.screen {
+	display: none;
 }
 
-.print{
-  display: inline;
+.print {
+	display: inline;
 }
 
-.legend{
-  margin-left:17px;
-  background-color:#eee;
-  border-style:dotted;
-  border-color:#00f;
-  border-width:1px;
+.legend {
+	margin-left: 17px;
+	background-color: #eee;
+	border-style: dotted;
+	border-color: #00f;
+	border-width: 1px;
 }
 
-.diagramm{
-  margin-left:17px;
-  margin-right:17px;
+.diagramm {
+	margin-left: 17px;
+	margin-right: 17px;
 }

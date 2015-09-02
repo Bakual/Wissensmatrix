@@ -11,12 +11,11 @@ JHtml::_('formbehavior.chosen', 'select');
 $params = $this->state->get('params');
 
 // Check if add or edit
-$id	= (JFactory::getApplication()->input->get('reload', false, 'bool')) ? 0 : $this->item->fwig_id;
+$id = (JFactory::getApplication()->input->get('reload', false, 'bool')) ? 0 : $this->item->fwig_id;
 ?>
 
 <script type="text/javascript">
-	Joomla.submitbutton = function(task)
-	{
+	Joomla.submitbutton = function (task) {
 		if (task == 'zfwig.cancel' || document.formvalidator.isValid(document.id('adminForm'))) {
 			Joomla.submitform(task);
 		} else {
@@ -26,14 +25,15 @@ $id	= (JFactory::getApplication()->input->get('reload', false, 'bool')) ? 0 : $t
 </script>
 <div class="edit item-page<?php echo $this->pageclass_sfx; ?>">
 	<?php if ($params->get('show_page_heading', 1)) : ?>
-	<div class="page-header">
-		<h1>
-			<?php echo $this->escape($params->get('page_heading')); ?>
-		</h1>
-	</div>
+		<div class="page-header">
+			<h1>
+				<?php echo $this->escape($params->get('page_heading')); ?>
+			</h1>
+		</div>
 	<?php endif; ?>
 
-	<form action="<?php echo JRoute::_('index.php?option=com_wissensmatrix&a_id='.(int)$id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate form-vertical">
+	<form action="<?php echo JRoute::_('index.php?option=com_wissensmatrix&a_id=' . (int) $id); ?>" method="post"
+		  name="adminForm" id="adminForm" class="form-validate form-vertical">
 		<div class="btn-toolbar">
 			<div class="btn-group">
 				<button type="button" class="btn btn-primary" onclick="Joomla.submitbutton('zfwig.save')">
@@ -70,11 +70,11 @@ $id	= (JFactory::getApplication()->input->get('reload', false, 'bool')) ? 0 : $t
 							<?php endif; ?>
 						</tr>
 						<?php foreach ($this->fwis as $fwi):
-							$istsoll	= $this->fwi_model->getIstSoll($fwi->id, $this->item->mit_id); ?>
+							$istsoll = $this->fwi_model->getIstSoll($fwi->id, $this->item->mit_id); ?>
 							<tr>
 								<td><?php echo $this->escape($fwi->title); ?></td>
-								<td><?php echo JHtml::_('select.genericlist', $this->levels, 'jform[fwis]['.$fwi->id.'][ist]', 'class="input-medium"', 'id', 'title', $istsoll['ist_id']); ?></td>
-								<td><?php echo JHtml::_('select.genericlist', $this->levels, 'jform[fwis]['.$fwi->id.'][soll]', 'class="input-medium"', 'id', 'title', ($id) ? $istsoll['soll_id'] : $istsoll['template_id']); ?></td>
+								<td><?php echo JHtml::_('select.genericlist', $this->levels, 'jform[fwis][' . $fwi->id . '][ist]', 'class="input-medium"', 'id', 'title', $istsoll['ist_id']); ?></td>
+								<td><?php echo JHtml::_('select.genericlist', $this->levels, 'jform[fwis][' . $fwi->id . '][soll]', 'class="input-medium"', 'id', 'title', ($id) ? $istsoll['soll_id'] : $istsoll['template_id']); ?></td>
 								<?php if ($id) : ?>
 									<td><?php echo $istsoll['template']; ?></td>
 								<?php endif; ?>
@@ -84,8 +84,8 @@ $id	= (JFactory::getApplication()->input->get('reload', false, 'bool')) ? 0 : $t
 
 				<?php echo $this->form->getInput('mit_id'); ?>
 				<?php echo $this->form->getInput('worker_catid'); ?>
-				<input type="hidden" name="task" value="" />
-				<input type="hidden" name="return" value="<?php echo $this->return_page; ?>" />
+				<input type="hidden" name="task" value=""/>
+				<input type="hidden" name="return" value="<?php echo $this->return_page; ?>"/>
 			</div>
 			<?php echo JHtml::_('form.token'); ?>
 		</fieldset>

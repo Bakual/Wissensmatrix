@@ -1,56 +1,57 @@
 <?php
 defined('_JEXEC') or die;
 
-JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
+JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 JHtml::stylesheet('com_wissensmatrix/wissensmatrix.css', '', true);
 
 // AmChart Scriptfiles
 JHtml::script('com_wissensmatrix/amcharts/amcharts.js', '', true);
 JHtml::script('com_wissensmatrix/amcharts/radar.js', '', true);
-$js	= 'AmCharts.ready(function () {'
+$js = 'AmCharts.ready(function () {'
 	// Chart
-	.'var chart = new AmCharts.AmRadarChart();'
-	.'chart.dataProvider = chartData;'
-	.'chart.categoryField = "fwig";'
-	.'chart.startDuration = 1;'
-	.'chart.startEffect = ">";'
+	. 'var chart = new AmCharts.AmRadarChart();'
+	. 'chart.dataProvider = chartData;'
+	. 'chart.categoryField = "fwig";'
+	. 'chart.startDuration = 1;'
+	. 'chart.startEffect = ">";'
 	// Value Axis
-	.'var valueAxis = new AmCharts.ValueAxis();'
-	.'valueAxis.axisAlpha = 0.15;'
-	.'valueAxis.minimum = 0;'
-	.'valueAxis.maximum = 120;'
-	.'valueAxis.fillAlpha = 0.1;'
-	.'valueAxis.fillColor = "#aaaaff";'
-	.'valueAxis.gridType = "circles";'
-	.'valueAxis.showFirstLabel = false;'
-	.'valueAxis.unit = "%";'
-	.'valueAxis.axisTitleOffset = 20;'
-	.'chart.addValueAxis(valueAxis);';
-	// Graphs
-	$bullets	= array("none", "round", "square", "bubble", "diamond", "triangleUp", "triangleDown");
-	foreach ($this->levels as $level)
-	{
-		if (!$level->value) continue;
-		$js	.= 'var graph = new AmCharts.AmGraph();'
-			.'graph.title = "'.$level->title.'";'
-			.'graph.valueField = "'.$level->title.'";'
-			.'graph.bullet = "'.$bullets[$level->value].'";'
-			.'graph.balloonText = "[[title]]: [[value]]%";'
-			.'chart.addGraph(graph);';
-	}
-	// Legend
-	$js .= 'var legend = new AmCharts.AmLegend();'
-	.'legend.align = "center";'
-	.'chart.addLegend(legend);'
+	. 'var valueAxis = new AmCharts.ValueAxis();'
+	. 'valueAxis.axisAlpha = 0.15;'
+	. 'valueAxis.minimum = 0;'
+	. 'valueAxis.maximum = 120;'
+	. 'valueAxis.fillAlpha = 0.1;'
+	. 'valueAxis.fillColor = "#aaaaff";'
+	. 'valueAxis.gridType = "circles";'
+	. 'valueAxis.showFirstLabel = false;'
+	. 'valueAxis.unit = "%";'
+	. 'valueAxis.axisTitleOffset = 20;'
+	. 'chart.addValueAxis(valueAxis);';
+// Graphs
+$bullets = array("none", "round", "square", "bubble", "diamond", "triangleUp", "triangleDown");
+foreach ($this->levels as $level)
+{
+	if (!$level->value) continue;
+	$js .= 'var graph = new AmCharts.AmGraph();'
+		. 'graph.title = "' . $level->title . '";'
+		. 'graph.valueField = "' . $level->title . '";'
+		. 'graph.bullet = "' . $bullets[$level->value] . '";'
+		. 'graph.balloonText = "[[title]]: [[value]]%";'
+		. 'chart.addGraph(graph);';
+}
+// Legend
+$js .= 'var legend = new AmCharts.AmLegend();'
+	. 'legend.align = "center";'
+	. 'chart.addLegend(legend);'
 	// Finish
-	.'chart.write("chartdiv");'
-.'});';
+	. 'chart.write("chartdiv");'
+	. '});';
 $chart_values = array();
 
-$listOrder	= $this->state->get('list.ordering');
-$listDirn	= $this->state->get('list.direction');
+$listOrder = $this->state->get('list.ordering');
+$listDirn  = $this->state->get('list.direction');
 ?>
-<div class="category-list<?php echo $this->pageclass_sfx;?> wm-reportfwiglevels-container<?php echo $this->pageclass_sfx; ?>">
+<div
+	class="category-list<?php echo $this->pageclass_sfx; ?> wm-reportfwiglevels-container<?php echo $this->pageclass_sfx; ?>">
 	<?php if ($this->params->get('show_page_heading', 1)) : ?>
 		<h1><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
 	<?php endif;
@@ -60,89 +61,91 @@ $listDirn	= $this->state->get('list.direction');
 		</h2>
 	<?php endif; ?>
 	<div class="cat-items">
-		<form action="<?php echo htmlspecialchars(JUri::getInstance()->toString()); ?>" method="post" id="adminForm" name="adminForm">
+		<form action="<?php echo htmlspecialchars(JUri::getInstance()->toString()); ?>" method="post" id="adminForm"
+			  name="adminForm">
 			<?php if (!count($this->items)) : ?>
-				<div class="no_entries alert alert-error"><?php echo JText::sprintf('COM_WISSENSMATRIX_NO_ENTRIES', JText::_('COM_WISSENSMATRIX_FWIGS')); ?></div>
+				<div
+					class="no_entries alert alert-error"><?php echo JText::sprintf('COM_WISSENSMATRIX_NO_ENTRIES', JText::_('COM_WISSENSMATRIX_FWIGS')); ?></div>
 			<?php else : ?>
-				<h3><?php echo JText::_('COM_WISSENSMATRIX_SUMMARY').': '.JText::_('COM_WISSENSMATRIX_LEVELS'); ?></h3>
+				<h3><?php echo JText::_('COM_WISSENSMATRIX_SUMMARY') . ': ' . JText::_('COM_WISSENSMATRIX_LEVELS'); ?></h3>
 				<div id="chartdiv" class="well"></div>
 				<table class="table table-striped table-hover table-condensed">
 					<thead>
-						<tr>
-							<th class="title">
-								<?php echo JHTML::_('grid.sort', 'COM_WISSENSMATRIX_FWIG', 'title', $listDirn, $listOrder); ?>
+					<tr>
+						<th class="title">
+							<?php echo JHTML::_('grid.sort', 'COM_WISSENSMATRIX_FWIG', 'title', $listDirn, $listOrder); ?>
+						</th>
+						<?php foreach ($this->levels as $level) :
+							if (!$level->value) continue; ?>
+							<th colspan="2" class="center">
+								<?php echo $level->title; ?>
 							</th>
-							<?php foreach ($this->levels as $level) : 
-								if (!$level->value) continue; ?>
-								<th colspan="2" class="center">
-									<?php echo $level->title; ?>
-								</th>
-							<?php endforeach; ?>
-						</tr>
+						<?php endforeach; ?>
+					</tr>
 					</thead>
 					<tbody>
-						<?php foreach ($this->items as $item) :
-							$values	= array('fwig' => $item->title); ?>
-							<tr>
-								<td>
-									<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwiglevels&id='.$item->id); ?>">
-										<?php echo $item->title; ?>
-									</a>
-								</td>
-								<?php foreach ($this->levels as $key => $level) :
-									if (!$level->value) continue;
-									$ist	= (isset($this->ist[$key][$item->id])) ? $this->ist[$key][$item->id]->mit_count : 0;
-									$soll	= (isset($this->soll[$key][$item->id])) ? $this->soll[$key][$item->id]->mit_count : 0;
-									$value	= ($soll) ? round($ist/$soll*100) : 100;
-									$values[$level->title]	= $value;
-									$class	= WissensmatrixHelperWissensmatrix::getPercentClass($value);
-									?>
-									<td class="cell-right">
-										<span class="label label-<?php echo $class; ?>">
-											<?php echo ($ist or $soll) ? $value.'%' : 'n/a'; ?> 
-										</span>
-									</td>
-									<td>
-										<span class="text-left label label-<?php echo $class; ?>">
-											<?php echo $ist.' / '.$soll; ?>
-										</span>
-									</td>
-								<?php endforeach;
-								$chart_values[] = $values; ?>
-							</tr>
-						<?php endforeach;
-						// Add amChart Data
-						$js	= 'var chartData = '.json_encode($chart_values).';'.$js;
-						JFactory::getDocument()->addScriptDeclaration($js);
-						?>
-						<tr class="info">
-							<td><?php echo JText::_('COM_WISSENSMATRIX_TOTAL'); ?></td>
+					<?php foreach ($this->items as $item) :
+						$values = array('fwig' => $item->title); ?>
+						<tr>
+							<td>
+								<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwiglevels&id=' . $item->id); ?>">
+									<?php echo $item->title; ?>
+								</a>
+							</td>
 							<?php foreach ($this->levels as $key => $level) :
 								if (!$level->value) continue;
-								$ist	= $this->ist_total[$key];
-								$soll	= $this->soll_total[$key];
-								$value	= ($soll) ? round($ist/$soll*100) : 100;
-								$class	= WissensmatrixHelperWissensmatrix::getPercentClass($value);
+								$ist                   = (isset($this->ist[$key][$item->id])) ? $this->ist[$key][$item->id]->mit_count : 0;
+								$soll                  = (isset($this->soll[$key][$item->id])) ? $this->soll[$key][$item->id]->mit_count : 0;
+								$value                 = ($soll) ? round($ist / $soll * 100) : 100;
+								$values[$level->title] = $value;
+								$class                 = WissensmatrixHelperWissensmatrix::getPercentClass($value);
 								?>
 								<td class="cell-right">
-									<span class="label label-<?php echo $class; ?>">
-										<?php echo ($ist or $soll) ? $value.'%' : 'n/a'; ?> 
-									</span>
+										<span class="label label-<?php echo $class; ?>">
+											<?php echo ($ist or $soll) ? $value . '%' : 'n/a'; ?>
+										</span>
 								</td>
 								<td>
-									<span class="text-left label label-<?php echo $class; ?>">
-										<?php echo $ist.' / '.$soll; ?>
-									</span>
+										<span class="text-left label label-<?php echo $class; ?>">
+											<?php echo $ist . ' / ' . $soll; ?>
+										</span>
 								</td>
-							<?php endforeach; ?>
+							<?php endforeach;
+							$chart_values[] = $values; ?>
 						</tr>
+					<?php endforeach;
+					// Add amChart Data
+					$js = 'var chartData = ' . json_encode($chart_values) . ';' . $js;
+					JFactory::getDocument()->addScriptDeclaration($js);
+					?>
+					<tr class="info">
+						<td><?php echo JText::_('COM_WISSENSMATRIX_TOTAL'); ?></td>
+						<?php foreach ($this->levels as $key => $level) :
+							if (!$level->value) continue;
+							$ist   = $this->ist_total[$key];
+							$soll  = $this->soll_total[$key];
+							$value = ($soll) ? round($ist / $soll * 100) : 100;
+							$class = WissensmatrixHelperWissensmatrix::getPercentClass($value);
+							?>
+							<td class="cell-right">
+									<span class="label label-<?php echo $class; ?>">
+										<?php echo ($ist or $soll) ? $value . '%' : 'n/a'; ?>
+									</span>
+							</td>
+							<td>
+									<span class="text-left label label-<?php echo $class; ?>">
+										<?php echo $ist . ' / ' . $soll; ?>
+									</span>
+							</td>
+						<?php endforeach; ?>
+					</tr>
 					</tbody>
 				</table>
 			<?php endif; ?>
-			<input type="hidden" name="task" value="" />
-			<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
-			<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
-			<input type="hidden" name="limitstart" value="" />
+			<input type="hidden" name="task" value=""/>
+			<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>"/>
+			<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>"/>
+			<input type="hidden" name="limitstart" value=""/>
 		</form>
 	</div>
 </div>

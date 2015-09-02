@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die;
-jimport( 'joomla.application.component.view');
+jimport('joomla.application.component.view');
+
 /**
  * HTML View class for the Wissensmatrix Component
  */
@@ -9,27 +10,27 @@ class WissensmatrixViewReportfwigdiff extends JViewLegacy
 	function display($tpl = null)
 	{
 		// Get some data from the model
-		$this->model		= $this->getModel();
-		$this->state		= $this->get('State');
+		$this->model = $this->getModel();
+		$this->state = $this->get('State');
 		$this->state->set('fwig.id', JFactory::getApplication()->input->get('id', 0, 'int'));
 		$this->state->set('list.start', 0);
 		$this->state->set('list.limit', 0);
-		$this->items		= $this->get('Items');
-		$this->levels		= $this->get('Levels');
+		$this->items  = $this->get('Items');
+		$this->levels = $this->get('Levels');
 
 		// Get Workers for selected teams
 		$this->workermodel = $this->getModel('Workers');
-		$this->w_state		= $this->workermodel->getState();
+		$this->w_state     = $this->workermodel->getState();
 		$this->w_state->set('list.start', 0);
 		$this->w_state->set('list.limit', 0);
-		$this->workers		= $this->workermodel->getItems();
-		$this->parent		= $this->workermodel->getParent();
+		$this->workers = $this->workermodel->getItems();
+		$this->parent  = $this->workermodel->getParent();
 
-		$this->params		= $this->state->get('params');
+		$this->params = $this->state->get('params');
 
 		// Get list of teams
-		$this->teams		= array();
-		$this->exclude		= $this->params->get('exclude_cat');
+		$this->teams   = array();
+		$this->exclude = $this->params->get('exclude_cat');
 		$this->getTeams($this->workermodel->getCategory());
 		if ($this->w_state->get('list.ordering') == 'category_title')
 		{
@@ -47,10 +48,11 @@ class WissensmatrixViewReportfwigdiff extends JViewLegacy
 		if (count($errors = $this->get('Errors')))
 		{
 			JError::raiseError(500, implode("\n", $errors));
+
 			return false;
 		}
 
-		$this->pageclass_sfx	= htmlspecialchars($this->params->get('pageclass_sfx'));
+		$this->pageclass_sfx = htmlspecialchars($this->params->get('pageclass_sfx'));
 		$this->_prepareDocument();
 		parent::display($tpl);
 	}
@@ -60,8 +62,8 @@ class WissensmatrixViewReportfwigdiff extends JViewLegacy
 	 */
 	protected function _prepareDocument()
 	{
-		$app	= JFactory::getApplication();
-		$menus	= $app->getMenu();
+		$app   = JFactory::getApplication();
+		$menus = $app->getMenu();
 
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself
@@ -113,7 +115,7 @@ class WissensmatrixViewReportfwigdiff extends JViewLegacy
 		}
 		if ($cat->numitems)
 		{
-			$this->teams[$cat->title]	= $cat;
+			$this->teams[$cat->title] = $cat;
 		}
 		if ($cat->hasChildren())
 		{

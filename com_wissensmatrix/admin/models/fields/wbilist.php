@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @copyright      Copyright (C) 2005 - 2010 Open Source Matters, Inc. All rights reserved.
+ * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('JPATH_BASE') or die;
@@ -15,16 +15,16 @@ JFormHelper::loadFieldClass('list');
  * Serieslist Field class for the Wissensmatrix.
  * Based on the Bannerlist field from com_banners
  *
- * @package		Wissensmatrix
- * @since		4.0
+ * @package        Wissensmatrix
+ * @since          4.0
  */
 class JFormFieldWbilist extends JFormFieldList
 {
 	/**
 	 * The form field type.
 	 *
-	 * @var		string
-	 * @since	1.6
+	 * @var        string
+	 * @since    1.6
 	 */
 	protected $type = 'Wbilist';
 	protected $translateLabel = false;
@@ -32,33 +32,33 @@ class JFormFieldWbilist extends JFormFieldList
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return	array	The field option objects.
-	 * @since	1.6
+	 * @return    array    The field option objects.
+	 * @since    1.6
 	 */
 	public function getOptions()
 	{
 		// Initialize variables.
 		$options = array();
 
-		$lang	= substr(JFactory::getLanguage()->getTag(), 0, 2);
+		$lang = substr(JFactory::getLanguage()->getTag(), 0, 2);
 
-		$db		= JFactory::getDbo();
+		$db = JFactory::getDbo();
 
-		$query	= $db->getQuery(true);
+		$query = $db->getQuery(true);
 		$query->select('wbis.id AS value');
 		$query->select('wbis.title_' . $lang . ' AS text');
 		$query->from('#__wissensmatrix_weiterbildung AS wbis');
 		$query->select('wbigs.title_' . $lang . ' AS wbig_title');
 		$query->join('LEFT', '#__wissensmatrix_weiterbildunggruppe AS wbigs ON wbigs.id = wbis.wbig_id');
-		if ($mit_id = (int)$this->element['mit_id'])
+		if ($mit_id = (int) $this->element['mit_id'])
 		{
-			$subquery	= $db->getQuery(true);
+			$subquery = $db->getQuery(true);
 			$subquery->select('count(1)');
 			$subquery->from('#__wissensmatrix_mit_wbi AS zwbi');
-			$subquery->where('zwbi.mit_id = '.$mit_id);
+			$subquery->where('zwbi.mit_id = ' . $mit_id);
 			$subquery->where('zwbi.wbi_id = wbis.id');
 			$subquery->group('zwbi.wbi_id');
-			$query->select('('.$subquery.') as zwbi_count');
+			$query->select('(' . $subquery . ') as zwbi_count');
 		}
 		$query->order('wbig_title ASC, text ASC');
 
@@ -76,12 +76,12 @@ class JFormFieldWbilist extends JFormFieldList
 				{
 					$options[] = JHtml::_('select.optgroup', $wbig_title);
 				}
-				$options[] = JHtml::_('select.optgroup', $item->wbig_title);
+				$options[]  = JHtml::_('select.optgroup', $item->wbig_title);
 				$wbig_title = $item->wbig_title;
 			}
 			if ($item->zwbi_count)
 			{
-				$item->text .= ' &rArr; '.JText::_('COM_WISSENSMATRIX_WBI_ERFASST');
+				$item->text .= ' &rArr; ' . JText::_('COM_WISSENSMATRIX_WBI_ERFASST');
 			}
 			$options[] = JHtml::_('select.option', $item->value, $item->text);
 		}
@@ -91,7 +91,8 @@ class JFormFieldWbilist extends JFormFieldList
 		}
 
 		// Check for a database error.
-		if ($db->getErrorNum()) {
+		if ($db->getErrorNum())
+		{
 			JError::raiseWarning(500, $db->getErrorMsg());
 		}
 

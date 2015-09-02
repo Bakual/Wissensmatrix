@@ -6,8 +6,9 @@ class WissensmatrixHelper
 	/**
 	 * Configure the Linkbar.
 	 *
-	 * @param	string	The name of the active view.
-	 * @since	1.6
+	 * @param    string    The name of the active view.
+	 *
+	 * @since    1.6
 	 */
 	public static function addSubmenu($vName = 'main')
 	{
@@ -53,8 +54,8 @@ class WissensmatrixHelper
 	 */
 	public static function getActions($categoryId = 0)
 	{
-		$user  	= JFactory::getUser();
-		$result	= new JObject;
+		$user   = JFactory::getUser();
+		$result = new JObject;
 
 		if (empty($categoryId))
 		{
@@ -62,11 +63,11 @@ class WissensmatrixHelper
 		}
 		else
 		{
-			$assetName = 'com_wissensmatrix.category.'.(int) $categoryId;
+			$assetName = 'com_wissensmatrix.category.' . (int) $categoryId;
 		}
 
 		$actions = array(
-			'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.own', 'core.edit.state', 'core.delete'
+			'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.own', 'core.edit.state', 'core.delete',
 		);
 
 		foreach ($actions as $action)

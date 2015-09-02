@@ -8,40 +8,44 @@ defined('_JEXEC') or die;
 class WissensmatrixModelZwbiform extends JModelAdmin
 {
 	/**
-	 * @var		string	The prefix to use with controller messages.
+	 * @var        string    The prefix to use with controller messages.
 	 */
 	protected $text_prefix = 'COM_WISSENSMATRIX';
 
 	/**
 	 * Method to test whether a record can be deleted.
 	 *
-	 * @param	object	A record object.
-	 * @return	boolean	True if allowed to delete the record. Defaults to the permission set in the component.
-	 * @since	1.6
+	 * @param    object    A record object.
+	 *
+	 * @return    boolean    True if allowed to delete the record. Defaults to the permission set in the component.
+	 * @since    1.6
 	 */
 	protected function canDelete($record)
 	{
-		if (!empty($record->id)) {
-			$user	= JFactory::getUser();
+		if (!empty($record->id))
+		{
+			$user = JFactory::getUser();
 
 			if (!$record->mit_id)
 			{
 				return;
 			}
 
-			$db		= JFactory::getDbo();
-			$query	= $db->getQuery(true);
+			$db    = JFactory::getDbo();
+			$query = $db->getQuery(true);
 
 			$query->select('catid');
 			$query->from('#__wissensmatrix_mitarbeiter');
-			$query->where('id = '.$record->mit_id);
+			$query->where('id = ' . $record->mit_id);
 			$db->setQuery($query);
-			$catid	= $db->loadResult();
+			$catid = $db->loadResult();
 
-			if ($catid) {
-				return $user->authorise('core.edit.worker', 'com_wissensmatrix.category.'.(int) $catid);
+			if ($catid)
+			{
+				return $user->authorise('core.edit.worker', 'com_wissensmatrix.category.' . (int) $catid);
 			}
-			else {
+			else
+			{
 				return parent::canDelete($record);
 			}
 		}
@@ -50,20 +54,24 @@ class WissensmatrixModelZwbiform extends JModelAdmin
 	/**
 	 * Method to test whether a records state can be changed.
 	 *
-	 * @param	object	A record object.
-	 * @return	boolean	True if allowed to change the state of the record. Defaults to the permission set in the component.
-	 * @since	1.6
+	 * @param    object    A record object.
+	 *
+	 * @return    boolean    True if allowed to change the state of the record. Defaults to the permission set in the
+	 *                       component.
+	 * @since    1.6
 	 */
 	protected function canEditState($record)
 	{
 		$user = JFactory::getUser();
 
 		// Check against the category.
-		if (!empty($record->worker_catid)) {
-			return $user->authorise('core.edit.worker', 'com_wissensmatrix.category.'.(int) $record->worker_catid);
+		if (!empty($record->worker_catid))
+		{
+			return $user->authorise('core.edit.worker', 'com_wissensmatrix.category.' . (int) $record->worker_catid);
 		}
 		// Default to component settings if neither article nor category known.
-		else {
+		else
+		{
 			return parent::canEditState($record);
 		}
 	}
@@ -71,27 +79,32 @@ class WissensmatrixModelZwbiform extends JModelAdmin
 	/**
 	 * Method to get the record form.
 	 *
-	 * @param	array	$data		An optional array of data for the form to interogate.
-	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
-	 * @return	JForm	A JForm object on success, false on failure
-	 * @since	1.6
+	 * @param    array   $data     An optional array of data for the form to interogate.
+	 * @param    boolean $loadData True if the form is to load its own data (default case), false if not.
+	 *
+	 * @return    JForm    A JForm object on success, false on failure
+	 * @since    1.6
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
 		// Initialise variables.
-		$app	= JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		// Get the form.
 		$form = $this->loadForm('com_wissensmatrix.zwbi', 'zwbi', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form)) {
+		if (empty($form))
+		{
 			return false;
 		}
 
 		// Determine correct permissions to check.
-		if ($this->getState('zwbi.id')) {
+		if ($this->getState('zwbi.id'))
+		{
 			// Existing record. Can only edit in selected categories.
 			$form->setFieldAttribute('catid', 'action', 'core.edit.worker');
-		} else {
+		}
+		else
+		{
 			// New record. Can only create in selected categories.
 			$form->setFieldAttribute('catid', 'action', 'core.edit.worker');
 		}
@@ -102,7 +115,8 @@ class WissensmatrixModelZwbiform extends JModelAdmin
 		}
 
 		// Modify the form based on Edit State access controls.
-		if (!$this->canEditState((object) $data)) {
+		if (!$this->canEditState((object) $data))
+		{
 			// Disable fields for display.
 			$form->setFieldAttribute('state', 'disabled', 'true');
 
@@ -127,11 +141,12 @@ class WissensmatrixModelZwbiform extends JModelAdmin
 	/**
 	 * Returns a reference to the a Table object, always creating it.
 	 *
-	 * @param	type	The table type to instantiate
-	 * @param	string	A prefix for the table class name. Optional.
-	 * @param	array	Configuration array for model. Optional.
-	 * @return	JTable	A database object
-	 * @since	1.6
+	 * @param    type      The table type to instantiate
+	 * @param    string    A prefix for the table class name. Optional.
+	 * @param    array     Configuration array for model. Optional.
+	 *
+	 * @return    JTable    A database object
+	 * @since    1.6
 	 */
 	public function getTable($type = 'Zwbi', $prefix = 'WissensmatrixTable', $config = array())
 	{
@@ -140,9 +155,9 @@ class WissensmatrixModelZwbiform extends JModelAdmin
 
 	public function getItem($pk = null)
 	{
-		$item	= parent::getItem($pk);
-		$db		= JFactory::getDbo();
-		$query	= $db->getQuery(true);
+		$item  = parent::getItem($pk);
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true);
 
 		if (!$item->mit_id)
 		{
@@ -152,11 +167,11 @@ class WissensmatrixModelZwbiform extends JModelAdmin
 		$query->select('catid as worker_catid');
 		$query->select('CASE WHEN CHAR_LENGTH(alias) THEN CONCAT_WS(\':\', id, alias) ELSE id END as worker_slug');
 		$query->from('#__wissensmatrix_mitarbeiter');
-		$query->where('id = '.$item->mit_id);
+		$query->where('id = ' . $item->mit_id);
 		$db->setQuery($query);
-		$row	= $db->loadAssoc();
+		$row = $db->loadAssoc();
 
-		foreach($row as $key => $value)
+		foreach ($row as $key => $value)
 		{
 			$item->$key = $value;
 		}
@@ -167,15 +182,16 @@ class WissensmatrixModelZwbiform extends JModelAdmin
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
-	 * @return	mixed	The data for the form.
-	 * @since	1.6
+	 * @return    mixed    The data for the form.
+	 * @since    1.6
 	 */
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
 		$data = JFactory::getApplication()->getUserState('com_wissensmatrix.edit.zwbi.data', array());
 
-		if (empty($data)) {
+		if (empty($data))
+		{
 			$data = $this->getItem();
 		}
 
@@ -185,20 +201,20 @@ class WissensmatrixModelZwbiform extends JModelAdmin
 	/**
 	 * Prepare and sanitise the table prior to saving.
 	 *
-	 * @since	1.6
+	 * @since    1.6
 	 */
 	protected function prepareTable($table)
 	{
 		jimport('joomla.filter.output');
 
-		$table->bemerkung	= htmlspecialchars_decode($table->bemerkung, ENT_QUOTES);
+		$table->bemerkung = htmlspecialchars_decode($table->bemerkung, ENT_QUOTES);
 	}
 
 	/**
 	 * Get the return URL.
 	 *
-	 * @return	string	The return URL.
-	 * @since	1.6
+	 * @return    string    The return URL.
+	 * @since    1.6
 	 */
 	public function getReturnPage()
 	{
@@ -210,7 +226,7 @@ class WissensmatrixModelZwbiform extends JModelAdmin
 	 *
 	 * Note. Calling getState in this method will result in recursion.
 	 *
-	 * @since	1.6
+	 * @since    1.6
 	 */
 	protected function populateState()
 	{
@@ -224,14 +240,15 @@ class WissensmatrixModelZwbiform extends JModelAdmin
 
 		$return = $app->input->get('return', null, 'base64');
 
-		if (!JUri::isInternal(base64_decode($return))) {
+		if (!JUri::isInternal(base64_decode($return)))
+		{
 			$return = null;
 		}
 
 		$this->setState('return_page', base64_decode($return));
 
 		// Load the parameters.
-		$params	= $app->getParams();
+		$params = $app->getParams();
 		$this->setState('params', $params);
 
 		$this->setState('layout', $app->input->get('layout'));

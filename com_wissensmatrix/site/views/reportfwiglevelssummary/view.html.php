@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die;
-jimport( 'joomla.application.component.view');
+jimport('joomla.application.component.view');
+
 /**
  * HTML View class for the Wissensmatrix Component
  */
@@ -9,42 +10,43 @@ class WissensmatrixViewReportfwiglevelssummary extends JViewLegacy
 	function display($tpl = null)
 	{
 		// Get some data from the model
-		$this->model		= $this->getModel();
-		$this->state		= $this->get('State');
+		$this->model = $this->getModel();
+		$this->state = $this->get('State');
 		$this->state->set('list.start', 0);
 		$this->state->set('list.limit', 0);
-		$this->items		= $this->get('Items');
+		$this->items = $this->get('Items');
 
-		$this->params		= $this->state->get('params');
+		$this->params = $this->state->get('params');
 
-		$this->fwis_model	= $this->getModel('fwis');
-		$this->fwis_state	= $this->fwis_model->getState();
+		$this->fwis_model = $this->getModel('fwis');
+		$this->fwis_state = $this->fwis_model->getState();
 		$this->fwis_state->set('list.start', 0);
 		$this->fwis_state->set('list.limit', 0);
-		$this->levels		= $this->fwis_model->getLevels();
+		$this->levels = $this->fwis_model->getLevels();
 		foreach ($this->levels as $key => $level)
 		{
-			$levels[]	= $key;
+			$levels[] = $key;
 		}
 		$levels = implode(',', $levels);
 
 		foreach ($this->levels as $key => $level)
 		{
 			if (!$level->value) continue;
-			$this->ist_total[$key]	= $this->model->getLevelSummary($level->value, $levels, false, false);
-			$this->soll_total[$key]	= $this->model->getLevelSummary($level->value, $levels, true, false);
-			$this->ist[$key]		= $this->model->getLevelSummary($level->value, $levels, false, true);
-			$this->soll[$key]		= $this->model->getLevelSummary($level->value, $levels, true, true);
+			$this->ist_total[$key]  = $this->model->getLevelSummary($level->value, $levels, false, false);
+			$this->soll_total[$key] = $this->model->getLevelSummary($level->value, $levels, true, false);
+			$this->ist[$key]        = $this->model->getLevelSummary($level->value, $levels, false, true);
+			$this->soll[$key]       = $this->model->getLevelSummary($level->value, $levels, true, true);
 		}
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
 			JError::raiseError(500, implode("\n", $errors));
+
 			return false;
 		}
 
-		$this->pageclass_sfx	= htmlspecialchars($this->params->get('pageclass_sfx'));
+		$this->pageclass_sfx = htmlspecialchars($this->params->get('pageclass_sfx'));
 		$this->_prepareDocument();
 		parent::display($tpl);
 	}
@@ -54,8 +56,8 @@ class WissensmatrixViewReportfwiglevelssummary extends JViewLegacy
 	 */
 	protected function _prepareDocument()
 	{
-		$app	= JFactory::getApplication();
-		$menus	= $app->getMenu();
+		$app   = JFactory::getApplication();
+		$menus = $app->getMenu();
 
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself

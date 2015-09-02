@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
 	<fieldset name="general"
-		addfieldpath="/administrator/components/com_wissensmatrix/models/fields">
+			  addfieldpath="/administrator/components/com_wissensmatrix/models/fields">
 		<field name="fwig_id" type="fwiglist"
-			label="COM_WISSENSMATRIX_FIELD_FWIG_ID_LABEL" description="COM_WISSENSMATRIX_FIELD_FWIG_ID_DESC"
-			size="1"
-			class="input-large"
-			onchange="Joomla.submitform('zfwig.reload')"
-			default="0" >
+			   label="COM_WISSENSMATRIX_FIELD_FWIG_ID_LABEL" description="COM_WISSENSMATRIX_FIELD_FWIG_ID_DESC"
+			   size="1"
+			   class="input-large"
+			   onchange="Joomla.submitform('zfwig.reload')"
+			   default="0">
 			<option value="0">COM_WISSENSMATRIX_FIELD_FWIG_ID_SELECT</option>
 		</field>
 
 		<field name="fwi_id" type="fwilist"
-			label="COM_WISSENSMATRIX_FIELD_FWI_ID_LABEL" description="COM_WISSENSMATRIX_FIELD_FWI_ID_DESC"
-			size="1"
-			class="input-large"
-			default="0" >
+			   label="COM_WISSENSMATRIX_FIELD_FWI_ID_LABEL" description="COM_WISSENSMATRIX_FIELD_FWI_ID_DESC"
+			   size="1"
+			   class="input-large"
+			   default="0">
 			<option value="0">COM_WISSENSMATRIX_FIELD_FWI_ID_SELECT</option>
 		</field>
 
 		<field name="fwis" type="hidden"
-			label="COM_WISSENSMATRIX_FIELD_FWIS_LABEL" />
+			   label="COM_WISSENSMATRIX_FIELD_FWIS_LABEL" />
 
 		<field name="id" type="hidden"
-			label="JGLOBAL_ID" />
+			   label="JGLOBAL_ID" />
 
 		<field name="mit_id" type="hidden"
-			label="COM_WISSENSMATRIX_WORKER" />
+			   label="COM_WISSENSMATRIX_WORKER" />
 
 		<field name="worker_catid" type="hidden"
-			label="JCATEGORY" />
+			   label="JCATEGORY" />
 
 	</fieldset>
 </form>

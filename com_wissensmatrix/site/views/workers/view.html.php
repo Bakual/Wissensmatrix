@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die;
-jimport( 'joomla.application.component.view');
+jimport('joomla.application.component.view');
+
 /**
  * HTML View class for the Wissensmatrix Component
  */
@@ -9,22 +10,23 @@ class WissensmatrixViewWorkers extends JViewLegacy
 	function display($tpl = null)
 	{
 		// Get some data from the model
-		$this->state		= $this->get('State');
-		$this->items		= $this->get('Items');
-		$this->pagination	= $this->get('Pagination');
+		$this->state      = $this->get('State');
+		$this->items      = $this->get('Items');
+		$this->pagination = $this->get('Pagination');
 		$this->pagination->setAdditionalUrlParam('teamid', $this->state->get('team.id'));
 		// Get Category stuff from model
-		$this->category		= $this->get('Category');
-		$children			= $this->get('Children');
-		$this->parent		= $this->get('Parent');
-		$this->children		= array($this->category->id => $children);
+		$this->category = $this->get('Category');
+		$children       = $this->get('Children');
+		$this->parent   = $this->get('Parent');
+		$this->children = array($this->category->id => $children);
 
-		$this->params		= $this->state->get('params');
+		$this->params = $this->state->get('params');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
 			JError::raiseError(500, implode("\n", $errors));
+
 			return false;
 		}
 
@@ -34,9 +36,10 @@ class WissensmatrixViewWorkers extends JViewLegacy
 		}
 		if ($this->parent == false && $this->category->id != 'root')
 		{
-				return JError::raiseError(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'));
+			return JError::raiseError(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'));
 		}
-		if ($this->category->id == 'root'){
+		if ($this->category->id == 'root')
+		{
 			$this->params->set('show_category_title', 0);
 			$this->cat = '';
 		}
@@ -46,15 +49,15 @@ class WissensmatrixViewWorkers extends JViewLegacy
 			$this->cat = $this->category->title;
 		}
 		// Check whether category access level allows access.
-		$user	= JFactory::getUser();
-		$groups	= $user->getAuthorisedViewLevels();
+		$user   = JFactory::getUser();
+		$groups = $user->getAuthorisedViewLevels();
 		if (!in_array($this->category->access, $groups))
 		{
 			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$this->pageclass_sfx	= htmlspecialchars($this->params->get('pageclass_sfx'));
-		$this->maxLevel			= $this->params->get('maxLevel', -1);
+		$this->pageclass_sfx = htmlspecialchars($this->params->get('pageclass_sfx'));
+		$this->maxLevel      = $this->params->get('maxLevel', -1);
 		$this->_prepareDocument();
 		parent::display($tpl);
 	}
@@ -64,8 +67,8 @@ class WissensmatrixViewWorkers extends JViewLegacy
 	 */
 	protected function _prepareDocument()
 	{
-		$app	= JFactory::getApplication();
-		$menus	= $app->getMenu();
+		$app   = JFactory::getApplication();
+		$menus = $app->getMenu();
 
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself

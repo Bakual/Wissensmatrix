@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @copyright      Copyright (C) 2005 - 2010 Open Source Matters, Inc. All rights reserved.
+ * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('JPATH_BASE') or die;
@@ -15,16 +15,16 @@ JFormHelper::loadFieldClass('list');
  * Serieslist Field class for the Wissensmatrix.
  * Based on the Bannerlist field from com_banners
  *
- * @package		Wissensmatrix
- * @since		4.0
+ * @package        Wissensmatrix
+ * @since          4.0
  */
 class JFormFieldFwiglist extends JFormFieldList
 {
 	/**
 	 * The form field type.
 	 *
-	 * @var		string
-	 * @since	1.6
+	 * @var        string
+	 * @since    1.6
 	 */
 	protected $type = 'Fwiglist';
 	protected $translateLabel = false;
@@ -32,37 +32,37 @@ class JFormFieldFwiglist extends JFormFieldList
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return	array	The field option objects.
-	 * @since	1.6
+	 * @return    array    The field option objects.
+	 * @since    1.6
 	 */
 	public function getOptions()
 	{
 		// Initialize variables.
 		$options = array();
 
-		$user	= JFactory::getUser();
-		$groups	= implode(',', $user->getAuthorisedViewLevels());
+		$user   = JFactory::getUser();
+		$groups = implode(',', $user->getAuthorisedViewLevels());
 
-		$lang	= substr(JFactory::getLanguage()->getTag(), 0, 2);
+		$lang = substr(JFactory::getLanguage()->getTag(), 0, 2);
 
-		$db		= JFactory::getDbo();
+		$db = JFactory::getDbo();
 
-		$query	= $db->getQuery(true);
+		$query = $db->getQuery(true);
 		$query->select('fwigs.id AS value');
 		$query->select('fwigs.title_' . $lang . ' AS text');
 		$query->from('#__wissensmatrix_fachwissengruppe AS fwigs');
 		$query->join('LEFT', '#__categories AS c_fwigs ON c_fwigs.id = fwigs.catid');
-		$query->where('(fwigs.catid = 0 OR (c_fwigs.access IN ('.$groups.') AND c_fwigs.published = 1))');
+		$query->where('(fwigs.catid = 0 OR (c_fwigs.access IN (' . $groups . ') AND c_fwigs.published = 1))');
 		$query->order('text ASC');
 
-		if ($mit_id = (int)$this->element['mit_id'])
+		if ($mit_id = (int) $this->element['mit_id'])
 		{
-			$subquery	= $db->getQuery(true);
+			$subquery = $db->getQuery(true);
 			$subquery->select('DISTINCT fwig_id');
 			$subquery->from('#__wissensmatrix_mit_fwi AS zfwi');
 			$subquery->join('LEFT', '#__wissensmatrix_fachwissen AS fwis ON zfwi.fwi_id = fwis.id');
-			$subquery->where('zfwi.mit_id = '.$mit_id);
-			$query->where('fwigs.id NOT IN ('.$subquery.')');
+			$subquery->where('zfwi.mit_id = ' . $mit_id);
+			$query->where('fwigs.id NOT IN (' . $subquery . ')');
 		}
 
 		// Get the options.
@@ -76,7 +76,8 @@ class JFormFieldFwiglist extends JFormFieldList
 		}
 
 		// Check for a database error.
-		if ($db->getErrorNum()) {
+		if ($db->getErrorNum())
+		{
 			JError::raiseWarning(500, $db->getErrorMsg());
 		}
 

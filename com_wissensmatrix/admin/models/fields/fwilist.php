@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @copyright      Copyright (C) 2005 - 2010 Open Source Matters, Inc. All rights reserved.
+ * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('JPATH_BASE') or die;
@@ -15,16 +15,16 @@ JFormHelper::loadFieldClass('list');
  * Serieslist Field class for the Wissensmatrix.
  * Based on the Bannerlist field from com_banners
  *
- * @package		Wissensmatrix
- * @since		4.0
+ * @package        Wissensmatrix
+ * @since          4.0
  */
 class JFormFieldFwilist extends JFormFieldList
 {
 	/**
 	 * The form field type.
 	 *
-	 * @var		string
-	 * @since	1.6
+	 * @var        string
+	 * @since    1.6
 	 */
 	protected $type = 'Fwilist';
 	protected $translateLabel = false;
@@ -32,19 +32,19 @@ class JFormFieldFwilist extends JFormFieldList
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return	array	The field option objects.
-	 * @since	1.6
+	 * @return    array    The field option objects.
+	 * @since    1.6
 	 */
 	public function getOptions()
 	{
 		// Initialize variables.
 		$options = array();
 
-		$lang	= substr(JFactory::getLanguage()->getTag(), 0, 2);
+		$lang = substr(JFactory::getLanguage()->getTag(), 0, 2);
 
-		$db		= JFactory::getDbo();
+		$db = JFactory::getDbo();
 
-		$query	= $db->getQuery(true);
+		$query = $db->getQuery(true);
 		$query->select('fwis.id AS value');
 		$query->select('fwis.title_' . $lang . ' AS text');
 		$query->from('#__wissensmatrix_fachwissen AS fwis');
@@ -66,7 +66,7 @@ class JFormFieldFwilist extends JFormFieldList
 				{
 					$options[] = JHtml::_('select.optgroup', $fwig_title);
 				}
-				$options[] = JHtml::_('select.optgroup', $item->fwig_title);
+				$options[]  = JHtml::_('select.optgroup', $item->fwig_title);
 				$fwig_title = $item->fwig_title;
 			}
 			$options[] = JHtml::_('select.option', $item->value, $item->text);
@@ -77,7 +77,8 @@ class JFormFieldFwilist extends JFormFieldList
 		}
 
 		// Check for a database error.
-		if ($db->getErrorNum()) {
+		if ($db->getErrorNum())
+		{
 			JError::raiseWarning(500, $db->getErrorMsg());
 		}
 

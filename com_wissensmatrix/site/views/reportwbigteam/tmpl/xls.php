@@ -1,10 +1,10 @@
 <?php
 defined('_JEXEC') or die;
 
-JHTML::addIncludePath(JPATH_COMPONENT.'/helpers');
+JHTML::addIncludePath(JPATH_COMPONENT . '/helpers');
 
 // loading PHPExcel (http://www.codeplex.com/PHPExcel)
-require_once JPATH_COMPONENT.'/libraries/PHPExcel.php';
+require_once JPATH_COMPONENT . '/libraries/PHPExcel.php';
 
 $xls = new PHPExcel();
 
@@ -21,10 +21,10 @@ foreach ($this->items AS $item) :
 	$xls->setActiveSheetIndex($i);
 
 	// Sanitize and shorten $item->title so it can be used as sheet title (max 31 chars allowed)
-	$search	= array(':', '\\', '/', '?', '*', '[', ']');
-	$title	= str_replace($search, '_', $item->title);
+	$search = array(':', '\\', '/', '?', '*', '[', ']');
+	$title  = str_replace($search, '_', $item->title);
 	if (strlen($title) > 31) :
-		$title	= substr($title, 0, 28).'...';
+		$title = substr($title, 0, 28) . '...';
 	endif;
 	$xls->getActiveSheet()->setTitle($title);
 
@@ -66,18 +66,18 @@ foreach ($this->items AS $item) :
 	$j = 1;
 	foreach ($workers AS $worker) :
 		$j++;
-		$xls->getActiveSheet()->SetCellValue('A'.$j, $worker->uid);
-		$xls->getActiveSheet()->SetCellValue('B'.$j, $worker->name);
-		$xls->getActiveSheet()->SetCellValue('C'.$j, $worker->vorname);
-		$xls->getActiveSheet()->SetCellValue('D'.$j, $worker->category_title);
-		$xls->getActiveSheet()->SetCellValue('E'.$j, JText::_('COM_WISSENSMATRIX_ZWBI_STATE_'.$worker->zwbi_status_id));
-		$xls->getActiveSheet()->SetCellValue('F'.$j, $worker->date);
+		$xls->getActiveSheet()->SetCellValue('A' . $j, $worker->uid);
+		$xls->getActiveSheet()->SetCellValue('B' . $j, $worker->name);
+		$xls->getActiveSheet()->SetCellValue('C' . $j, $worker->vorname);
+		$xls->getActiveSheet()->SetCellValue('D' . $j, $worker->category_title);
+		$xls->getActiveSheet()->SetCellValue('E' . $j, JText::_('COM_WISSENSMATRIX_ZWBI_STATE_' . $worker->zwbi_status_id));
+		$xls->getActiveSheet()->SetCellValue('F' . $j, $worker->date);
 		if ($item->refresh) :
-			$xls->getActiveSheet()->SetCellValue('G'.$j, $item->refresh);
-			$xls->getActiveSheet()->SetCellValue('H'.$j, $worker->zwbi_refresh);
-			$xls->getActiveSheet()->SetCellValue('I'.$j, $worker->bemerkung);
+			$xls->getActiveSheet()->SetCellValue('G' . $j, $item->refresh);
+			$xls->getActiveSheet()->SetCellValue('H' . $j, $worker->zwbi_refresh);
+			$xls->getActiveSheet()->SetCellValue('I' . $j, $worker->bemerkung);
 		else:
-			$xls->getActiveSheet()->SetCellValue('G'.$j, $worker->bemerkung);
+			$xls->getActiveSheet()->SetCellValue('G' . $j, $worker->bemerkung);
 		endif;
 	endforeach;
 
@@ -92,7 +92,7 @@ header("Pragma: public");
 header("Expires: 0");
 header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-header('Content-Disposition: attachment;filename="'.JText::_('COM_WISSENSMATRIX_WBIG').'.xlsx"');
+header('Content-Disposition: attachment;filename="' . JText::_('COM_WISSENSMATRIX_WBIG') . '.xlsx"');
 
 $xlsWriter = PHPExcel_IOFactory::createWriter($xls, 'Excel2007');
 $xlsWriter->save('php://output');

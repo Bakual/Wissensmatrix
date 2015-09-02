@@ -1,7 +1,7 @@
 <?php
 defined('_JEXEC') or die;
 
-require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/worker.php';
+require_once JPATH_COMPONENT_ADMINISTRATOR . '/models/worker.php';
 
 /**
  * Wissensmatrix model.
@@ -12,8 +12,8 @@ class WissensmatrixModelForm extends WissensmatrixModelWorker
 	/**
 	 * Get the return URL.
 	 *
-	 * @return	string	The return URL.
-	 * @since	1.6
+	 * @return    string    The return URL.
+	 * @since    1.6
 	 */
 	public function getReturnPage()
 	{
@@ -25,7 +25,7 @@ class WissensmatrixModelForm extends WissensmatrixModelWorker
 	 *
 	 * Note. Calling getState in this method will result in recursion.
 	 *
-	 * @since	1.6
+	 * @since    1.6
 	 */
 	protected function populateState()
 	{
@@ -39,14 +39,15 @@ class WissensmatrixModelForm extends WissensmatrixModelWorker
 
 		$return = $app->input->get('return', null, 'base64');
 
-		if (!JUri::isInternal(base64_decode($return))) {
+		if (!JUri::isInternal(base64_decode($return)))
+		{
 			$return = null;
 		}
 
 		$this->setState('return_page', base64_decode($return));
 
 		// Load the parameters.
-		$params	= $app->getParams();
+		$params = $app->getParams();
 		$this->setState('params', $params);
 
 		$this->setState('layout', $app->input->get('layout'));

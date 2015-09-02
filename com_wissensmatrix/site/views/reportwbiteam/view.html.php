@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die;
-jimport( 'joomla.application.component.view');
+jimport('joomla.application.component.view');
+
 /**
  * HTML View class for the Wissensmatrix Component
  */
@@ -9,31 +10,32 @@ class WissensmatrixViewReportwbiteam extends JViewLegacy
 	function display($tpl = null)
 	{
 		// Get the model
-		$this->model		= $this->getModel();
+		$this->model = $this->getModel();
 
 		// Get some data from the model
-		$this->state		= $this->get('State');
-		$this->item			= $this->get('Item');
+		$this->state = $this->get('State');
+		$this->item  = $this->get('Item');
 
 		// Get Workers for selected teams
 		$this->workermodel = $this->getModel('Workers');
-		$this->w_state		= $this->workermodel->getState();
+		$this->w_state     = $this->workermodel->getState();
 		$this->w_state->set('wbi.id', $this->state->get('wbi.id'));
 		$this->w_state->set('list.start', 0);
 		$this->w_state->set('list.limit', 0);
-		$this->workers		= $this->workermodel->getItems();
-		$this->parent		= $this->workermodel->getParent();
+		$this->workers = $this->workermodel->getItems();
+		$this->parent  = $this->workermodel->getParent();
 
-		$this->params		= $this->state->get('params');
+		$this->params = $this->state->get('params');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
 			JError::raiseError(500, implode("\n", $errors));
+
 			return false;
 		}
 
-		$this->pageclass_sfx	= htmlspecialchars($this->params->get('pageclass_sfx'));
+		$this->pageclass_sfx = htmlspecialchars($this->params->get('pageclass_sfx'));
 		$this->_prepareDocument();
 		parent::display($tpl);
 	}
@@ -43,8 +45,8 @@ class WissensmatrixViewReportwbiteam extends JViewLegacy
 	 */
 	protected function _prepareDocument()
 	{
-		$app	= JFactory::getApplication();
-		$menus	= $app->getMenu();
+		$app   = JFactory::getApplication();
+		$menus = $app->getMenu();
 
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself

@@ -17,27 +17,29 @@ class WissensmatrixViewFwigs extends JViewLegacy
 			WissensmatrixHelper::addSubmenu('fwigs');
 		}
 
-		$this->state		= $this->get('State');
-		$this->items		= $this->get('Items');
-		$this->pagination	= $this->get('Pagination');
+		$this->state      = $this->get('State');
+		$this->items      = $this->get('Items');
+		$this->pagination = $this->get('Pagination');
 
 		$db = JFactory::getDbo();
 		foreach ($this->items as $item)
 		{
 			if (!$item->alias)
 			{
-				$query	= $db->getQuery(true);
+				$query = $db->getQuery(true);
 				$query->UPDATE('#__wissensmatrix_fachwissengruppe');
-				$query->SET('alias = "'.JApplication::stringURLSafe($item->title).'"');
-				$query->WHERE('id = '.$item->id);
+				$query->SET('alias = "' . JApplication::stringURLSafe($item->title) . '"');
+				$query->WHERE('id = ' . $item->id);
 				$db->setQuery($query);
 				$db->query();
 			}
 		}
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
+		if (count($errors = $this->get('Errors')))
+		{
 			JError::raiseError(500, implode("\n", $errors));
+
 			return false;
 		}
 
@@ -52,36 +54,45 @@ class WissensmatrixViewFwigs extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		$canDo 	= WissensmatrixHelper::getActions();
+		$canDo = WissensmatrixHelper::getActions();
 
 		JToolBarHelper::title(JText::_('COM_WISSENSMATRIX_FWIGS_TITLE'), 'fwigs');
 
-		if ($canDo->get('core.create')) {
-			JToolBarHelper::addNew('fwig.add','JTOOLBAR_NEW');
+		if ($canDo->get('core.create'))
+		{
+			JToolBarHelper::addNew('fwig.add', 'JTOOLBAR_NEW');
 		}
 
-		if (($canDo->get('core.edit')) || ($canDo->get('core.edit.own'))) {
-			JToolBarHelper::editList('fwig.edit','JTOOLBAR_EDIT');
+		if (($canDo->get('core.edit')) || ($canDo->get('core.edit.own')))
+		{
+			JToolBarHelper::editList('fwig.edit', 'JTOOLBAR_EDIT');
 		}
 
-		if ($canDo->get('core.edit.state')) {
+		if ($canDo->get('core.edit.state'))
+		{
 			JToolBarHelper::divider();
-			JToolBarHelper::custom('fwigs.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);
+			JToolBarHelper::custom('fwigs.publish', 'publish.png', 'publish_f2.png', 'JTOOLBAR_PUBLISH', true);
 			JToolBarHelper::custom('fwigs.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
 			JToolBarHelper::divider();
-			if ($this->state->get('filter.state') != 2) {
-				JToolBarHelper::archiveList('fwigs.archive','JTOOLBAR_ARCHIVE');
-			} else {
+			if ($this->state->get('filter.state') != 2)
+			{
+				JToolBarHelper::archiveList('fwigs.archive', 'JTOOLBAR_ARCHIVE');
+			}
+			else
+			{
 				JToolBarHelper::unarchiveList('fwigs.publish', 'JTOOLBAR_UNARCHIVE');
 			}
 			JToolBarHelper::checkin('fwigs.checkin');
 		}
 
-		if ($this->state->get('filter.state') == -2 && $canDo->get('core.delete')) {
-			JToolBarHelper::deleteList('', 'fwigs.delete','JTOOLBAR_EMPTY_TRASH');
+		if ($this->state->get('filter.state') == -2 && $canDo->get('core.delete'))
+		{
+			JToolBarHelper::deleteList('', 'fwigs.delete', 'JTOOLBAR_EMPTY_TRASH');
 			JToolBarHelper::divider();
-		} else if ($canDo->get('core.edit.state')) {
-			JToolBarHelper::trash('fwigs.trash','JTOOLBAR_TRASH');
+		}
+		else if ($canDo->get('core.edit.state'))
+		{
+			JToolBarHelper::trash('fwigs.trash', 'JTOOLBAR_TRASH');
 			JToolBarHelper::divider();
 		}
 
@@ -98,7 +109,8 @@ class WissensmatrixViewFwigs extends JViewLegacy
 			$bar->appendButton('Custom', $dhtml, 'batch');
 		}
 
-		if ($canDo->get('core.admin')) {
+		if ($canDo->get('core.admin'))
+		{
 			JToolBarHelper::preferences('com_wissensmatrix', 650, 900);
 		}
 	}
@@ -146,12 +158,12 @@ class WissensmatrixViewFwigs extends JViewLegacy
 	{
 		return array(
 			'fwigs.ordering' => JText::_('JGRID_HEADING_ORDERING'),
-			'fwigs.state' => JText::_('JSTATUS'),
-			'fwigs.title' => JText::_('JGLOBAL_TITLE'),
+			'fwigs.state'    => JText::_('JSTATUS'),
+			'fwigs.title'    => JText::_('JGLOBAL_TITLE'),
 			'category_title' => JText::_('JCATEGORY'),
-			'fwigs.hits' => JText::_('JGLOBAL_HITS'),
-			'language' => JText::_('JGRID_HEADING_LANGUAGE'),
-			'fwigs.id' => JText::_('JGRID_HEADING_ID')
+			'fwigs.hits'     => JText::_('JGLOBAL_HITS'),
+			'language'       => JText::_('JGRID_HEADING_LANGUAGE'),
+			'fwigs.id'       => JText::_('JGRID_HEADING_ID'),
 		);
 	}
 }

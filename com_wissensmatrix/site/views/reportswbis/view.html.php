@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die;
-jimport( 'joomla.application.component.view');
+jimport('joomla.application.component.view');
+
 /**
  * HTML View class for the Wissensmatrix Component
  */
@@ -8,35 +9,36 @@ class WissensmatrixViewReportswbis extends JViewLegacy
 {
 	function display($tpl = null)
 	{
-		$this->state		= $this->get('State');
+		$this->state = $this->get('State');
 		$this->state->set('wbig.id', JFactory::getApplication()->input->get('id', 0, 'int'));
-		$this->items		= $this->get('Items');
-		$this->pagination	= $this->get('Pagination');
+		$this->items      = $this->get('Items');
+		$this->pagination = $this->get('Pagination');
 		$this->pagination->setAdditionalUrlParam('teamid', $this->state->get('team.id'));
 		$this->pagination->setAdditionalUrlParam('id', $this->state->get('wbig.id'));
-		$this->parent		= JCategories::getInstance('Wissensmatrix')->get($this->state->get('team.id', 'root'))->getParent();
+		$this->parent = JCategories::getInstance('Wissensmatrix')->get($this->state->get('team.id', 'root'))->getParent();
 
 		// Get Wbigs for dropdown and add "- select wbig -"
-		$wbigsmodel		= $this->getModel('Wbigs');
-		$wbig_state		= $wbigsmodel->getState();
+		$wbigsmodel = $this->getModel('Wbigs');
+		$wbig_state = $wbigsmodel->getState();
 		$wbig_state->set('filter.search', '');
 		$wbig_state->set('list.limit', 0);
 		$wbig_state->set('list.start', 0);
 		$wbig_state->set('list.ordering', 'title');
 		$wbig_state->set('list.direction', 'asc');
-		$this->wbigs	= $wbigsmodel->getItems();
+		$this->wbigs = $wbigsmodel->getItems();
 
-		$this->params		= $this->state->get('params');
+		$this->params = $this->state->get('params');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
 			JError::raiseError(500, implode("\n", $errors));
+
 			return false;
 		}
 
-		$this->pageclass_sfx	= htmlspecialchars($this->params->get('pageclass_sfx'));
-		$this->maxLevel			= $this->params->get('maxLevel', -1);
+		$this->pageclass_sfx = htmlspecialchars($this->params->get('pageclass_sfx'));
+		$this->maxLevel      = $this->params->get('maxLevel', -1);
 		$this->_prepareDocument();
 		parent::display($tpl);
 	}
@@ -46,8 +48,8 @@ class WissensmatrixViewReportswbis extends JViewLegacy
 	 */
 	protected function _prepareDocument()
 	{
-		$app	= JFactory::getApplication();
-		$menus	= $app->getMenu();
+		$app   = JFactory::getApplication();
+		$menus = $app->getMenu();
 
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself

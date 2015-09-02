@@ -8,17 +8,19 @@ class WissensmatrixModelFwigs extends JModelList
 	/**
 	 * Constructor.
 	 *
-	 * @param	array	An optional associative array of configuration settings.
-	 * @see		JController
-	 * @since	1.6
+	 * @param    array    An optional associative array of configuration settings.
+	 *
+	 * @see        JController
+	 * @since      1.6
 	 */
 	public function __construct($config = array())
 	{
-		if (empty($config['filter_fields'])) {
+		if (empty($config['filter_fields']))
+		{
 			$config['filter_fields'] = array(
 				'id', 'fwigs.id',
-				'fwigs.title_de', 'fwigs.title_fr', 'fwigs.title_it', 
-				'title', 'title_de', 'title_fr', 'title_it', 
+				'fwigs.title_de', 'fwigs.title_fr', 'fwigs.title_it',
+				'title', 'title_de', 'title_fr', 'title_it',
 				'alias', 'fwigs.alias',
 				'checked_out', 'fwigs.checked_out',
 				'checked_out_time', 'fwigs.checked_out_time',
@@ -42,14 +44,14 @@ class WissensmatrixModelFwigs extends JModelList
 	 *
 	 * Note. Calling getState in this method will result in recursion.
 	 *
-	 * @since	1.6
+	 * @since    1.6
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app	= JFactory::getApplication();
-		$params	= $app->getParams();
+		$app    = JFactory::getApplication();
+		$params = $app->getParams();
 		$this->setState('params', $params);
-		$jinput	= $app->input;
+		$jinput = $app->input;
 
 		// Category filter (priority on request so subcategories work)
 		// Team in this case, not used but selection has to be saved in userstate
@@ -58,14 +60,15 @@ class WissensmatrixModelFwigs extends JModelList
 
 		// Category filter (priority on request so subcategories work)
 		// We don't use userstate here as the category is not used as team but category.
-		$id	= $jinput->get('catid', $params->get('catid', 0), 'int');
+		$id = $jinput->get('catid', $params->get('catid', 0), 'int');
 		$this->setState('category.id', $id);
 
 		// Include Subcategories or not
 		$this->setState('filter.subcategories', $params->get('show_subcategory_content', 0));
 
-		$user	= JFactory::getUser();
-		if ((!$user->authorise('core.edit.state', 'com_wissensmatrix')) &&  (!$user->authorise('core.edit', 'com_wissensmatrix'))){
+		$user = JFactory::getUser();
+		if ((!$user->authorise('core.edit.state', 'com_wissensmatrix')) && (!$user->authorise('core.edit', 'com_wissensmatrix')))
+		{
 			// filter on published for those who do not have edit or edit.state rights.
 			$this->setState('filter.state', 1);
 		}
@@ -73,10 +76,10 @@ class WissensmatrixModelFwigs extends JModelList
 		$this->setState('filter.language', $app->getLanguageFilter());
 
 		// Load the filter state.
-		$published = $app->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
+		$published = $app->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string');
 		$this->setState('filter.state', $published);
 
-		$search = $app->getUserStateFromRequest($this->context.'.filter.search', 'filter-search', '', 'STRING');
+		$search = $app->getUserStateFromRequest($this->context . '.filter.search', 'filter-search', '', 'STRING');
 		$this->setState('filter.search', $search);
 
 		parent::populateState('title', 'ASC');
@@ -85,40 +88,40 @@ class WissensmatrixModelFwigs extends JModelList
 	/**
 	 * Build an SQL query to load the list data.
 	 *
-	 * @return	JDatabaseQuery
-	 * @since	1.6
+	 * @return    JDatabaseQuery
+	 * @since    1.6
 	 */
 	protected function getListQuery()
 	{
-		$user	= JFactory::getUser();
-		$groups	= implode(',', $user->getAuthorisedViewLevels());
+		$user   = JFactory::getUser();
+		$groups = implode(',', $user->getAuthorisedViewLevels());
 
 		// Create a new query object.
-		$db		= $this->getDbo();
-		$query	= $db->getQuery(true);
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true);
 
 		// Select the required fields from the table.
 		$query->select(
 			$this->getState(
 				'list.select',
-				'fwigs.id, fwigs.catid, fwigs.language, '.
+				'fwigs.id, fwigs.catid, fwigs.language, ' .
 				'CASE WHEN CHAR_LENGTH(fwigs.alias) THEN CONCAT_WS(\':\', fwigs.id, fwigs.alias) ELSE fwigs.id END as slug, ' .
-				'fwigs.checked_out, fwigs.checked_out_time, '.
-				'fwigs.alias, fwigs.created, fwigs.created_by, '.
+				'fwigs.checked_out, fwigs.checked_out_time, ' .
+				'fwigs.alias, fwigs.created, fwigs.created_by, ' .
 				'fwigs.state, fwigs.bool, fwigs.ordering, fwigs.hits'
 			)
 		);
 		$query->from('`#__wissensmatrix_fachwissengruppe` AS fwigs');
 
 		// Create title from active language
-		$lang	= substr(JFactory::getLanguage()->getTag(), 0, 2);
-		$query->select('fwigs.`title_'.$lang.'` AS title');
+		$lang = substr(JFactory::getLanguage()->getTag(), 0, 2);
+		$query->select('fwigs.`title_' . $lang . '` AS title');
 
 		// Join over Fwigs Category.
 		$query->select('c_fwigs.title AS category_title');
 		$query->select('CASE WHEN CHAR_LENGTH(c_fwigs.alias) THEN CONCAT_WS(\':\', c_fwigs.id, c_fwigs.alias) ELSE c_fwigs.id END as catslug');
 		$query->join('LEFT', '#__categories AS c_fwigs ON c_fwigs.id = fwigs.catid');
-		$query->where('(fwigs.catid = 0 OR (c_fwigs.access IN ('.$groups.') AND c_fwigs.published = 1))');
+		$query->where('(fwigs.catid = 0 OR (c_fwigs.access IN (' . $groups . ') AND c_fwigs.published = 1))');
 
 		// Filter by category
 		if ($categoryId = $this->getState('category.id'))
@@ -130,17 +133,18 @@ class WissensmatrixModelFwigs extends JModelList
 				$subQuery->select('sub.id');
 				$subQuery->from('#__categories as sub');
 				$subQuery->join('INNER', '#__categories as this ON sub.lft > this.lft AND sub.rgt < this.rgt');
-				$subQuery->where('this.id = '.(int) $categoryId);
-				if ($levels > 0) {
-					$subQuery->where('sub.level <= this.level + '.$levels);
+				$subQuery->where('this.id = ' . (int) $categoryId);
+				if ($levels > 0)
+				{
+					$subQuery->where('sub.level <= this.level + ' . $levels);
 				}
 				// Add the subquery to the main query
-				$query->where('(fwigs.catid = '.(int) $categoryId
-					.' OR fwigs.catid IN ('.$subQuery->__toString().'))');
+				$query->where('(fwigs.catid = ' . (int) $categoryId
+					. ' OR fwigs.catid IN (' . $subQuery->__toString() . '))');
 			}
 			else
 			{
-				$query->where('fwigs.catid = '.(int) $categoryId);
+				$query->where('fwigs.catid = ' . (int) $categoryId);
 			}
 		}
 
@@ -152,30 +156,31 @@ class WissensmatrixModelFwigs extends JModelList
 		$search = $this->getState('filter.search');
 		if (!empty($search))
 		{
-			$search = $db->Quote('%'.$db->escape($search, true).'%');
-			$query->where('(fwigs.title_'.$lang.' LIKE '.$search.')');
+			$search = $db->Quote('%' . $db->escape($search, true) . '%');
+			$query->where('(fwigs.title_' . $lang . ' LIKE ' . $search . ')');
 		}
 
 		// Filter by state
 		$state = $this->getState('filter.state');
 		if (is_numeric($state))
 		{
-			$query->where('fwigs.state = '.(int) $state);
+			$query->where('fwigs.state = ' . (int) $state);
 		}
 
 		// Filter by language
 		if ($this->getState('filter.language'))
 		{
-			$query->where('fwigs.language in ('.$db->quote(JFactory::getLanguage()->getTag()).','.$db->quote('*').')');
+			$query->where('fwigs.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
 		}
 
 		// Add the list ordering clause.
-		$orderCol	= $this->state->get('list.ordering');
-		$orderDirn	= $this->state->get('list.direction');
-		if ($orderCol == 'fwigs.ordering' || $orderCol == 'category_title') {
-			$orderCol = 'category_title '.$orderDirn.', fwigs.ordering';
+		$orderCol  = $this->state->get('list.ordering');
+		$orderDirn = $this->state->get('list.direction');
+		if ($orderCol == 'fwigs.ordering' || $orderCol == 'category_title')
+		{
+			$orderCol = 'category_title ' . $orderDirn . ', fwigs.ordering';
 		}
-		$query->order($db->escape($orderCol.' '.$orderDirn));
+		$query->order($db->escape($orderCol . ' ' . $orderDirn));
 
 		return $query;
 	}
@@ -183,19 +188,19 @@ class WissensmatrixModelFwigs extends JModelList
 	/**
 	 * Method to get category data for the current category
 	 *
-	 * @param	int		An optional ID
+	 * @param    int        An optional ID
 	 *
-	 * @return	object
-	 * @since	1.5
+	 * @return    object
+	 * @since    1.5
 	 */
 	public function getCategory()
 	{
 		if (!is_object($this->_item))
 		{
-			if(isset($this->state->params))
+			if (isset($this->state->params))
 			{
-				$params = $this->state->params;
-				$options = array();
+				$params                = $this->state->params;
+				$options               = array();
 				$options['countItems'] = $params->get('show_cat_num_items', 1) || !$params->get('show_empty_categories', 0);
 			}
 			else
@@ -204,34 +209,38 @@ class WissensmatrixModelFwigs extends JModelList
 			}
 			$options['table'] = '#__wissensmatrix_mitarbeiter';
 
-			$categories = JCategories::getInstance('Wissensmatrix', $options);
+			$categories  = JCategories::getInstance('Wissensmatrix', $options);
 			$this->_item = $categories->get($this->getState('category.id', 'root'));
 
 			// Compute selected asset permissions.
-			if (is_object($this->_item)) {
-				$user	= JFactory::getUser();
-				$userId	= $user->get('id');
-				$asset	= 'com_wissensmatrix.category.'.$this->_item->id;
+			if (is_object($this->_item))
+			{
+				$user   = JFactory::getUser();
+				$userId = $user->get('id');
+				$asset  = 'com_wissensmatrix.category.' . $this->_item->id;
 
 				// Check general create permission.
-				if ($user->authorise('core.create', $asset)) {
+				if ($user->authorise('core.create', $asset))
+				{
 					$this->_item->getParams()->set('access-create', true);
 				}
 
 				// TODO: Why aren't we lazy loading the children and siblings?
 				$this->_children = $this->_item->getChildren();
-				$this->_parent = false;
+				$this->_parent   = false;
 
-				if ($this->_item->getParent()) {
+				if ($this->_item->getParent())
+				{
 					$this->_parent = $this->_item->getParent();
 				}
 
 				$this->_rightsibling = $this->_item->getSibling();
-				$this->_leftsibling = $this->_item->getSibling(false);
+				$this->_leftsibling  = $this->_item->getSibling(false);
 			}
-			else {
+			else
+			{
 				$this->_children = false;
-				$this->_parent = false;
+				$this->_parent   = false;
 			}
 		}
 
@@ -241,14 +250,15 @@ class WissensmatrixModelFwigs extends JModelList
 	/**
 	 * Get the parent categorie.
 	 *
-	 * @param	int		An optional category id. If not supplied, the model state 'category.id' will be used.
+	 * @param    int        An optional category id. If not supplied, the model state 'category.id' will be used.
 	 *
-	 * @return	mixed	An array of categories or false if an error occurs.
-	 * @since	1.6
+	 * @return    mixed    An array of categories or false if an error occurs.
+	 * @since    1.6
 	 */
 	public function getParent()
 	{
-		if (!is_object($this->_item)) {
+		if (!is_object($this->_item))
+		{
 			$this->getCategory();
 		}
 
@@ -258,12 +268,13 @@ class WissensmatrixModelFwigs extends JModelList
 	/**
 	 * Get the left sibling (adjacent) categories.
 	 *
-	 * @return	mixed	An array of categories or false if an error occurs.
-	 * @since	1.6
+	 * @return    mixed    An array of categories or false if an error occurs.
+	 * @since    1.6
 	 */
 	function &getLeftSibling()
 	{
-		if (!is_object($this->_item)) {
+		if (!is_object($this->_item))
+		{
 			$this->getCategory();
 		}
 
@@ -273,12 +284,13 @@ class WissensmatrixModelFwigs extends JModelList
 	/**
 	 * Get the right sibling (adjacent) categories.
 	 *
-	 * @return	mixed	An array of categories or false if an error occurs.
-	 * @since	1.6
+	 * @return    mixed    An array of categories or false if an error occurs.
+	 * @since    1.6
 	 */
 	function &getRightSibling()
 	{
-		if (!is_object($this->_item)) {
+		if (!is_object($this->_item))
+		{
 			$this->getCategory();
 		}
 
@@ -288,21 +300,24 @@ class WissensmatrixModelFwigs extends JModelList
 	/**
 	 * Get the child categories.
 	 *
-	 * @param	int		An optional category id. If not supplied, the model state 'category.id' will be used.
+	 * @param    int        An optional category id. If not supplied, the model state 'category.id' will be used.
 	 *
-	 * @return	mixed	An array of categories or false if an error occurs.
-	 * @since	1.6
+	 * @return    mixed    An array of categories or false if an error occurs.
+	 * @since    1.6
 	 */
 	function &getChildren()
 	{
-		if (!is_object($this->_item)) {
+		if (!is_object($this->_item))
+		{
 			$this->getCategory();
 		}
 
 		// Order subcategories
-		if (sizeof($this->_children)) {
+		if (sizeof($this->_children))
+		{
 			$params = $this->getState()->get('params');
-			if ($params->get('orderby_pri') == 'alpha' || $params->get('orderby_pri') == 'ralpha') {
+			if ($params->get('orderby_pri') == 'alpha' || $params->get('orderby_pri') == 'ralpha')
+			{
 				jimport('joomla.utilities.arrayhelper');
 				JArrayHelper::sortObjects($this->_children, 'title', ($params->get('orderby_pri') == 'alpha') ? 1 : -1);
 			}
@@ -315,18 +330,18 @@ class WissensmatrixModelFwigs extends JModelList
 	 * Gets the excluded categories
 	 * UMaybe move to a helper
 	 *
-	 * @author Thomas Hunziker <thomi.hunziker@sbb.ch>
+	 * @author  Thomas Hunziker <thomi.hunziker@sbb.ch>
 	 * @version 1.0
-	 * @access private
+	 * @access  private
 	 */
 	private function getExcludedCats()
 	{
-		$exclude = $this->state->params->get('exclude_cat');
-		$cat 	= JCategories::getInstance('Wissensmatrix')->get($exclude);
+		$exclude  = $this->state->params->get('exclude_cat');
+		$cat      = JCategories::getInstance('Wissensmatrix')->get($exclude);
 		$children = $cat->getChildren(true);
 		foreach ($children as $cat)
 		{
-			$this->excluded_cats[]	= (int)$cat->id;
+			$this->excluded_cats[] = (int) $cat->id;
 		}
 	}
 
@@ -334,9 +349,9 @@ class WissensmatrixModelFwigs extends JModelList
 	 * Gets the summary data for each level per fwig
 	 * Used in FwigLevelSummary Report
 	 *
-	 * @author Thomas Hunziker <thomi.hunziker@sbb.ch>
+	 * @author  Thomas Hunziker <thomi.hunziker@sbb.ch>
 	 * @version 1.0
-	 * @access public
+	 * @access  public
 	 */
 	public function getLevelSummary($level, $levels, $soll = 0, $per_fwig = 0)
 	{
@@ -345,18 +360,18 @@ class WissensmatrixModelFwigs extends JModelList
 			$this->getExcludedCats();
 		}
 
-		$field	= ($soll) ? 'soll' : 'ist';
+		$field = ($soll) ? 'soll' : 'ist';
 		// Create a new query object.
-		$db		= $this->getDbo();
-		$query	= $db->getQuery(true);
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true);
 
 		$query->select('COUNT(1) AS mit_count');
 		$query->from('#__wissensmatrix_mit_fwi AS mit_fwi');
 		$query->join('LEFT', '#__wissensmatrix_mitarbeiter AS mit ON mit_fwi.mit_id = mit.id');
-		$query->join('LEFT', '#__wissensmatrix_erfahrung AS level ON mit_fwi.'.$field.' = level.id');
-		$query->where('mit.catid NOT IN ('.implode(',', $this->excluded_cats).')');
-		$query->where('mit_fwi.'.$field.' IN ('.$levels.')');
-		$query->where('level.value >= '.(int)$level);
+		$query->join('LEFT', '#__wissensmatrix_erfahrung AS level ON mit_fwi.' . $field . ' = level.id');
+		$query->where('mit.catid NOT IN (' . implode(',', $this->excluded_cats) . ')');
+		$query->where('mit_fwi.' . $field . ' IN (' . $levels . ')');
+		$query->where('level.value >= ' . (int) $level);
 
 		// Join over fwi table
 		if ($per_fwig)
@@ -382,9 +397,9 @@ class WissensmatrixModelFwigs extends JModelList
 	 * Gets the summary data for each delta per fwig
 	 * Used in FwigDiffSummary Report
 	 *
-	 * @author Thomas Hunziker <thomi.hunziker@sbb.ch>
+	 * @author  Thomas Hunziker <thomi.hunziker@sbb.ch>
 	 * @version 1.0
-	 * @access public
+	 * @access  public
 	 */
 	public function getDiffSummary($manko_pot = 0, $per_fwig = 0)
 	{
@@ -394,15 +409,15 @@ class WissensmatrixModelFwigs extends JModelList
 		}
 
 		// Create a new query object.
-		$db		= $this->getDbo();
-		$query	= $db->getQuery(true);
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true);
 
 		$query->select('COUNT(1) AS mit_count');
 		$query->from('#__wissensmatrix_mit_fwi AS mit_fwi');
 		$query->join('LEFT', '#__wissensmatrix_mitarbeiter AS mit ON mit_fwi.mit_id = mit.id');
 		$query->join('LEFT', '#__wissensmatrix_erfahrung AS ist_level ON mit_fwi.ist = ist_level.id');
 		$query->join('LEFT', '#__wissensmatrix_erfahrung AS soll_level ON mit_fwi.soll = soll_level.id');
-		$query->where('mit.catid NOT IN ('.implode(',', $this->excluded_cats).')');
+		$query->where('mit.catid NOT IN (' . implode(',', $this->excluded_cats) . ')');
 		if ($manko_pot == 1)
 		{
 			$query->where('ist_level.value > soll_level.value');

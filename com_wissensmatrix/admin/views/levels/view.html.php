@@ -17,13 +17,15 @@ class WissensmatrixViewLevels extends JViewLegacy
 			WissensmatrixHelper::addSubmenu('levels');
 		}
 
-		$this->state		= $this->get('State');
-		$this->items		= $this->get('Items');
-		$this->pagination	= $this->get('Pagination');
+		$this->state      = $this->get('State');
+		$this->items      = $this->get('Items');
+		$this->pagination = $this->get('Pagination');
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
+		if (count($errors = $this->get('Errors')))
+		{
 			JError::raiseError(500, implode("\n", $errors));
+
 			return false;
 		}
 
@@ -38,36 +40,45 @@ class WissensmatrixViewLevels extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		$canDo 	= WissensmatrixHelper::getActions();
+		$canDo = WissensmatrixHelper::getActions();
 
 		JToolBarHelper::title(JText::_('COM_WISSENSMATRIX_LEVELS_TITLE'), 'levels');
 
-		if ($canDo->get('core.create')) {
-			JToolBarHelper::addNew('level.add','JTOOLBAR_NEW');
+		if ($canDo->get('core.create'))
+		{
+			JToolBarHelper::addNew('level.add', 'JTOOLBAR_NEW');
 		}
 
-		if (($canDo->get('core.edit')) || ($canDo->get('core.edit.own'))) {
-			JToolBarHelper::editList('level.edit','JTOOLBAR_EDIT');
+		if (($canDo->get('core.edit')) || ($canDo->get('core.edit.own')))
+		{
+			JToolBarHelper::editList('level.edit', 'JTOOLBAR_EDIT');
 		}
 
-		if ($canDo->get('core.edit.state')) {
+		if ($canDo->get('core.edit.state'))
+		{
 			JToolBarHelper::divider();
-			JToolBarHelper::custom('levels.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);
+			JToolBarHelper::custom('levels.publish', 'publish.png', 'publish_f2.png', 'JTOOLBAR_PUBLISH', true);
 			JToolBarHelper::custom('levels.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
 			JToolBarHelper::divider();
-			if ($this->state->get('filter.state') != 2) {
-				JToolBarHelper::archiveList('levels.archive','JTOOLBAR_ARCHIVE');
-			} else {
+			if ($this->state->get('filter.state') != 2)
+			{
+				JToolBarHelper::archiveList('levels.archive', 'JTOOLBAR_ARCHIVE');
+			}
+			else
+			{
 				JToolBarHelper::unarchiveList('levels.publish', 'JTOOLBAR_UNARCHIVE');
 			}
 			JToolBarHelper::checkin('levels.checkin');
 		}
 
-		if ($this->state->get('filter.state') == -2 && $canDo->get('core.delete')) {
-			JToolBarHelper::deleteList('', 'levels.delete','JTOOLBAR_EMPTY_TRASH');
+		if ($this->state->get('filter.state') == -2 && $canDo->get('core.delete'))
+		{
+			JToolBarHelper::deleteList('', 'levels.delete', 'JTOOLBAR_EMPTY_TRASH');
 			JToolBarHelper::divider();
-		} else if ($canDo->get('core.edit.state')) {
-			JToolBarHelper::trash('levels.trash','JTOOLBAR_TRASH');
+		}
+		else if ($canDo->get('core.edit.state'))
+		{
+			JToolBarHelper::trash('levels.trash', 'JTOOLBAR_TRASH');
 			JToolBarHelper::divider();
 		}
 
@@ -84,7 +95,8 @@ class WissensmatrixViewLevels extends JViewLegacy
 			$bar->appendButton('Custom', $dhtml, 'batch');
 		}
 
-		if ($canDo->get('core.admin')) {
+		if ($canDo->get('core.admin'))
+		{
 			JToolBarHelper::preferences('com_wissensmatrix', 650, 900);
 		}
 	}
@@ -126,12 +138,12 @@ class WissensmatrixViewLevels extends JViewLegacy
 	{
 		return array(
 			'levels.ordering' => JText::_('JGRID_HEADING_ORDERING'),
-			'levels.state' => JText::_('JSTATUS'),
-			'levels.title' => JText::_('JGLOBAL_TITLE'),
-			'category_title' => JText::_('JCATEGORY'),
-			'levels.hits' => JText::_('JGLOBAL_HITS'),
-			'language' => JText::_('JGRID_HEADING_LANGUAGE'),
-			'levels.id' => JText::_('JGRID_HEADING_ID')
+			'levels.state'    => JText::_('JSTATUS'),
+			'levels.title'    => JText::_('JGLOBAL_TITLE'),
+			'category_title'  => JText::_('JCATEGORY'),
+			'levels.hits'     => JText::_('JGLOBAL_HITS'),
+			'language'        => JText::_('JGRID_HEADING_LANGUAGE'),
+			'levels.id'       => JText::_('JGRID_HEADING_ID'),
 		);
 	}
 }

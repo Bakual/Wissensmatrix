@@ -1,10 +1,10 @@
 <?php
 defined('_JEXEC') or die;
 
-JHTML::addIncludePath(JPATH_COMPONENT.'/helpers');
+JHTML::addIncludePath(JPATH_COMPONENT . '/helpers');
 
 // loading PHPExcel (http://www.codeplex.com/PHPExcel)
-require_once JPATH_COMPONENT.'/libraries/PHPExcel.php';
+require_once JPATH_COMPONENT . '/libraries/PHPExcel.php';
 
 $xls = new PHPExcel();
 
@@ -13,10 +13,10 @@ $xls->getDefaultStyle()->getFont()->setName('Arial');
 $xls->getDefaultStyle()->getFont()->setSize(10);
 
 // Sanitize and shorten $item->title so it can be used as sheet title (max 31 chars allowed)
-$search	= array(':', '\\', '/', '?', '*', '[', ']');
-$title	= str_replace($search, '_', JText::_('COM_WISSENSMATRIX_DIFF'));
+$search = array(':', '\\', '/', '?', '*', '[', ']');
+$title  = str_replace($search, '_', JText::_('COM_WISSENSMATRIX_DIFF'));
 if (strlen($title) > 31) :
-	$title	= substr($title, 0, 28).'...';
+	$title = substr($title, 0, 28) . '...';
 endif;
 $xls->getActiveSheet()->setTitle($title);
 
@@ -41,27 +41,27 @@ $xls->getActiveSheet()->SetCellValue('F1', JText::_('COM_WISSENSMATRIX_BASE'));
 $i = 1;
 foreach ($this->items as $item) :
 	$i++;
-	$xls->getActiveSheet()->SetCellValue('A'.$i, $item->title);
-	$xls->getActiveSheet()->SetCellValue('B'.$i, $this->manko[$item->id]->mit_count);
-	$xls->getActiveSheet()->SetCellValue('C'.$i, '=ROUND(B'.$i.'/F'.$i.', 2)');
-	$xls->getActiveSheet()->SetCellValue('D'.$i, $this->potential[$item->id]->mit_count);
-	$xls->getActiveSheet()->SetCellValue('E'.$i, '=ROUND(D'.$i.'/F'.$i.', 2)');
-	$xls->getActiveSheet()->SetCellValue('F'.$i, $this->workers[$item->id]->mit_count);
+	$xls->getActiveSheet()->SetCellValue('A' . $i, $item->title);
+	$xls->getActiveSheet()->SetCellValue('B' . $i, $this->manko[$item->id]->mit_count);
+	$xls->getActiveSheet()->SetCellValue('C' . $i, '=ROUND(B' . $i . '/F' . $i . ', 2)');
+	$xls->getActiveSheet()->SetCellValue('D' . $i, $this->potential[$item->id]->mit_count);
+	$xls->getActiveSheet()->SetCellValue('E' . $i, '=ROUND(D' . $i . '/F' . $i . ', 2)');
+	$xls->getActiveSheet()->SetCellValue('F' . $i, $this->workers[$item->id]->mit_count);
 endforeach;
 
 // Total is calculated by Excel
 $i++;
-$xls->getActiveSheet()->SetCellValue('A'.$i, JText::_('COM_WISSENSMATRIX_TOTAL'));
-$xls->getActiveSheet()->SetCellValue('B'.$i, '=SUM(B2:B'.($i-1).')');
-$xls->getActiveSheet()->SetCellValue('C'.$i, '=ROUND(B'.$i.'/F'.$i.', 2)');
-$xls->getActiveSheet()->SetCellValue('D'.$i, '=SUM(D2:D'.($i-1).')');
-$xls->getActiveSheet()->SetCellValue('E'.$i, '=ROUND(D'.$i.'/F'.$i.', 2)');
-$xls->getActiveSheet()->SetCellValue('F'.$i, '=SUM(F2:F'.($i-1).')');
+$xls->getActiveSheet()->SetCellValue('A' . $i, JText::_('COM_WISSENSMATRIX_TOTAL'));
+$xls->getActiveSheet()->SetCellValue('B' . $i, '=SUM(B2:B' . ($i - 1) . ')');
+$xls->getActiveSheet()->SetCellValue('C' . $i, '=ROUND(B' . $i . '/F' . $i . ', 2)');
+$xls->getActiveSheet()->SetCellValue('D' . $i, '=SUM(D2:D' . ($i - 1) . ')');
+$xls->getActiveSheet()->SetCellValue('E' . $i, '=ROUND(D' . $i . '/F' . $i . ', 2)');
+$xls->getActiveSheet()->SetCellValue('F' . $i, '=SUM(F2:F' . ($i - 1) . ')');
 
 // Set "total" row to italic and set percent cell format
-$xls->getActiveSheet()->getStyle('A'.$i.':F'.$i)->getFont()->setItalic(true);
-$xls->getActiveSheet()->getStyle('C2:C'.$i)->getNumberFormat()->setFormatCode('0%');
-$xls->getActiveSheet()->getStyle('E2:E'.$i)->getNumberFormat()->setFormatCode('0%');
+$xls->getActiveSheet()->getStyle('A' . $i . ':F' . $i)->getFont()->setItalic(true);
+$xls->getActiveSheet()->getStyle('C2:C' . $i)->getNumberFormat()->setFormatCode('0%');
+$xls->getActiveSheet()->getStyle('E2:E' . $i)->getNumberFormat()->setFormatCode('0%');
 
 $xls->setActiveSheetIndex(0);
 
@@ -71,7 +71,7 @@ header("Pragma: public");
 header("Expires: 0");
 header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-header('Content-Disposition: attachment;filename="'.JText::_('COM_WISSENSMATRIX_FWIG').'.xlsx"');
+header('Content-Disposition: attachment;filename="' . JText::_('COM_WISSENSMATRIX_FWIG') . '.xlsx"');
 
 $xlsWriter = PHPExcel_IOFactory::createWriter($xls, 'Excel2007');
 $xlsWriter->save('php://output');

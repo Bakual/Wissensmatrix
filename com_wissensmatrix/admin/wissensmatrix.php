@@ -8,7 +8,7 @@ if (!JFactory::getUser()->authorise('core.manage', 'com_wissensmatrix'))
 }
 
 // require helper file
-JLoader::register('WissensmatrixHelper', dirname(__FILE__).'/helpers/wissensmatrix.php');
+JLoader::register('WissensmatrixHelper', dirname(__FILE__) . '/helpers/wissensmatrix.php');
 
 JHTML::stylesheet('administrator/components/com_wissensmatrix/wissensmatrix.css');
 
@@ -17,6 +17,6 @@ JHTML::stylesheet('administrator/components/com_wissensmatrix/wissensmatrix.css'
 // $jlang->load('com_wissensmatrix', JPATH_COMPONENT, 'en-GB', true);
 // $jlang->load('com_wissensmatrix', JPATH_COMPONENT, null, true);
 
-$controller	= JControllerLegacy::getInstance('Wissensmatrix');
+$controller = JControllerLegacy::getInstance('Wissensmatrix');
 $controller->execute(JFactory::getApplication()->input->get('task'));
 $controller->redirect();

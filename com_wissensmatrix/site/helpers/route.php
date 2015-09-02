@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @copyright      Copyright (C) 2005 - 2010 Open Source Matters, Inc. All rights reserved.
+ * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 // no direct access
@@ -15,8 +15,8 @@ jimport('joomla.application.categories');
  * Wissensmatrix Component Route Helper
  *
  * @static
- * @package		Wissensmatrix
- * @since 4.0
+ * @package        Wissensmatrix
+ * @since          4.0
  */
 abstract class WissensmatrixHelperRoute
 {
@@ -26,12 +26,13 @@ abstract class WissensmatrixHelperRoute
 	public static function getWorkersRoute($teamid = 0, $language = 0)
 	{
 		$needles = array(
-			'workers' => array(0)
+			'workers' => array(0),
 		);
 		//Create the link
 		$link = 'index.php?option=com_wissensmatrix&view=workers';
-		if ($teamid){
-			$link .= '&teamid='.$teamid;
+		if ($teamid)
+		{
+			$link .= '&teamid=' . $teamid;
 		}
 
 		if ($language && $language != "*" && JLanguageMultilang::isEnabled())
@@ -44,7 +45,7 @@ abstract class WissensmatrixHelperRoute
 			{
 				if ($language == $lang->lang_code)
 				{
-					$link .= '&lang='.$lang->sef;
+					$link .= '&lang=' . $lang->sef;
 					$needles['language'] = $language;
 				}
 			}
@@ -52,11 +53,11 @@ abstract class WissensmatrixHelperRoute
 
 		if ($item = self::_findItem($needles))
 		{
-			$link .= '&Itemid='.$item;
+			$link .= '&Itemid=' . $item;
 		}
 		elseif ($item = self::_findItem())
 		{
-			$link .= '&Itemid='.$item;
+			$link .= '&Itemid=' . $item;
 		}
 
 		return $link;
@@ -65,11 +66,11 @@ abstract class WissensmatrixHelperRoute
 	public static function getWorkerRoute($id, $language = 0)
 	{
 		$needles = array(
-			'worker' => array((int)$id),
-			'workers' => array(0)
+			'worker'  => array((int) $id),
+			'workers' => array(0),
 		);
 		//Create the link
-		$link = 'index.php?option=com_wissensmatrix&view=worker&id='.$id;
+		$link = 'index.php?option=com_wissensmatrix&view=worker&id=' . $id;
 
 		if ($language && $language != "*" && JLanguageMultilang::isEnabled())
 		{
@@ -81,7 +82,7 @@ abstract class WissensmatrixHelperRoute
 			{
 				if ($language == $lang->lang_code)
 				{
-					$link .= '&lang='.$lang->sef;
+					$link .= '&lang=' . $lang->sef;
 					$needles['language'] = $language;
 				}
 			}
@@ -89,11 +90,11 @@ abstract class WissensmatrixHelperRoute
 
 		if ($item = self::_findItem($needles))
 		{
-			$link .= '&Itemid='.$item;
+			$link .= '&Itemid=' . $item;
 		}
 		elseif ($item = self::_findItem())
 		{
-			$link .= '&Itemid='.$item;
+			$link .= '&Itemid=' . $item;
 		}
 
 		return $link;
@@ -102,12 +103,12 @@ abstract class WissensmatrixHelperRoute
 	public static function getReportsFwisRoute($id, $language = 0)
 	{
 		$needles = array(
-			'reportsfwis' => array((int)$id),
-			'reportsfwis' => array(0),
-			'reportsfwigs' => array(0)
+			'reportsfwis'  => array((int) $id),
+			'reportsfwis'  => array(0),
+			'reportsfwigs' => array(0),
 		);
 		//Create the link
-		$link = 'index.php?option=com_wissensmatrix&view=reportsfwis&id='.$id;
+		$link = 'index.php?option=com_wissensmatrix&view=reportsfwis&id=' . $id;
 
 		if ($language && $language != "*" && JLanguageMultilang::isEnabled())
 		{
@@ -119,7 +120,7 @@ abstract class WissensmatrixHelperRoute
 			{
 				if ($language == $lang->lang_code)
 				{
-					$link .= '&lang='.$lang->sef;
+					$link .= '&lang=' . $lang->sef;
 					$needles['language'] = $language;
 				}
 			}
@@ -127,11 +128,11 @@ abstract class WissensmatrixHelperRoute
 
 		if ($item = self::_findItem($needles))
 		{
-			$link .= '&Itemid='.$item;
+			$link .= '&Itemid=' . $item;
 		}
 		elseif ($item = self::_findItem())
 		{
-			$link .= '&Itemid='.$item;
+			$link .= '&Itemid=' . $item;
 		}
 
 		return $link;
@@ -140,12 +141,12 @@ abstract class WissensmatrixHelperRoute
 	public static function getReportsWbisRoute($id, $language = 0)
 	{
 		$needles = array(
-			'reportswbis' => array((int)$id),
-			'reportswbis' => array(0),
-			'reportswbigs' => array(0)
+			'reportswbis'  => array((int) $id),
+			'reportswbis'  => array(0),
+			'reportswbigs' => array(0),
 		);
 		//Create the link
-		$link = 'index.php?option=com_wissensmatrix&view=reportswbis&id='.$id;
+		$link = 'index.php?option=com_wissensmatrix&view=reportswbis&id=' . $id;
 
 		if ($language && $language != "*" && JLanguageMultilang::isEnabled())
 		{
@@ -157,7 +158,7 @@ abstract class WissensmatrixHelperRoute
 			{
 				if ($language == $lang->lang_code)
 				{
-					$link .= '&lang='.$lang->sef;
+					$link .= '&lang=' . $lang->sef;
 					$needles['language'] = $language;
 				}
 			}
@@ -165,11 +166,11 @@ abstract class WissensmatrixHelperRoute
 
 		if ($item = self::_findItem($needles))
 		{
-			$link .= '&Itemid='.$item;
+			$link .= '&Itemid=' . $item;
 		}
 		elseif ($item = self::_findItem())
 		{
-			$link .= '&Itemid='.$item;
+			$link .= '&Itemid=' . $item;
 		}
 
 		return $link;
@@ -177,27 +178,27 @@ abstract class WissensmatrixHelperRoute
 
 	protected static function _findItem($needles = null)
 	{
-		$app		= JFactory::getApplication();
-		$menus		= $app->getMenu('site');
-		$language	= isset($needles['language']) ? $needles['language'] : '*';
+		$app      = JFactory::getApplication();
+		$menus    = $app->getMenu('site');
+		$language = isset($needles['language']) ? $needles['language'] : '*';
 
 		// Prepare the reverse lookup array.
 		if (!isset(self::$lookup[$language]))
 		{
 			self::$lookup[$language] = array();
 
-			$component	= JComponentHelper::getComponent('com_wissensmatrix');
+			$component = JComponentHelper::getComponent('com_wissensmatrix');
 
 			$attributes = array('component_id');
-			$values = array($component->id);
+			$values     = array($component->id);
 
 			if ($language != '*')
 			{
 				$attributes[] = 'language';
-				$values[] = array($needles['language'], '*');
+				$values[]     = array($needles['language'], '*');
 			}
 
-			$items		= $menus->getItems($attributes, $values);
+			$items = $menus->getItems($attributes, $values);
 
 			foreach ($items as $item)
 			{
@@ -232,7 +233,7 @@ abstract class WissensmatrixHelperRoute
 			{
 				if (isset(self::$lookup[$language][$view]))
 				{
-					foreach($ids as $id)
+					foreach ($ids as $id)
 					{
 						if (isset(self::$lookup[$language][$view][(int) $id]))
 						{
@@ -255,12 +256,14 @@ abstract class WissensmatrixHelperRoute
 			// Get first Wissensmatrix menuitem found
 			if (isset(self::$lookup[$language]))
 			{
-				$first	= self::$lookup[$language];
+				$first = self::$lookup[$language];
+
 				return reset($first);
 			}
 
 			// if not found in second try, return language specific home link
 			$default = $menus->getDefault($language);
+
 			return !empty($default->id) ? $default->id : null;
 		}
 
@@ -269,8 +272,8 @@ abstract class WissensmatrixHelperRoute
 
 	protected static function _getLanguages()
 	{
-		$db		= JFactory::getDbo();
-		$query	= $db->getQuery(true)
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true)
 			->select('a.sef AS sef')
 			->select('a.lang_code AS lang_code')
 			->from('#__languages AS a');

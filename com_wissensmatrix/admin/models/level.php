@@ -7,34 +7,39 @@ jimport('joomla.application.component.modeladmin');
 /**
  * Fachwissen model.
  *
- * @package		Wissensmatrix.Administrator
+ * @package        Wissensmatrix.Administrator
  */
 class WissensmatrixModelLevel extends JModelAdmin
 {
 	/**
-	 * @var		string	The prefix to use with controller messages.
+	 * @var        string    The prefix to use with controller messages.
 	 */
 	protected $text_prefix = 'COM_WISSENSMATRIX';
 
 	/**
 	 * Method to test whether a record can be deleted.
 	 *
-	 * @param	object	A record object.
-	 * @return	boolean	True if allowed to delete the record. Defaults to the permission set in the component.
-	 * @since	1.6
+	 * @param    object    A record object.
+	 *
+	 * @return    boolean    True if allowed to delete the record. Defaults to the permission set in the component.
+	 * @since    1.6
 	 */
 	protected function canDelete($record)
 	{
-		if (!empty($record->id)) {
-			if ($record->state != -2) {
-				return ;
+		if (!empty($record->id))
+		{
+			if ($record->state != -2)
+			{
+				return;
 			}
 			$user = JFactory::getUser();
 
-			if ($record->catid) {
-				return $user->authorise('core.delete', 'com_wissensmatrix.category.'.(int) $record->catid);
+			if ($record->catid)
+			{
+				return $user->authorise('core.delete', 'com_wissensmatrix.category.' . (int) $record->catid);
 			}
-			else {
+			else
+			{
 				return parent::canDelete($record);
 			}
 		}
@@ -43,18 +48,22 @@ class WissensmatrixModelLevel extends JModelAdmin
 	/**
 	 * Method to test whether a records state can be changed.
 	 *
-	 * @param	object	A record object.
-	 * @return	boolean	True if allowed to change the state of the record. Defaults to the permission set in the component.
-	 * @since	1.6
+	 * @param    object    A record object.
+	 *
+	 * @return    boolean    True if allowed to change the state of the record. Defaults to the permission set in the
+	 *                       component.
+	 * @since    1.6
 	 */
 	protected function canEditState($record)
 	{
 		$user = JFactory::getUser();
 
-		if (!empty($record->catid)) {
-			return $user->authorise('core.edit.state', 'com_wissensmatrix.category.'.(int) $record->catid);
+		if (!empty($record->catid))
+		{
+			return $user->authorise('core.edit.state', 'com_wissensmatrix.category.' . (int) $record->catid);
 		}
-		else {
+		else
+		{
 			return parent::canEditState($record);
 		}
 	}
@@ -62,11 +71,12 @@ class WissensmatrixModelLevel extends JModelAdmin
 	/**
 	 * Returns a reference to the a Table object, always creating it.
 	 *
-	 * @param	type	The table type to instantiate
-	 * @param	string	A prefix for the table class name. Optional.
-	 * @param	array	Configuration array for model. Optional.
-	 * @return	JTable	A database object
-	 * @since	1.6
+	 * @param    type      The table type to instantiate
+	 * @param    string    A prefix for the table class name. Optional.
+	 * @param    array     Configuration array for model. Optional.
+	 *
+	 * @return    JTable    A database object
+	 * @since    1.6
 	 */
 	public function getTable($type = 'Level', $prefix = 'WissensmatrixTable', $config = array())
 	{
@@ -76,32 +86,38 @@ class WissensmatrixModelLevel extends JModelAdmin
 	/**
 	 * Method to get the record form.
 	 *
-	 * @param	array	$data		An optional array of data for the form to interogate.
-	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
-	 * @return	JForm	A JForm object on success, false on failure
-	 * @since	1.6
+	 * @param    array   $data     An optional array of data for the form to interogate.
+	 * @param    boolean $loadData True if the form is to load its own data (default case), false if not.
+	 *
+	 * @return    JForm    A JForm object on success, false on failure
+	 * @since    1.6
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
 		// Get the form.
 		$form = $this->loadForm('com_wissensmatrix.level', 'level', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form)) {
+		if (empty($form))
+		{
 			return false;
 		}
 
 		// Determine correct permissions to check.
-		if ((int)$this->getState('level.id')) {
+		if ((int) $this->getState('level.id'))
+		{
 			// Existing record. Can only edit in selected categories.
 			$form->setFieldAttribute('catid', 'action', 'core.edit');
 			// Existing record. Can only edit own articles in selected categories.
 			$form->setFieldAttribute('catid', 'action', 'core.edit.own');
-		} else {
+		}
+		else
+		{
 			// New record. Can only create in selected categories.
 			$form->setFieldAttribute('catid', 'action', 'core.create');
 		}
 
 		// Modify the form based on Edit State access controls.
-		if (!$this->canEditState((object) $data)) {
+		if (!$this->canEditState((object) $data))
+		{
 			// Disable fields for display.
 			$form->setFieldAttribute('ordering', 'disabled', 'true');
 			$form->setFieldAttribute('state', 'disabled', 'true');
@@ -120,15 +136,16 @@ class WissensmatrixModelLevel extends JModelAdmin
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
-	 * @return	mixed	The data for the form.
-	 * @since	1.6
+	 * @return    mixed    The data for the form.
+	 * @since    1.6
 	 */
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
 		$data = JFactory::getApplication()->getUserState('com_wissensmatrix.edit.level.data', array());
 
-		if (empty($data)) {
+		if (empty($data))
+		{
 			$data = $this->getItem();
 		}
 
@@ -138,39 +155,44 @@ class WissensmatrixModelLevel extends JModelAdmin
 	/**
 	 * Prepare and sanitise the table prior to saving.
 	 *
-	 * @since	1.6
+	 * @since    1.6
 	 */
 	protected function prepareTable($table)
 	{
 		jimport('joomla.filter.output');
 
-		$table->title	= htmlspecialchars_decode($table->title, ENT_QUOTES);
-		$table->alias		= JApplication::stringURLSafe($table->alias);
+		$table->title = htmlspecialchars_decode($table->title, ENT_QUOTES);
+		$table->alias = JApplication::stringURLSafe($table->alias);
 
-		if (empty($table->alias)) {
+		if (empty($table->alias))
+		{
 			$table->alias = JApplication::stringURLSafe($table->title);
-			if (empty($table->alias)) {
+			if (empty($table->alias))
+			{
 				$table->alias = JFactory::getDate()->format("Y-m-d-H-i-s");
 			}
 		}
 
 		// Reorder the articles within the category so the new level is first
-		if (empty($table->id)) {
-			$table->reorder('catid = '.(int) $table->catid.' AND state >= 0');
+		if (empty($table->id))
+		{
+			$table->reorder('catid = ' . (int) $table->catid . ' AND state >= 0');
 		}
 	}
 
 	/**
 	 * A protected method to get a set of ordering conditions.
 	 *
-	 * @param	object	A record object.
-	 * @return	array	An array of conditions to add to add to ordering queries.
-	 * @since	1.6
+	 * @param    object    A record object.
+	 *
+	 * @return    array    An array of conditions to add to add to ordering queries.
+	 * @since    1.6
 	 */
 	protected function getReorderConditions($table = null)
 	{
-		$condition = array();
-		$condition[] = 'catid = '.(int) $table->catid;
+		$condition   = array();
+		$condition[] = 'catid = ' . (int) $table->catid;
+
 		return $condition;
 	}
 
@@ -178,9 +200,9 @@ class WissensmatrixModelLevel extends JModelAdmin
 	 * Method to perform batch operations on an item or a set of items.
 	 * Copy from modeladmin with added commands for speaker and series.
 	 *
-	 * @param   array  $commands  An array of commands to perform.
-	 * @param   array  $pks       An array of item ids.
-	 * @param   array  $contexts  An array of item contexts.
+	 * @param   array $commands An array of commands to perform.
+	 * @param   array $pks      An array of item ids.
+	 * @param   array $contexts An array of item contexts.
 	 *
 	 * @return  boolean  Returns true on success, false on failure.
 	 *
@@ -201,6 +223,7 @@ class WissensmatrixModelLevel extends JModelAdmin
 		if (empty($pks))
 		{
 			$this->setError(JText::_('JGLOBAL_NO_ITEM_SELECTED'));
+
 			return false;
 		}
 
@@ -242,6 +265,7 @@ class WissensmatrixModelLevel extends JModelAdmin
 		if (!$done)
 		{
 			$this->setError(JText::_('JLIB_APPLICATION_ERROR_INSUFFICIENT_BATCH_INFORMATION'));
+
 			return false;
 		}
 
@@ -255,20 +279,20 @@ class WissensmatrixModelLevel extends JModelAdmin
 	 * Batch copy items to a new category or current.
 	 * Override from modeladmin to adjust title field.
 	 *
-	 * @param   integer  $value     The new category.
-	 * @param   array    $pks       An array of row IDs.
-	 * @param   array    $contexts  An array of item contexts.
+	 * @param   integer $value    The new category.
+	 * @param   array   $pks      An array of row IDs.
+	 * @param   array   $contexts An array of item contexts.
 	 *
 	 * @return  mixed  An array of new IDs on success, boolean false on failure.
 	 *
-	 * @since	11.1
+	 * @since    11.1
 	 */
 	protected function batchCopy($value, $pks, $contexts)
 	{
 		$categoryId = (int) $value;
 
 		$table = $this->getTable();
-		$i = 0;
+		$i     = 0;
 
 		// Check that the category exists
 		if ($categoryId)
@@ -280,11 +304,13 @@ class WissensmatrixModelLevel extends JModelAdmin
 				{
 					// Fatal error
 					$this->setError($error);
+
 					return false;
 				}
 				else
 				{
 					$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
+
 					return false;
 				}
 			}
@@ -293,15 +319,17 @@ class WissensmatrixModelLevel extends JModelAdmin
 		if (empty($categoryId))
 		{
 			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
+
 			return false;
 		}
 
 		// Check that the user has create permission for the component
 		$extension = JFactory::getApplication()->input->get('option', '');
-		$user = JFactory::getUser();
+		$user      = JFactory::getUser();
 		if (!$user->authorise('core.create', $extension . '.category.' . $categoryId))
 		{
 			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
+
 			return false;
 		}
 
@@ -320,6 +348,7 @@ class WissensmatrixModelLevel extends JModelAdmin
 				{
 					// Fatal error
 					$this->setError($error);
+
 					return false;
 				}
 				else
@@ -332,9 +361,9 @@ class WissensmatrixModelLevel extends JModelAdmin
 
 			// Alter the title & alias
 			// Custom: defining the level_title
-			$data = $this->generateNewTitle($categoryId, $table->alias, $table->title_de);
+			$data            = $this->generateNewTitle($categoryId, $table->alias, $table->title_de);
 			$table->title_de = $data['0'];
-			$table->alias = $data['1'];
+			$table->alias    = $data['1'];
 
 			// Reset the ID because we are making a copy
 			$table->id = 0;
@@ -349,6 +378,7 @@ class WissensmatrixModelLevel extends JModelAdmin
 			if (!$table->check())
 			{
 				$this->setError($table->getError());
+
 				return false;
 			}
 
@@ -356,6 +386,7 @@ class WissensmatrixModelLevel extends JModelAdmin
 			if (!$table->store())
 			{
 				$this->setError($table->getError());
+
 				return false;
 			}
 
@@ -363,7 +394,7 @@ class WissensmatrixModelLevel extends JModelAdmin
 			$newId = $table->get('id');
 
 			// Add the new ID to the array
-			$newIds[$i]	= $newId;
+			$newIds[$i] = $newId;
 			$i++;
 		}
 

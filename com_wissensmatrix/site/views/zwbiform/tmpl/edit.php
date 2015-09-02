@@ -12,8 +12,7 @@ $params = $this->state->get('params');
 ?>
 
 <script type="text/javascript">
-	Joomla.submitbutton = function(task)
-	{
+	Joomla.submitbutton = function (task) {
 		if (task == 'zwbi.cancel' || document.formvalidator.isValid(document.id('adminForm'))) {
 			Joomla.submitform(task);
 		} else {
@@ -23,14 +22,15 @@ $params = $this->state->get('params');
 </script>
 <div class="edit item-page<?php echo $this->pageclass_sfx; ?>">
 	<?php if ($params->get('show_page_heading', 1)) : ?>
-	<div class="page-header">
-		<h1>
-			<?php echo $this->escape($params->get('page_heading')); ?>
-		</h1>
-	</div>
+		<div class="page-header">
+			<h1>
+				<?php echo $this->escape($params->get('page_heading')); ?>
+			</h1>
+		</div>
 	<?php endif; ?>
 
-	<form action="<?php echo JRoute::_('index.php?option=com_wissensmatrix&a_id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate form-vertical">
+	<form action="<?php echo JRoute::_('index.php?option=com_wissensmatrix&a_id=' . (int) $this->item->id); ?>"
+		  method="post" name="adminForm" id="adminForm" class="form-validate form-vertical">
 		<div class="btn-toolbar">
 			<div class="btn-group">
 				<button type="button" class="btn btn-primary" onclick="Joomla.submitbutton('zwbi.save')">
@@ -92,8 +92,8 @@ $params = $this->state->get('params');
 				<?php echo $this->form->getInput('id'); ?>
 				<?php echo $this->form->getInput('mit_id'); ?>
 				<?php echo $this->form->getInput('worker_catid'); ?>
-				<input type="hidden" name="task" value="" />
-				<input type="hidden" name="return" value="<?php echo $this->return_page; ?>" />
+				<input type="hidden" name="task" value=""/>
+				<input type="hidden" name="return" value="<?php echo $this->return_page; ?>"/>
 			</div>
 			<?php echo JHtml::_('form.token'); ?>
 		</fieldset>

@@ -1,10 +1,10 @@
 <?php
 defined('_JEXEC') or die;
 
-JHTML::addIncludePath(JPATH_COMPONENT.'/helpers');
+JHTML::addIncludePath(JPATH_COMPONENT . '/helpers');
 
 // loading PHPExcel (http://www.codeplex.com/PHPExcel)
-require_once JPATH_COMPONENT.'/libraries/PHPExcel.php';
+require_once JPATH_COMPONENT . '/libraries/PHPExcel.php';
 
 $xls = new PHPExcel();
 
@@ -21,10 +21,10 @@ foreach ($this->items AS $item) :
 	$xls->setActiveSheetIndex($i);
 
 	// Sanitize and shorten $item->title so it can be used as sheet title (max 31 chars allowed)
-	$search	= array(':', '\\', '/', '?', '*', '[', ']');
-	$title	= str_replace($search, '_', $item->title);
+	$search = array(':', '\\', '/', '?', '*', '[', ']');
+	$title  = str_replace($search, '_', $item->title);
 	if (strlen($title) > 31) :
-		$title	= substr($title, 0, 28).'...';
+		$title = substr($title, 0, 28) . '...';
 	endif;
 	$xls->getActiveSheet()->setTitle($title);
 
@@ -44,9 +44,9 @@ foreach ($this->items AS $item) :
 	$xls->getActiveSheet()->SetCellValue('B1', JText::_('COM_WISSENSMATRIX_NACHNAME'));
 	$xls->getActiveSheet()->SetCellValue('C1', JText::_('COM_WISSENSMATRIX_VORNAME'));
 	$xls->getActiveSheet()->SetCellValue('D1', JText::_('COM_WISSENSMATRIX_TEAM'));
-	$xls->getActiveSheet()->SetCellValue('E1', JText::_('COM_WISSENSMATRIX_IST').' '.JText::_('COM_WISSENSMATRIX_VALUE'));
+	$xls->getActiveSheet()->SetCellValue('E1', JText::_('COM_WISSENSMATRIX_IST') . ' ' . JText::_('COM_WISSENSMATRIX_VALUE'));
 	$xls->getActiveSheet()->SetCellValue('F1', JText::_('COM_WISSENSMATRIX_IST'));
-	$xls->getActiveSheet()->SetCellValue('G1', JText::_('COM_WISSENSMATRIX_SOLL').' '.JText::_('COM_WISSENSMATRIX_VALUE'));
+	$xls->getActiveSheet()->SetCellValue('G1', JText::_('COM_WISSENSMATRIX_SOLL') . ' ' . JText::_('COM_WISSENSMATRIX_VALUE'));
 	$xls->getActiveSheet()->SetCellValue('H1', JText::_('COM_WISSENSMATRIX_SOLL'));
 
 	// Adding Data
@@ -57,14 +57,14 @@ foreach ($this->items AS $item) :
 			continue;
 		endif;
 		$j++;
-		$xls->getActiveSheet()->SetCellValue('A'.$j, $worker->uid);
-		$xls->getActiveSheet()->SetCellValue('B'.$j, $worker->name);
-		$xls->getActiveSheet()->SetCellValue('C'.$j, $worker->vorname);
-		$xls->getActiveSheet()->SetCellValue('D'.$j, $worker->category_title);
-		$xls->getActiveSheet()->SetCellValue('E'.$j, $istsoll['ist']);
-		$xls->getActiveSheet()->SetCellValue('F'.$j, $istsoll['ist_title']);
-		$xls->getActiveSheet()->SetCellValue('G'.$j, $istsoll['soll']);
-		$xls->getActiveSheet()->SetCellValue('H'.$j, $istsoll['soll_title']);
+		$xls->getActiveSheet()->SetCellValue('A' . $j, $worker->uid);
+		$xls->getActiveSheet()->SetCellValue('B' . $j, $worker->name);
+		$xls->getActiveSheet()->SetCellValue('C' . $j, $worker->vorname);
+		$xls->getActiveSheet()->SetCellValue('D' . $j, $worker->category_title);
+		$xls->getActiveSheet()->SetCellValue('E' . $j, $istsoll['ist']);
+		$xls->getActiveSheet()->SetCellValue('F' . $j, $istsoll['ist_title']);
+		$xls->getActiveSheet()->SetCellValue('G' . $j, $istsoll['soll']);
+		$xls->getActiveSheet()->SetCellValue('H' . $j, $istsoll['soll_title']);
 	endforeach;
 
 	$i++;
@@ -78,7 +78,7 @@ header("Pragma: public");
 header("Expires: 0");
 header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-header('Content-Disposition: attachment;filename="'.JText::_('COM_WISSENSMATRIX_FWIG').'.xlsx"');
+header('Content-Disposition: attachment;filename="' . JText::_('COM_WISSENSMATRIX_FWIG') . '.xlsx"');
 
 $xlsWriter = PHPExcel_IOFactory::createWriter($xls, 'Excel2007');
 $xlsWriter->save('php://output');

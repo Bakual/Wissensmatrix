@@ -29,8 +29,8 @@ abstract class JHtmlWissensmatrixCategory
 	/**
 	 * Returns an array of categories for the given extension.
 	 *
-	 * @param   string  $extension  The extension option e.g. com_something.
-	 * @param   array   $config     An array of configuration options. By default, only
+	 * @param   string $extension   The extension option e.g. com_something.
+	 * @param   array  $config      An array of configuration options. By default, only
 	 *                              published and unpublished categories are returned.
 	 *
 	 * @return  array
@@ -44,8 +44,8 @@ abstract class JHtmlWissensmatrixCategory
 		if (!isset(self::$items[$hash]))
 		{
 			$config = (array) $config;
-			$db = JFactory::getDbo();
-			$query = $db->getQuery(true);
+			$db     = JFactory::getDbo();
+			$query  = $db->getQuery(true);
 
 			$query->select('a.id, a.title, a.level');
 			$query->from('#__categories AS a');
@@ -88,9 +88,9 @@ abstract class JHtmlWissensmatrixCategory
 			// Filter on access level
 			if (isset($config['filter.access']) && $config['filter.access'])
 			{
-				$user	= JFactory::getUser();
-				$groups	= $user->getAuthorisedViewLevels();
-				$query->where('a.access IN ('.implode(',',$groups).')');
+				$user   = JFactory::getUser();
+				$groups = $user->getAuthorisedViewLevels();
+				$query->where('a.access IN (' . implode(',', $groups) . ')');
 			}
 
 			$query->order('a.lft');
@@ -103,8 +103,8 @@ abstract class JHtmlWissensmatrixCategory
 
 			foreach ($items as &$item)
 			{
-				$repeat = ($item->level - 1 >= 0) ? $item->level - 1 : 0;
-				$item->title = str_repeat('- ', $repeat) . $item->title;
+				$repeat               = ($item->level - 1 >= 0) ? $item->level - 1 : 0;
+				$item->title          = str_repeat('- ', $repeat) . $item->title;
 				self::$items[$hash][] = JHtml::_('select.option', $item->id, $item->title);
 			}
 		}

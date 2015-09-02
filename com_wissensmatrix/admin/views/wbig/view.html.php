@@ -5,7 +5,7 @@ defined('_JEXEC') or die;
 /**
  * View to edit a wbig.
  *
- * @package		Wissensmatrix.Administrator
+ * @package        Wissensmatrix.Administrator
  */
 class WissensmatrixViewWbig extends JViewLegacy
 {
@@ -18,13 +18,15 @@ class WissensmatrixViewWbig extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$this->state	= $this->get('State');
-		$this->item		= $this->get('Item');
-		$this->form		= $this->get('Form');
+		$this->state = $this->get('State');
+		$this->item  = $this->get('Item');
+		$this->form  = $this->get('Form');
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
+		if (count($errors = $this->get('Errors')))
+		{
 			JError::raiseError(500, implode("\n", $errors));
+
 			return false;
 		}
 
@@ -35,17 +37,17 @@ class WissensmatrixViewWbig extends JViewLegacy
 	/**
 	 * Add the page title and toolbar.
 	 *
-	 * @since	1.6
+	 * @since    1.6
 	 */
 	protected function addToolbar()
 	{
 		JFactory::getApplication()->input->set('hidemainmenu', true);
-		$user		= JFactory::getUser();
-		$userId		= $user->get('id');
-		$isNew		= ($this->item->id == 0);
-		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
-		$canDo		= WissensmatrixHelper::getActions();
-		JToolbarHelper::title(JText::sprintf('COM_WISSENSMATRIX_PAGE_'.($checkedOut ? 'VIEW' : ($isNew ? 'ADD' : 'EDIT')), JText::_('COM_WISSENSMATRIX_WBIGS_TITLE'), JText::_('COM_WISSENSMATRIX_WBIG')), 'wbigs');
+		$user       = JFactory::getUser();
+		$userId     = $user->get('id');
+		$isNew      = ($this->item->id == 0);
+		$checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
+		$canDo      = WissensmatrixHelper::getActions();
+		JToolbarHelper::title(JText::sprintf('COM_WISSENSMATRIX_PAGE_' . ($checkedOut ? 'VIEW' : ($isNew ? 'ADD' : 'EDIT')), JText::_('COM_WISSENSMATRIX_WBIGS_TITLE'), JText::_('COM_WISSENSMATRIX_WBIG')), 'wbigs');
 
 		// Built the actions for new and existing records.
 		if ($isNew)

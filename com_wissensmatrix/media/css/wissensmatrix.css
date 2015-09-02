@@ -1,13 +1,11 @@
 /* Text abschneiden mittels CSS. Theoretisch möglich für Worker -> WBI mittels class ellipsis und span9 */
-.ellipsis
-{
+.ellipsis {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
 
-ul.list-condensed strong
-{
+ul.list-condensed strong {
 	min-height: auto !important;
 }
 
@@ -15,18 +13,23 @@ ul.list-condensed strong
 .diff1 {
 	background-color: #FFFF00 !important;
 }
+
 .diff2 {
 	background-color: #FFA500 !important;
 }
+
 .diff3 {
 	background-color: #FF0000 !important;
 }
+
 .pot1 {
 	background-color: #D0F5A9 !important;
 }
+
 .pot2 {
 	background-color: #81F781 !important;
 }
+
 .pot3 {
 	background-color: #01DF01 !important;
 }
@@ -35,6 +38,7 @@ ul.list-condensed strong
 .text-center {
 	text-align: center !important;
 }
+
 /* align table cell */
 .table td.cell-right {
 	text-align: right;
@@ -42,7 +46,7 @@ ul.list-condensed strong
 
 /* Wbi edit/delete icons */
 ul.wbi span.list-edit.pull-left {
-	margin-right:5px;
+	margin-right: 5px;
 }
 
 /* amChart */

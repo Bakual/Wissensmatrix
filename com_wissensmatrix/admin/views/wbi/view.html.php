@@ -5,7 +5,7 @@ defined('_JEXEC') or die;
 /**
  * View to edit a wbi.
  *
- * @package		Wissensmatrix.Administrator
+ * @package        Wissensmatrix.Administrator
  */
 class WissensmatrixViewWbi extends JViewLegacy
 {
@@ -18,13 +18,15 @@ class WissensmatrixViewWbi extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$this->state	= $this->get('State');
-		$this->item		= $this->get('Item');
-		$this->form		= $this->get('Form');
+		$this->state = $this->get('State');
+		$this->item  = $this->get('Item');
+		$this->form  = $this->get('Form');
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
+		if (count($errors = $this->get('Errors')))
+		{
 			JError::raiseError(500, implode("\n", $errors));
+
 			return false;
 		}
 
@@ -35,37 +37,43 @@ class WissensmatrixViewWbi extends JViewLegacy
 	/**
 	 * Add the page title and toolbar.
 	 *
-	 * @since	1.6
+	 * @since    1.6
 	 */
 	protected function addToolbar()
 	{
 		JRequest::setVar('hidemainmenu', true);
 
-		$user		= JFactory::getUser();
-		$userId		= $user->get('id');
-		$isNew		= ($this->item->id == 0);
-		$canDo		= WissensmatrixHelper::getActions();
+		$user   = JFactory::getUser();
+		$userId = $user->get('id');
+		$isNew  = ($this->item->id == 0);
+		$canDo  = WissensmatrixHelper::getActions();
 
 		JToolBarHelper::title(JText::_('COM_WISSENSMATRIX_WBIS_TITLE'), 'wbis');
 
 		// Built the actions for new and existing records.
-		if ($isNew)  {
+		if ($isNew)
+		{
 			// For new records, check the create permission.
-			if ($canDo->get('core.create')) {
+			if ($canDo->get('core.create'))
+			{
 				JToolBarHelper::apply('wbi.apply', 'JTOOLBAR_APPLY');
 				JToolBarHelper::save('wbi.save', 'JTOOLBAR_SAVE');
 				JToolBarHelper::custom('wbi.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
 			}
 
 			JToolBarHelper::cancel('wbi.cancel', 'JTOOLBAR_CANCEL');
-		} else {
+		}
+		else
+		{
 			// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
-			if ($canDo->get('core.edit') || ($canDo->get('core.edit.own') && $this->item->created_by == $userId)) {
+			if ($canDo->get('core.edit') || ($canDo->get('core.edit.own') && $this->item->created_by == $userId))
+			{
 				JToolBarHelper::apply('wbi.apply', 'JTOOLBAR_APPLY');
 				JToolBarHelper::save('wbi.save', 'JTOOLBAR_SAVE');
 
 				// We can save this record as copy, but check the create permission first.
-				if ($canDo->get('core.create')) {
+				if ($canDo->get('core.create'))
+				{
 					JToolBarHelper::custom('wbi.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
 					JToolBarHelper::custom('wbi.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
 				}

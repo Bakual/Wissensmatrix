@@ -1,15 +1,15 @@
 <?php
 defined('_JEXEC') or die;
 
-JHTML::addIncludePath(JPATH_COMPONENT.'/helpers');
+JHTML::addIncludePath(JPATH_COMPONENT . '/helpers');
 
-$user		= JFactory::getUser();
-$canView	= $user->authorise('core.view.worker', 'com_wissensmatrix');
-$canEdit	= $user->authorise('core.edit.worker', 'com_wissensmatrix');
-$listOrder	= $this->state->get('list.ordering');
-$listDirn	= $this->state->get('list.direction');
+$user      = JFactory::getUser();
+$canView   = $user->authorise('core.view.worker', 'com_wissensmatrix');
+$canEdit   = $user->authorise('core.edit.worker', 'com_wissensmatrix');
+$listOrder = $this->state->get('list.ordering');
+$listDirn  = $this->state->get('list.direction');
 ?>
-<div class="category-list<?php echo $this->pageclass_sfx;?> wm-workers-container<?php echo $this->pageclass_sfx; ?>">
+<div class="category-list<?php echo $this->pageclass_sfx; ?> wm-workers-container<?php echo $this->pageclass_sfx; ?>">
 	<?php if ($this->params->get('show_page_heading', 1)) : ?>
 		<h1><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
 	<?php endif;
@@ -17,7 +17,7 @@ $listDirn	= $this->state->get('list.direction');
 		<h2>
 			<?php echo $this->escape($this->params->get('page_subheading'));
 			if ($this->params->get('show_category_title')) : ?>
-				<span class="subheading-category"><?php echo $this->category->title;?></span>
+				<span class="subheading-category"><?php echo $this->category->title; ?></span>
 			<?php endif; ?>
 		</h2>
 	<?php endif;
@@ -33,17 +33,25 @@ $listDirn	= $this->state->get('list.direction');
 		</div>
 	<?php endif; ?>
 	<div class="cat-items">
-		<form action="<?php echo htmlspecialchars(JUri::getInstance()->toString()); ?>" method="post" id="adminForm" name="adminForm">
+		<form action="<?php echo htmlspecialchars(JUri::getInstance()->toString()); ?>" method="post" id="adminForm"
+			  name="adminForm">
 			<?php if ($this->params->get('filter_field') or $this->params->get('show_pagination_limit')) : ?>
 				<div id="filter-bar" class="filters btn-toolbar">
 					<?php if ($this->params->get('filter_field')) : ?>
 						<div class="filter-search btn-group input-append pull-left">
 							<label class="filter-search-lbl element-invisible" for="filter-search">
 								<span class="label label-warning"><?php echo JText::_('JUNPUBLISHED'); ?></span>
-								<?php echo JText::_('JGLOBAL_FILTER_LABEL').'&#160;'; ?>
+								<?php echo JText::_('JGLOBAL_FILTER_LABEL') . '&#160;'; ?>
 							</label>
-							<input type="text" name="filter-search" id="filter-search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" class="input-medium" onchange="document.adminForm.submit();" title="<?php echo JText::_('COM_WISSENSMATRIX_FILTER_SEARCH_DESC'); ?>" placeholder="<?php echo JText::_('COM_WISSENSMATRIX_FILTER_SEARCH_DESC'); ?>" />
-							<button class="btn tip hidden-phone hidden-tablet" type="button" onclick="document.id('filter-search').value='';this.form.submit();" rel="tooltip" title="<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>"><i class="icon-remove"></i></button>
+							<input type="text" name="filter-search" id="filter-search"
+								   value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
+								   class="input-medium" onchange="document.adminForm.submit();"
+								   title="<?php echo JText::_('COM_WISSENSMATRIX_FILTER_SEARCH_DESC'); ?>"
+								   placeholder="<?php echo JText::_('COM_WISSENSMATRIX_FILTER_SEARCH_DESC'); ?>"/>
+							<button class="btn tip hidden-phone hidden-tablet" type="button"
+									onclick="document.id('filter-search').value='';this.form.submit();" rel="tooltip"
+									title="<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>"><i class="icon-remove"></i>
+							</button>
 						</div>
 						<div class="btn-group filter-select input-append">
 							<select name="teamid" id="filter_teamid" class="input-xlarge" onchange="this.form.submit()">
@@ -52,7 +60,10 @@ $listDirn	= $this->state->get('list.direction');
 								echo JHtml::_('select.options', JHtml::_('wissensmatrixcategory.options', 'com_wissensmatrix', $config), 'value', 'text', $this->state->get('team.id', 0)); ?>
 							</select>
 							<?php if ($this->parent) : ?>
-								<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=workers&teamid='.$this->parent->id); ?>" class="btn addon" title="<?php JText::printf('COM_WISSENSMATRIX_GET_PARENT_TEAM', $this->parent->title); ?>" rel="tooltip"><i class="icon-arrow-up"></i></a>
+								<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=workers&teamid=' . $this->parent->id); ?>"
+								   class="btn addon"
+								   title="<?php JText::printf('COM_WISSENSMATRIX_GET_PARENT_TEAM', $this->parent->title); ?>"
+								   rel="tooltip"><i class="icon-arrow-up"></i></a>
 							<?php endif; ?>
 						</div>
 					<?php endif;
@@ -68,10 +79,12 @@ $listDirn	= $this->state->get('list.direction');
 			<?php endif; ?>
 			<div class="clearfix"></div>
 			<?php if (!count($this->items)) : ?>
-				<div class="no_entries alert alert-error"><?php echo JText::sprintf('COM_WISSENSMATRIX_NO_ENTRIES', JText::_('COM_WISSENSMATRIX_WORKERS')); ?></div>
+				<div
+					class="no_entries alert alert-error"><?php echo JText::sprintf('COM_WISSENSMATRIX_NO_ENTRIES', JText::_('COM_WISSENSMATRIX_WORKERS')); ?></div>
 			<?php else : ?>
 				<table class="table table-striped table-hover table-condensed">
-					<thead><tr>
+					<thead>
+					<tr>
 						<th class="title">
 							<?php echo JHTML::_('grid.sort', 'COM_WISSENSMATRIX_VORNAME', 'vorname', $listDirn, $listOrder); ?>
 							<?php echo JHTML::_('grid.sort', 'COM_WISSENSMATRIX_NACHNAME', 'name', $listDirn, $listOrder); ?>
@@ -79,33 +92,34 @@ $listDirn	= $this->state->get('list.direction');
 						<th class="hidden-phone">
 							<?php echo JHTML::_('grid.sort', 'COM_WISSENSMATRIX_TEAM', 'category_title', $listDirn, $listOrder); ?>
 						</th>
-					</tr></thead>
-				<!-- Begin Data -->
+					</tr>
+					</thead>
+					<!-- Begin Data -->
 					<tbody>
-						<?php foreach($this->items as $i => $item) : ?>
-							<tr class="<?php echo ($item->state) ? '': 'system-unpublished '; ?>cat-list-row<?php echo $i % 2; ?>">
-								<td class="title">
-									<?php if ($canView or $user->authorise('core.view.worker', 'com_wissensmatrix.category.'.$item->catid)) : ?>
-										<a href="<?php echo JRoute::_(WissensmatrixHelperRoute::getWorkerRoute($item->slug)); ?>">
-											<?php echo $item->vorname.' '.$item->name; ?>
-										</a>
-									<?php else :
-										echo $item->vorname.' '.$item->name;
-									endif;
-									if ($canEdit or $user->authorise('core.edit.worker', 'com_wissensmatrix.category.'.$item->catid)) : ?>
-										<span class="list-edit pull-left">
+					<?php foreach ($this->items as $i => $item) : ?>
+						<tr class="<?php echo ($item->state) ? '' : 'system-unpublished '; ?>cat-list-row<?php echo $i % 2; ?>">
+							<td class="title">
+								<?php if ($canView or $user->authorise('core.view.worker', 'com_wissensmatrix.category.' . $item->catid)) : ?>
+									<a href="<?php echo JRoute::_(WissensmatrixHelperRoute::getWorkerRoute($item->slug)); ?>">
+										<?php echo $item->vorname . ' ' . $item->name; ?>
+									</a>
+								<?php else :
+									echo $item->vorname . ' ' . $item->name;
+								endif;
+								if ($canEdit or $user->authorise('core.edit.worker', 'com_wissensmatrix.category.' . $item->catid)) : ?>
+									<span class="list-edit pull-left">
 											<?php echo JHtml::_('icon.edit', $item, $this->params, array('type' => 'worker', 'hide_text' => true)); ?>
 										</span>
-									<?php endif; ?>
-									<?php if (!$item->state) : ?>
-										<span class="label label-warning"><?php echo JText::_('JUNPUBLISHED'); ?></span>
-									<?php endif; ?>
-								</td>
-								<td class="hidden-phone">
-									<a href="<?php echo JRoute::_(WissensmatrixHelperRoute::getWorkersRoute($item->catslug)); ?>"><?php echo $item->category_title; ?></a>
-								</td>
-							</tr>
-						<?php endforeach; ?>
+								<?php endif; ?>
+								<?php if (!$item->state) : ?>
+									<span class="label label-warning"><?php echo JText::_('JUNPUBLISHED'); ?></span>
+								<?php endif; ?>
+							</td>
+							<td class="hidden-phone">
+								<a href="<?php echo JRoute::_(WissensmatrixHelperRoute::getWorkersRoute($item->catslug)); ?>"><?php echo $item->category_title; ?></a>
+							</td>
+						</tr>
+					<?php endforeach; ?>
 					</tbody>
 				</table>
 			<?php endif;
@@ -122,10 +136,10 @@ $listDirn	= $this->state->get('list.direction');
 					echo $this->pagination->getPagesLinks(); ?>
 				</div>
 			<?php endif; ?>
-			<input type="hidden" name="task" value="" />
-			<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
-			<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
-			<input type="hidden" name="limitstart" value="" />
+			<input type="hidden" name="task" value=""/>
+			<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>"/>
+			<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>"/>
+			<input type="hidden" name="limitstart" value=""/>
 		</form>
 	</div>
 	<?php if (!empty($this->children[$this->category->id]) and $this->maxLevel != 0) : ?>

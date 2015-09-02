@@ -8,19 +8,19 @@
 	<fields name="params">
 		<fieldset name="basic">
 			<field name="enable_category"
-				type="radio"
-				class="btn-group"
-				default="0"
-				label="COM_WISSENSMATRIX_CREATE_WORKER_CATEGORY_LABEL"
-				description="COM_WISSENSMATRIX_CREATE_WORKER_CATEGORY_DESC">
-					<option value="1">JYES</option>
-					<option value="0">JNO</option>
+				   type="radio"
+				   class="btn-group"
+				   default="0"
+				   label="COM_WISSENSMATRIX_CREATE_WORKER_CATEGORY_LABEL"
+				   description="COM_WISSENSMATRIX_CREATE_WORKER_CATEGORY_DESC">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
 			</field>
 			<field name="catid"
-				type="category"
-				label="JGLOBAL_CHOOSE_CATEGORY_LABEL"
-				extension="com_wissensmatrix"
-				description="JGLOBAL_CHOOSE_CATEGORY_DESC" />
+				   type="category"
+				   label="JGLOBAL_CHOOSE_CATEGORY_LABEL"
+				   extension="com_wissensmatrix"
+				   description="JGLOBAL_CHOOSE_CATEGORY_DESC" />
 		</fieldset>
 	</fields>
 </metadata>

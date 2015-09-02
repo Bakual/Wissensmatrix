@@ -1,10 +1,11 @@
 <?php
 // No direct access
 defined('_JEXEC') or die;
+
 /**
  * View to close a modal.
  *
- * @package		Wissensmatrix.Site
+ * @package        Wissensmatrix.Site
  */
 class WissensmatrixViewClose extends JViewLegacy
 {
@@ -13,7 +14,7 @@ class WissensmatrixViewClose extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$js	= "window.onload=function closeme(){
+		$js = "window.onload=function closeme(){
 				window.setTimeout('parent.location.reload()', 500);
 			}";
 

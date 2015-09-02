@@ -7,7 +7,7 @@ jimport('joomla.application.component.controlleradmin');
 /**
  * Fachwissen list controller class.
  *
- * @package		Wissensmatrix.Administrator
+ * @package        Wissensmatrix.Administrator
  */
 class WissensmatrixControllerFwis extends JControllerAdmin
 {
@@ -17,19 +17,20 @@ class WissensmatrixControllerFwis extends JControllerAdmin
 	public function getModel($name = 'Fwi', $prefix = 'WissensmatrixModel')
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
+
 		return $model;
 	}
 
 	/**
 	 * Method to save the submitted ordering values for records via AJAX.
 	 *
-	 * @return	void
+	 * @return    void
 	 *
 	 * @since   3.0
 	 */
 	public function saveOrderAjax()
 	{
-		$pks = $this->input->post->get('cid', array(), 'array');
+		$pks   = $this->input->post->get('cid', array(), 'array');
 		$order = $this->input->post->get('order', array(), 'array');
 
 		// Sanitize the input

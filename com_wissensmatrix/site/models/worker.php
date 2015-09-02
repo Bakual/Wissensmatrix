@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @copyright      Copyright (C) 2005 - 2010 Open Source Matters, Inc. All rights reserved.
+ * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 // No direct access
@@ -10,18 +10,18 @@ defined('_JEXEC') or die;
 jimport('joomla.application.component.modelitem');
 
 /**
- * @package		Wissensmatrix
+ * @package        Wissensmatrix
  */
 // Based on com_contact
 class WissensmatrixModelWorker extends JModelItem
 {
 	public function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
-		$params	= $app->getParams();
+		$app    = JFactory::getApplication();
+		$params = $app->getParams();
 
 		// Load the object state.
-		$id	= $app->input->get('id', 0, 'int');
+		$id = $app->input->get('id', 0, 'int');
 		$this->setState('worker.id', $id);
 
 		// Load the parameters.
@@ -31,32 +31,35 @@ class WissensmatrixModelWorker extends JModelItem
 	/**
 	 * Method to get an ojbect.
 	 *
-	 * @param	integer	The id of the object to get.
+	 * @param    integer    The id of the object to get.
 	 *
-	 * @return	mixed	Object on success, false on failure.
+	 * @return    mixed    Object on success, false on failure.
 	 */
 	public function &getItem($id = null)
 	{
 		// Initialise variables.
 		$id = (!empty($id)) ? $id : (int) $this->getState('worker.id');
 
-		if ($this->_item === null) {
+		if ($this->_item === null)
+		{
 			$this->_item = array();
 		}
 
-		if (!isset($this->_item[$id])) {
+		if (!isset($this->_item[$id]))
+		{
 
-			try {
-				$db = $this->getDbo();
+			try
+			{
+				$db    = $this->getDbo();
 				$query = $db->getQuery(true);
 
 				$query->select(
 					$this->getState(
 						'item.select',
-						'worker.id, worker.uid, worker.vorname, worker.name, worker.catid, worker.geb, worker.eintritt, '.
-						'worker.checked_out, worker.checked_out_time, worker.language, '.
-						'worker.hits, worker.state, worker.created, worker.created_by, '.
-						'CONCAT(worker.vorname, \' \', worker.name) as title, '.
+						'worker.id, worker.uid, worker.vorname, worker.name, worker.catid, worker.geb, worker.eintritt, ' .
+						'worker.checked_out, worker.checked_out_time, worker.language, ' .
+						'worker.hits, worker.state, worker.created, worker.created_by, ' .
+						'CONCAT(worker.vorname, \' \', worker.name) as title, ' .
 						'CASE WHEN CHAR_LENGTH(worker.alias) THEN CONCAT_WS(\':\', worker.id, worker.alias) ELSE worker.id END as slug'
 					)
 				);
@@ -68,7 +71,7 @@ class WissensmatrixModelWorker extends JModelItem
 				$query->join('LEFT', '#__categories AS c on c.id = worker.catid');
 				$query->where('(worker.catid = 0 OR c.published = 1)');
 
-				$query->where('worker.id = '.(int)$id);
+				$query->where('worker.id = ' . (int) $id);
 				$query->where('worker.state = 1');
 
 				// Join on mitarbeiter table for template.
@@ -83,11 +86,13 @@ class WissensmatrixModelWorker extends JModelItem
 
 				$data = $db->loadObject();
 
-				if ($error = $db->getErrorMsg()) {
+				if ($error = $db->getErrorMsg())
+				{
 					throw new Exception($error);
 				}
 
-				if (empty($data)) {
+				if (empty($data))
+				{
 					throw new JException(JText::_('JGLOBAL_RESOURCE_NOT_FOUND'), 404);
 				}
 
@@ -106,9 +111,9 @@ class WissensmatrixModelWorker extends JModelItem
 	/**
 	 * Method to get an worker by uid.
 	 *
-	 * @param	string	The uid of the worker to get.
+	 * @param    string    The uid of the worker to get.
 	 *
-	 * @return	mixed	Object on success, false on failure.
+	 * @return    mixed    Object on success, false on failure.
 	 */
 	public function getWorkerByUid($uid = null)
 	{
@@ -117,25 +122,28 @@ class WissensmatrixModelWorker extends JModelItem
 			return false;
 		}
 
-		try {
-			$db = $this->getDbo();
+		try
+		{
+			$db    = $this->getDbo();
 			$query = $db->getQuery(true);
 
 			$query->select('id, uid');
 			$query->from('#__wissensmatrix_mitarbeiter');
 
-			$query->where('uid = '.$db->quote($uid));
+			$query->where('uid = ' . $db->quote($uid));
 			$query->where('state = 1');
 
 			$db->setQuery($query);
 
 			$worker = $db->loadObject();
 
-			if ($error = $db->getErrorMsg()) {
+			if ($error = $db->getErrorMsg())
+			{
 				throw new Exception($error);
 			}
 
-			if (empty($worker)) {
+			if (empty($worker))
+			{
 				throw new JException(JText::_('JGLOBAL_RESOURCE_NOT_FOUND'), 404);
 			}
 		}
@@ -151,17 +159,20 @@ class WissensmatrixModelWorker extends JModelItem
 	/**
 	 * Method to increment the hit counter for the workers
 	 *
-	 * @param	int		Optional ID of the workers.
-	 * @return	boolean	True on success
-	 * @since	1.5
+	 * @param    int        Optional ID of the workers.
+	 *
+	 * @return    boolean    True on success
+	 * @since    1.5
 	 */
 	public function hit($id = null)
 	{
-		if (empty($id)) {
+		if (empty($id))
+		{
 			$id = $this->getState('worker.id');
 		}
 
 		$worker = $this->getTable('Worker', 'WissensmatrixTable');
+
 		return $worker->hit($id);
 	}
 }

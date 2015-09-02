@@ -8,19 +8,19 @@ defined('_JEXEC') or die;
 class WissensmatrixControllerZfwig extends JControllerForm
 {
 	/**
-	 * @since	1.6
+	 * @since    1.6
 	 */
 	protected $view_item = 'zfwigform';
 
 	/**
-	 * @since	1.6
+	 * @since    1.6
 	 */
 	protected $view_list = 'worker';
 
 	/**
 	 * Constructor.
 	 *
-	 * @param   array  $config  An optional associative array of configuration settings.
+	 * @param   array $config An optional associative array of configuration settings.
 	 *
 	 * @see     JControllerLegacy
 	 * @since   12.2
@@ -37,20 +37,21 @@ class WissensmatrixControllerZfwig extends JControllerForm
 	/**
 	 * Method to add a new record.
 	 *
-	 * @return	boolean	True if the worker can be added, false if not.
-	 * @since	1.6
+	 * @return    boolean    True if the worker can be added, false if not.
+	 * @since    1.6
 	 */
 	public function add()
 	{
-		if (!parent::add()) {
+		if (!parent::add())
+		{
 			// Redirect to the return page.
 			$this->setRedirect($this->getReturnPage());
 		}
 
 		if ($this->task == 'reload')
 		{
-			$context = "$this->option.edit.$this->context";
-			$form_data	= $this->input->get('jform', '', 'array');
+			$context   = "$this->option.edit.$this->context";
+			$form_data = $this->input->get('jform', '', 'array');
 			JFactory::getApplication()->setUserState($context . '.data', $form_data);
 		}
 	}
@@ -58,26 +59,27 @@ class WissensmatrixControllerZfwig extends JControllerForm
 	/**
 	 * Method override to check if you can add a new record.
 	 *
-	 * @param	array	An array of input data.
+	 * @param    array    An array of input data.
 	 *
-	 * @return	boolean
-	 * @since	1.6
+	 * @return    boolean
+	 * @since    1.6
 	 */
 	protected function allowAdd($data = array())
 	{
-		$user		= JFactory::getUser();
-		$categoryId	= JArrayHelper::getValue($data, 'worker_catid', $this->input->getInt('catid'), 'int');
-		$allow		= null;
+		$user       = JFactory::getUser();
+		$categoryId = JArrayHelper::getValue($data, 'worker_catid', $this->input->getInt('catid'), 'int');
+		$allow      = null;
 
 		if ($this->task == 'reload')
 		{
-			$form_data	= $this->input->get('jform', '', 'array');
-			$categoryId	= JArrayHelper::getValue($form_data, 'worker_catid', 0, 'int');
+			$form_data  = $this->input->get('jform', '', 'array');
+			$categoryId = JArrayHelper::getValue($form_data, 'worker_catid', 0, 'int');
 		}
 
-		if ($categoryId) {
+		if ($categoryId)
+		{
 			// If the category has been passed in the data or URL check it.
-			return $user->authorise('core.edit.worker', 'com_wissensmatrix.category.'.$categoryId);
+			return $user->authorise('core.edit.worker', 'com_wissensmatrix.category.' . $categoryId);
 		}
 		else
 		{
@@ -89,31 +91,31 @@ class WissensmatrixControllerZfwig extends JControllerForm
 	/**
 	 * Method override to check if you can edit an existing record.
 	 *
-	 * @param	array	$data	An array of input data.
-	 * @param	string	$key	The name of the key for the primary key.
+	 * @param    array  $data An array of input data.
+	 * @param    string $key  The name of the key for the primary key.
 	 *
-	 * @return	boolean
-	 * @since	1.6
+	 * @return    boolean
+	 * @since    1.6
 	 */
 	protected function allowEdit($data = array(), $key = 'id')
 	{
-		$recordId = (int) isset($data[$key]) ? $data[$key] : 0;
+		$recordId   = (int) isset($data[$key]) ? $data[$key] : 0;
 		$categoryId = 0;
-		$allow	= null;
+		$allow      = null;
 
 		if ($recordId)
 		{
 			// Need to do a lookup from the model.
-			$record = $this->getModel()->getItem($recordId);
+			$record     = $this->getModel()->getItem($recordId);
 			$categoryId = (int) $record->worker_catid;
 		}
 
 		if ($categoryId)
 		{
-			$user	= JFactory::getUser();
+			$user = JFactory::getUser();
 
 			// The category has been set. Check the category permissions.
-			if ($user->authorise('core.edit.worker', $this->option.'.category.'.$categoryId))
+			if ($user->authorise('core.edit.worker', $this->option . '.category.' . $categoryId))
 			{
 				return true;
 			}
@@ -128,10 +130,10 @@ class WissensmatrixControllerZfwig extends JControllerForm
 	/**
 	 * Method to cancel an edit.
 	 *
-	 * @param	string	$key	The name of the primary key of the URL variable.
+	 * @param    string $key The name of the primary key of the URL variable.
 	 *
-	 * @return	Boolean	True if access level checks pass, false otherwise.
-	 * @since	1.6
+	 * @return    Boolean    True if access level checks pass, false otherwise.
+	 * @since    1.6
 	 */
 	public function cancel($key = 'a_id')
 	{
@@ -144,11 +146,12 @@ class WissensmatrixControllerZfwig extends JControllerForm
 	/**
 	 * Method to edit an existing record.
 	 *
-	 * @param	string	$key	The name of the primary key of the URL variable.
-	 * @param	string	$urlVar	The name of the URL variable if different from the primary key (sometimes required to avoid router collisions).
+	 * @param    string $key    The name of the primary key of the URL variable.
+	 * @param    string $urlVar The name of the URL variable if different from the primary key (sometimes required to
+	 *                          avoid router collisions).
 	 *
-	 * @return	Boolean	True if access level check and checkout passes, false otherwise.
-	 * @since	1.6
+	 * @return    Boolean    True if access level check and checkout passes, false otherwise.
+	 * @since    1.6
 	 */
 	public function edit($key = null, $urlVar = 'a_id')
 	{
@@ -160,13 +163,13 @@ class WissensmatrixControllerZfwig extends JControllerForm
 	/**
 	 * Method to get a model object, loading it if required.
 	 *
-	 * @param	string	$name	The model name. Optional.
-	 * @param	string	$prefix	The class prefix. Optional.
-	 * @param	array	$config	Configuration array for model. Optional.
+	 * @param    string $name   The model name. Optional.
+	 * @param    string $prefix The class prefix. Optional.
+	 * @param    array  $config Configuration array for model. Optional.
 	 *
-	 * @return	object	The model.
+	 * @return    object    The model.
 	 *
-	 * @since	1.5
+	 * @since    1.5
 	 */
 	public function getModel($name = 'zfwigform', $prefix = '', $config = array('ignore_request' => true))
 	{
@@ -178,11 +181,11 @@ class WissensmatrixControllerZfwig extends JControllerForm
 	/**
 	 * Gets the URL arguments to append to an item redirect.
 	 *
-	 * @param	int		$recordId	The primary key id for the item.
-	 * @param	string	$urlVar		The name of the URL variable for the id.
+	 * @param    int    $recordId The primary key id for the item.
+	 * @param    string $urlVar   The name of the URL variable for the id.
 	 *
-	 * @return	string	The arguments to append to the redirect URL.
-	 * @since	1.6
+	 * @return    string    The arguments to append to the redirect URL.
+	 * @since    1.6
 	 */
 	protected function getRedirectToItemAppend($recordId = null, $urlVar = 'a_id')
 	{
@@ -199,37 +202,42 @@ class WissensmatrixControllerZfwig extends JControllerForm
 //		}
 		$append .= '&tmpl=component';
 
-		$append .= '&layout='.$layout;
+		$append .= '&layout=' . $layout;
 
-		if ($recordId) {
-			$append .= '&'.$urlVar.'='.$recordId;
+		if ($recordId)
+		{
+			$append .= '&' . $urlVar . '=' . $recordId;
 		}
 		elseif ($this->task == 'reload')
 		{
-			$form_data	= $this->input->get('jform', '', 'array');
-			$recordId	= JArrayHelper::getValue($form_data, 'fwig_id', 0, 'int');
-			$append .= '&'.$urlVar.'='.$recordId;
+			$form_data = $this->input->get('jform', '', 'array');
+			$recordId  = JArrayHelper::getValue($form_data, 'fwig_id', 0, 'int');
+			$append .= '&' . $urlVar . '=' . $recordId;
 			$append .= '&reload=true';
 		}
 
-		if ($itemId	= $this->input->getInt('Itemid')) {
-			$append .= '&Itemid='.$itemId;
+		if ($itemId = $this->input->getInt('Itemid'))
+		{
+			$append .= '&Itemid=' . $itemId;
 		}
 
-		if($mit_id = $this->input->getInt('mit_id', 0, 'get')) {
-			$append .= '&mit_id='.$mit_id;
+		if ($mit_id = $this->input->getInt('mit_id', 0, 'get'))
+		{
+			$append .= '&mit_id=' . $mit_id;
 		}
 		elseif (isset($form_data))
 		{
-			$append .= '&mit_id='.JArrayHelper::getValue($form_data, 'mit_id', 0, 'int');;
+			$append .= '&mit_id=' . JArrayHelper::getValue($form_data, 'mit_id', 0, 'int');;
 		}
 
-		if($catId = $this->input->getInt('catid', null, 'get')) {
-			$append .= '&catid='.$catId;
+		if ($catId = $this->input->getInt('catid', null, 'get'))
+		{
+			$append .= '&catid=' . $catId;
 		}
 
-		if ($return	= $this->getReturnPage()) {
-			$append .= '&return='.base64_encode($return);
+		if ($return = $this->getReturnPage())
+		{
+			$append .= '&return=' . base64_encode($return);
 		}
 
 		return $append;
@@ -249,7 +257,7 @@ class WissensmatrixControllerZfwig extends JControllerForm
 		$id = $this->input->get('mit_id', 0, 'int');
 		if ($id)
 		{
-			$append .= '&id='.$id;
+			$append .= '&id=' . $id;
 		}
 		$append .= '#fwis';
 
@@ -261,17 +269,19 @@ class WissensmatrixControllerZfwig extends JControllerForm
 	 *
 	 * If a "return" variable has been passed in the request
 	 *
-	 * @return	string	The return URL.
-	 * @since	1.6
+	 * @return    string    The return URL.
+	 * @since    1.6
 	 */
 	protected function getReturnPage()
 	{
 		$return = $this->input->get('return', null, 'base64');
 
-		if (empty($return) || !JUri::isInternal(base64_decode($return))) {
+		if (empty($return) || !JUri::isInternal(base64_decode($return)))
+		{
 			return JURI::base();
 		}
-		else {
+		else
+		{
 			return base64_decode($return);
 		}
 	}
@@ -279,21 +289,23 @@ class WissensmatrixControllerZfwig extends JControllerForm
 	/**
 	 * Method to save a record.
 	 *
-	 * @param	string	$key	The name of the primary key of the URL variable.
-	 * @param	string	$urlVar	The name of the URL variable if different from the primary key (sometimes required to avoid router collisions).
+	 * @param    string $key    The name of the primary key of the URL variable.
+	 * @param    string $urlVar The name of the URL variable if different from the primary key (sometimes required to
+	 *                          avoid router collisions).
 	 *
-	 * @return	Boolean	True if successful, false otherwise.
-	 * @since	1.6
+	 * @return    Boolean    True if successful, false otherwise.
+	 * @since    1.6
 	 */
 	public function save($key = null, $urlVar = 'a_id')
 	{
 		// Load the backend helper for filtering.
-		require_once JPATH_ADMINISTRATOR.'/components/com_wissensmatrix/helpers/wissensmatrix.php';
+		require_once JPATH_ADMINISTRATOR . '/components/com_wissensmatrix/helpers/wissensmatrix.php';
 
 		$result = parent::save($key, $urlVar);
 
 		// If ok, redirect to the return page.
-		if ($result) {
+		if ($result)
+		{
 			$this->setRedirect($this->getReturnPage());
 		}
 
@@ -335,6 +347,6 @@ class WissensmatrixControllerZfwig extends JControllerForm
 			}
 		}
 
-		$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&id='.$this->getRedirectToListAppend(), false));
+		$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list . '&id=' . $this->getRedirectToListAppend(), false));
 	}
 }
