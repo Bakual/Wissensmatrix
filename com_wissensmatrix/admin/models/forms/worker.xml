@@ -87,7 +87,7 @@
 		<field name="eintritt" type="calendar"
 			label="COM_WISSENSMATRIX_FIELD_EINTRITT_LABEL" description="COM_WISSENSMATRIX_FIELD_EINTRITT_DESC" />
 
-		<field name="template_uid" type="sql"
+		<field name="template_id" type="sql"
 			label="COM_WISSENSMATRIX_FIELD_TEMPLATE_LABEL" description="COM_WISSENSMATRIX_FIELD_TEMPLATE_DESC"
 			query="SELECT mit.id, CONCAT(name, ' ', vorname) AS text FROM #__wissensmatrix_mitarbeiter AS mit LEFT JOIN #__categories AS cat ON mit.catid = cat.id WHERE cat.title LIKE 'Template%' ORDER BY mit.name, mit.vorname"
 			value_field="text"
