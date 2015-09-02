@@ -53,15 +53,17 @@ class PlgUserWissensmatrix extends JPlugin
 		{
 			$userId = isset($data->id) ? $data->id : 0;
 
-			if (!isset($data->profile) and $userId > 0)
+			if (!isset($data->wissensmatrix) && $userId)
 			{
 				// Load the profile data from the database.
 				$db = JFactory::getDbo();
-				$db->setQuery(
-					'SELECT profile_key, profile_value FROM #__user_profiles' .
-						' WHERE user_id = ' . (int) $userId . " AND profile_key LIKE 'profile.%'" .
-						' ORDER BY ordering'
-				);
+				$query = $db->getQuery(true)
+					->select('profile_key, profile_value')
+					->from('#__user_profiles')
+					->where('user_id = ' . (int) $userId)
+					->where('profile_key LIKE "wissensmatrix.%"')
+					->order('ordering');
+				$db->setQuery($query);
 
 				try
 				{
@@ -75,16 +77,16 @@ class PlgUserWissensmatrix extends JPlugin
 				}
 
 				// Merge the profile data.
-				$data->profile = array();
+				$data->wissensmatrix = array();
 
 				foreach ($results as $v)
 				{
-					$k = str_replace('profile.', '', $v[0]);
-					$data->profile[$k] = json_decode($v[1], true);
+					$k = str_replace('wissensmatrix.', '', $v[0]);
+					$data->wissensmatrix[$k] = json_decode($v[1], true);
 
-					if ($data->profile[$k] === null)
+					if ($data->wissensmatrix[$k] === null)
 					{
-						$data->profile[$k] = $v[1];
+						$data->wissensmatrix[$k] = $v[1];
 					}
 				}
 			}
@@ -159,27 +161,29 @@ class PlgUserWissensmatrix extends JPlugin
 	{
 		$userId = Joomla\Utilities\ArrayHelper::getValue($data, 'id', 0, 'int');
 
-		if ($userId && $result && isset($data['profile']) && (count($data['profile'])))
+		if (!$userId || !$result)
+		{
+			return true;
+		}
+
+		if (!empty($data['wissensmatrix']))
 		{
 			try
 			{
-				// Sanitize the date
-				$data['profile']['dob'] = $this->date;
-
 				$db = JFactory::getDbo();
 				$query = $db->getQuery(true)
 					->delete($db->quoteName('#__user_profiles'))
 					->where($db->quoteName('user_id') . ' = ' . (int) $userId)
-					->where($db->quoteName('profile_key') . ' LIKE ' . $db->quote('profile.%'));
+					->where($db->quoteName('profile_key') . ' LIKE ' . $db->quote('wissensmatrix.%'));
 				$db->setQuery($query);
 				$db->execute();
 
 				$tuples = array();
 				$order = 1;
 
-				foreach ($data['profile'] as $k => $v)
+				foreach ($data['wissensmatrix'] as $k => $v)
 				{
-					$tuples[] = '(' . $userId . ', ' . $db->quote('profile.' . $k) . ', ' . $db->quote(json_encode($v)) . ', ' . ($order++) . ')';
+					$tuples[] = '(' . $userId . ', ' . $db->quote('wissensmatrix.' . $k) . ', ' . $db->quote(json_encode($v)) . ', ' . ($order++) . ')';
 				}
 
 				$db->setQuery('INSERT INTO #__user_profiles VALUES ' . implode(', ', $tuples));
@@ -223,7 +227,7 @@ class PlgUserWissensmatrix extends JPlugin
 				$db = JFactory::getDbo();
 				$db->setQuery(
 					'DELETE FROM #__user_profiles WHERE user_id = ' . $userId .
-						" AND profile_key LIKE 'profile.%'"
+						" AND profile_key LIKE 'wissensmatrix.%'"
 				);
 
 				$db->execute();

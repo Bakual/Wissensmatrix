@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-	<fields name="basic">
-		<fieldset name="basic">
+	<fields name="wissensmatrix">
+		<fieldset
+			name="wissensmatrix"
+			label="PLG_USER_WISSENSMATRIX_FIELDSET_WISSENSMATRIX"
+			>
 			<field
 				name="team"
-				type="text"
+				type="team"
 				label="PLG_USER_WISSENSMATRIX_FIELD_TEAM_LABEL"
 				description="PLG_USER_WISSENSMATRIX_FIELD_TEAM_DESC"
-				filter="string"
-				id="team"
-			/>
+				extension="com_wissensmatrix"
+				class="input-xlarge"
+				published="1"
+				>
+				<option>PLG_USER_WISSENSMATRIX_FIELD_TEAM_SELECT</option>
+			</field>
 		</fieldset>
 	</fields>
 </form>
