@@ -30,7 +30,6 @@
 		<filename>router.php</filename>
 		<filename>wissensmatrix.php</filename>
 		<filename>controller.php</filename>
-		<filename>index.html</filename>
 		<folder>controllers</folder>
 		<folder>helpers</folder>
 		<folder>views</folder>
@@ -68,7 +67,6 @@
 			<filename>wissensmatrix.php</filename>
 			<filename>wissensmatrix.css</filename>
 			<filename>controller.php</filename>
-			<filename>index.html</filename>
 			<folder>controllers</folder>
 			<folder>images</folder>
 			<folder>models</folder>
