@@ -106,6 +106,9 @@ class WissensmatrixModelWbigs extends JModelList
 	 */
 	protected function getListQuery()
 	{
+		$user   = JFactory::getUser();
+		$groups = implode(',', $user->getAuthorisedViewLevels());
+
 		// Create a new query object.
 		$db    = $this->getDbo();
 		$query = $db->getQuery(true);
@@ -138,6 +141,7 @@ class WissensmatrixModelWbigs extends JModelList
 		// Join over the categories.
 		$query->select('c.title AS category_title');
 		$query->join('LEFT', '#__categories AS c ON c.id = wbigs.catid');
+		$query->where('(wbigs.catid = 0 OR (c.access IN (' . $groups . ') AND c.published = 1))');
 
 		// Filter by published state
 		$published = $this->getState('filter.state');
