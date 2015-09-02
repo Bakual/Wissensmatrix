@@ -12,6 +12,7 @@
 	<files>
 		<filename plugin="wissensmatrix">wissensmatrix.php</filename>
 		<folder>language</folder>
+		<folder>fields</folder>
 		<folder>forms</folder>
 	</files>
 	<config>
