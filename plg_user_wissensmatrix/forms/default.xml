@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fields name="basic">
+		<fieldset name="basic">
+			<field
+				name="team"
+				type="text"
+				label="PLG_USER_WISSENSMATRIX_FIELD_TEAM_LABEL"
+				description="PLG_USER_WISSENSMATRIX_FIELD_TEAM_DESC"
+				filter="string"
+				id="team"
+			/>
+		</fieldset>
+	</fields>
+</form>

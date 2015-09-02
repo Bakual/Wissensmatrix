@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.4" type="plugin" group="user" method="upgrade">
+	<name>plg_user_wissensmatrix</name>
+	<author>Thomas Hunziker</author>
+	<creationDate>2015-09-02</creationDate>
+	<copyright>(C) 2015</copyright>
+	<authorEmail>thomi.hunziker@sbb.ch</authorEmail>
+	<authorUrl>http://www.bakual.ch</authorUrl>
+	<version>3.0</version>
+	<license>http://www.gnu.org/licenses/gpl.html</license>
+	<description>PLG_USER_WISSENSMATRIX_DESCRIPTION</description>
+	<files>
+		<filename plugin="wissensmatrix">wissensmatrix.php</filename>
+		<folder>language</folder>
+		<folder>forms</folder>
+	</files>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+			</fieldset>
+		</fields>
+	</config>
+</extension>

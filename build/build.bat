@@ -13,6 +13,8 @@ zip -r ../build/packages/mod_wissensmatrix_legend.zip *
 cd ../mod_wissensmatrix_userreport/
 zip -r ../build/packages/mod_wissensmatrix_userreport.zip *
 REM Plugins
+cd ../plg_user_wissensmatrix/
+zip -r ../build/packages/plg_user_wissensmatrix.zip *
 REM Package
 cd ../build/packages/
 copy ..\..\pkg_wissensmatrix.xml
