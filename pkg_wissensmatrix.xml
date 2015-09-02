@@ -13,7 +13,7 @@
 	<packagerurl>http://www.bakual.net</packagerurl>
 	<description>Wissensmatrix Packages.</description>
 	<files>
-		<file type="component" id="com_wissensmatrix" >com_wissensmatrix.zip</file>
+		<file type="component" id="com_wissensmatrix">com_wissensmatrix.zip</file>
 		<file type="module" id="mod_wissensmatrix_legend" client="site">mod_wissensmatrix_legend.zip</file>
 		<file type="module" id="mod_wissensmatrix_userreport" client="site">mod_wissensmatrix_userreport.zip</file>
 	</files>

@@ -47,12 +47,20 @@
 		<menu img="components/com_wissensmatrix/images/fwis-16.png">COM_WISSENSMATRIX</menu>
 		<submenu>
 			<menu img="components/com_wissensmatrix/images/fwis-16.png" view="fwis">COM_WISSENSMATRIX_MENU_FWIS</menu>
-			<menu img="components/com_wissensmatrix/images/fwigs-16.png" view="fwigs">COM_WISSENSMATRIX_MENU_FWIGS</menu>
+			<menu img="components/com_wissensmatrix/images/fwigs-16.png" view="fwigs">COM_WISSENSMATRIX_MENU_FWIGS
+			</menu>
 			<menu img="components/com_wissensmatrix/images/wbis-16.png" view="wbis">COM_WISSENSMATRIX_MENU_WBIS</menu>
-			<menu img="components/com_wissensmatrix/images/wbigs-16.png" view="wbigs">COM_WISSENSMATRIX_MENU_WBIGS</menu>
-			<menu img="components/com_wissensmatrix/images/worker-16.png" view="workers">COM_WISSENSMATRIX_MENU_WORKERS</menu>
-			<menu img="components/com_wissensmatrix/images/teams-16.png" link="option=com_categories&amp;extension=com_wissensmatrix">COM_WISSENSMATRIX_MENU_CATEGORY_TEAMS</menu>
-			<menu img="components/com_wissensmatrix/images/level_green-16.png" view="levels">COM_WISSENSMATRIX_MENU_LEVELS</menu>
+			<menu img="components/com_wissensmatrix/images/wbigs-16.png" view="wbigs">COM_WISSENSMATRIX_MENU_WBIGS
+			</menu>
+			<menu img="components/com_wissensmatrix/images/worker-16.png" view="workers">
+				COM_WISSENSMATRIX_MENU_WORKERS
+			</menu>
+			<menu img="components/com_wissensmatrix/images/teams-16.png"
+				  link="option=com_categories&amp;extension=com_wissensmatrix">COM_WISSENSMATRIX_MENU_CATEGORY_TEAMS
+			</menu>
+			<menu img="components/com_wissensmatrix/images/level_green-16.png" view="levels">
+				COM_WISSENSMATRIX_MENU_LEVELS
+			</menu>
 		</submenu>
 		<files folder="admin">
 			<filename>config.xml</filename>

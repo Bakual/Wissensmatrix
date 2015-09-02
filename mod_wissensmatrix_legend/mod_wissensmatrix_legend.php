@@ -9,32 +9,32 @@
 
 defined('_JEXEC') or die;
 
-$jinput	= JFactory::getApplication()->input;
+$jinput = JFactory::getApplication()->input;
 
 if ($jinput->get('option') != 'com_wissensmatrix')
 {
 	return;
 }
 
-$view	= $jinput->get('view');
+$view = $jinput->get('view');
 switch ($view)
-{ 
+{
 	case 'reportfwiglevels':
 	case 'reportfwigteam':
 	case 'reportfwiteam':
-		$layout	= 'default';
+		$layout = 'default';
 		break;
 	case 'reportfwiglevelssummary':
-		$layout	= 'levelssummary';
+		$layout = 'levelssummary';
 		break;
 	case 'reportfwigdiffsummary':
-		$layout	= 'diffsummary';
+		$layout = 'diffsummary';
 		break;
 	default:
 		return;
 }
-$moduleclass_sfx	= htmlspecialchars($params->get('moduleclass_sfx'));
+$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
 
-JHTML::addIncludePath(JPATH_SITE.'components/com_wissensmatrix/helpers');
+JHTML::addIncludePath(JPATH_SITE . 'components/com_wissensmatrix/helpers');
 
 require JModuleHelper::getLayoutPath('mod_wissensmatrix_legend', $layout);
