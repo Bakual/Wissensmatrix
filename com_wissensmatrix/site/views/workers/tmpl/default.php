@@ -18,11 +18,6 @@ $listDirn  = $this->state->get('list.direction');
 			<?php echo $this->escape($this->params->get('page_subheading'));
 			if ($this->params->get('show_category_title')) : ?>
 				<span class="subheading-category"><?php echo $this->category->title; ?></span>
-				<?php if ($this->parent && $this->parent->id != 'root') : ?>
-					<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=workers&teamid=' . $this->parent->slug); ?>">
-						<span class="icon-chevron-up"> </span>
-					</a>
-				<?php endif; ?>
 			<?php endif; ?>
 		</h2>
 	<?php endif;
