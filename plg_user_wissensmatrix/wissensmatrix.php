@@ -20,8 +20,8 @@ class PlgUserWissensmatrix extends JPlugin
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$subject  The object to observe
-	 * @param   array   $config    An array that holds the plugin configuration
+	 * @param   object &$subject The object to observe
+	 * @param   array  $config   An array that holds the plugin configuration
 	 *
 	 * @since   1.5
 	 */
@@ -34,8 +34,8 @@ class PlgUserWissensmatrix extends JPlugin
 	/**
 	 * Runs on content preparation
 	 *
-	 * @param   string  $context  The context for the data
-	 * @param   object  $data     An object containing the data for the form.
+	 * @param   string $context The context for the data
+	 * @param   object $data    An object containing the data for the form.
 	 *
 	 * @return  boolean
 	 *
@@ -56,7 +56,7 @@ class PlgUserWissensmatrix extends JPlugin
 			if (!isset($data->wissensmatrix) && $userId)
 			{
 				// Load the profile data from the database.
-				$db = JFactory::getDbo();
+				$db    = JFactory::getDbo();
 				$query = $db->getQuery(true)
 					->select('profile_key, profile_value')
 					->from('#__user_profiles')
@@ -81,13 +81,18 @@ class PlgUserWissensmatrix extends JPlugin
 
 				foreach ($results as $v)
 				{
-					$k = str_replace('wissensmatrix.', '', $v[0]);
+					$k                       = str_replace('wissensmatrix.', '', $v[0]);
 					$data->wissensmatrix[$k] = json_decode($v[1], true);
 
 					if ($data->wissensmatrix[$k] === null)
 					{
 						$data->wissensmatrix[$k] = $v[1];
 					}
+				}
+
+				if (!JHtml::isRegistered('users.team'))
+				{
+					JHtml::register('users.team', array(__CLASS__, 'team'));
 				}
 			}
 		}
@@ -98,8 +103,8 @@ class PlgUserWissensmatrix extends JPlugin
 	/**
 	 * Adds additional fields to the user editing form
 	 *
-	 * @param   JForm  $form  The form to be altered.
-	 * @param   mixed  $data  The associated data for the form.
+	 * @param   JForm $form The form to be altered.
+	 * @param   mixed $data The associated data for the form.
 	 *
 	 * @return  boolean
 	 *
@@ -132,9 +137,9 @@ class PlgUserWissensmatrix extends JPlugin
 	/**
 	 * Method is called before user data is stored in the database
 	 *
-	 * @param   array    $user   Holds the old user data.
-	 * @param   boolean  $isnew  True if a new user is stored.
-	 * @param   array    $data   Holds the new user data.
+	 * @param   array   $user  Holds the old user data.
+	 * @param   boolean $isnew True if a new user is stored.
+	 * @param   array   $data  Holds the new user data.
 	 *
 	 * @return    boolean
 	 *
@@ -150,10 +155,10 @@ class PlgUserWissensmatrix extends JPlugin
 	/**
 	 * Saves user profile data
 	 *
-	 * @param   array    $data    entered user data
-	 * @param   boolean  $isNew   true if this is a new user
-	 * @param   boolean  $result  true if saving the user worked
-	 * @param   string   $error   error message
+	 * @param   array   $data   entered user data
+	 * @param   boolean $isNew  true if this is a new user
+	 * @param   boolean $result true if saving the user worked
+	 * @param   string  $error  error message
 	 *
 	 * @return bool
 	 */
@@ -170,7 +175,7 @@ class PlgUserWissensmatrix extends JPlugin
 		{
 			try
 			{
-				$db = JFactory::getDbo();
+				$db    = JFactory::getDbo();
 				$query = $db->getQuery(true)
 					->delete($db->quoteName('#__user_profiles'))
 					->where($db->quoteName('user_id') . ' = ' . (int) $userId)
@@ -179,7 +184,7 @@ class PlgUserWissensmatrix extends JPlugin
 				$db->execute();
 
 				$tuples = array();
-				$order = 1;
+				$order  = 1;
 
 				foreach ($data['wissensmatrix'] as $k => $v)
 				{
@@ -205,9 +210,9 @@ class PlgUserWissensmatrix extends JPlugin
 	 *
 	 * Method is called after user data is deleted from the database
 	 *
-	 * @param   array    $user     Holds the user data
-	 * @param   boolean  $success  True if user was succesfully stored in the database
-	 * @param   string   $msg      Message
+	 * @param   array   $user    Holds the user data
+	 * @param   boolean $success True if user was succesfully stored in the database
+	 * @param   string  $msg     Message
 	 *
 	 * @return  boolean
 	 */
@@ -227,7 +232,7 @@ class PlgUserWissensmatrix extends JPlugin
 				$db = JFactory::getDbo();
 				$db->setQuery(
 					'DELETE FROM #__user_profiles WHERE user_id = ' . $userId .
-						" AND profile_key LIKE 'wissensmatrix.%'"
+					" AND profile_key LIKE 'wissensmatrix.%'"
 				);
 
 				$db->execute();
@@ -241,5 +246,23 @@ class PlgUserWissensmatrix extends JPlugin
 		}
 
 		return true;
+	}
+
+	/**
+	 * returns the team name instead of the id
+	 *
+	 * @param   string $value url to use
+	 *
+	 * @return mixed|string
+	 */
+	public static function team($value)
+	{
+		if ($value)
+		{
+			$table = JTable::getInstance('category');
+			$table->load($value);
+
+			return $table->title;
+		}
 	}
 }
