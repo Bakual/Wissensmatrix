@@ -25,7 +25,15 @@ class WissensmatrixModelWbi extends JModelItem
 
 		// Category filter (priority on request so subcategories work)
 		// Team in this case, not used but selection has to be saved in userstate
-		$teamid = $app->getUserStateFromRequest('com_wissensmatrix.team.id', 'teamid', $params->get('teamid', 0), 'int');
+		$teamid = $app->getUserStateFromRequest('com_wissensmatrix.team.id', 'teamid', null, 'int');
+
+		// Check default team
+		if ($teamid === null)
+		{
+			$teamid = WissensmatrixHelperWissensmatrix::getDefaultTeam();
+			JFactory::getApplication()->setUserState('com_wissensmatrix.team.id', $teamid);
+		}
+
 		$this->setState('team.id', $teamid);
 
 		// Load the parameters.

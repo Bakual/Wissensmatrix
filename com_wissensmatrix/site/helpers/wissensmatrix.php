@@ -51,4 +51,23 @@ class WissensmatrixHelperWissensmatrix
 				return 'success';
 		}
 	}
+
+	/**
+	 * Retrieves the default team for the user.
+	 *
+	 * return  integer
+	 */
+	public static function getDefaultTeam()
+	{
+		$user  = JFactory::getUser();
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		$query->select($db->quoteName('profile_value'))
+			->from($db->quoteName('#__user_profiles'))
+			->where($db->quoteName('profile_key') . ' = ' . $db->quote('wissensmatrix.team'))
+			->where($db->quoteName('user_id') . ' = ' . $user->id);
+		$db->setQuery($query);
+
+		return (int) json_decode($db->loadResult());
+	}
 }

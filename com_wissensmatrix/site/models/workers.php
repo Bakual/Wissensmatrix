@@ -170,19 +170,8 @@ class WissensmatrixModelWorkers extends JModelList
 		// Check default team
 		if ($teamid === null)
 		{
-			$db    = $this->getDbo();
-			$query = $db->getQuery(true);
-			$query->select($db->quoteName('profile_value'))
-				->from($db->quoteName('#__user_profiles'))
-				->where($db->quoteName('profile_key') . ' = ' . $db->quote('wissensmatrix.team'))
-				->where($db->quoteName('user_id') . ' = ' . $user->id);
-			$db->setQuery($query);
-			$result = (int) json_decode($db->loadResult());
-			if ($result)
-			{
-				$this->setUserState('com_wissensmatrix.team.id', $teamid);
-				$teamid = $result;
-			}
+			$teamid = WissensmatrixHelperWissensmatrix::getDefaultTeam();
+			JFactory::getApplication()->setUserState('com_wissensmatrix.team.id', $teamid);
 		}
 
 		$this->setState('team.id', $teamid);
