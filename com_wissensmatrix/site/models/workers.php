@@ -161,10 +161,30 @@ class WissensmatrixModelWorkers extends JModelList
 		$app    = JFactory::getApplication();
 		$params = $app->getParams();
 		$this->setState('params', $params);
+		$user = JFactory::getUser();
 
 		// Category filter (priority on request so subcategories work)
 		// Team in this case
-		$teamid = $this->getUserStateFromRequest('com_wissensmatrix.team.id', 'teamid', $params->get('teamid', 0), 'int');
+		$teamid = $this->getUserStateFromRequest('com_wissensmatrix.team.id', 'teamid', null, 'int');
+
+		// Check default team
+		if ($teamid === null)
+		{
+			$db    = $this->getDbo();
+			$query = $db->getQuery(true);
+			$query->select($db->quoteName('profile_value'))
+				->from($db->quoteName('#__user_profiles'))
+				->where($db->quoteName('profile_key') . ' = ' . $db->quote('wissensmatrix.team'))
+				->where($db->quoteName('user_id') . ' = ' . $user->id);
+			$db->setQuery($query);
+			$result = (int) json_decode($db->loadResult());
+			if ($result)
+			{
+				$this->setUserState('com_wissensmatrix.team.id', $teamid);
+				$teamid = $result;
+			}
+		}
+
 		$this->setState('team.id', $teamid);
 
 		$zwbistate = $app->getUserStateFromRequest($this->context . '.filter.zwbistate', 'zwbistate', 0, 'INT');
@@ -173,7 +193,6 @@ class WissensmatrixModelWorkers extends JModelList
 		// Include Subcategories or not
 		$this->setState('filter.subcategories', $params->get('show_subcategory_content', 0));
 
-		$user = JFactory::getUser();
 		if ((!$user->authorise('core.edit.state', 'com_wissensmatrix')) && (!$user->authorise('core.edit', 'com_wissensmatrix')))
 		{
 			// filter on published for those who do not have edit or edit.state rights.
@@ -239,7 +258,6 @@ class WissensmatrixModelWorkers extends JModelList
 			if (is_object($this->_item))
 			{
 				$user   = JFactory::getUser();
-				$userId = $user->get('id');
 				$asset  = 'com_wissensmatrix.category.' . $this->_item->id;
 
 				// Check general create permission.
