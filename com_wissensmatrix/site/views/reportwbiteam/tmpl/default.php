@@ -1,9 +1,11 @@
 <?php
 defined('_JEXEC') or die;
 
-JHTML::addIncludePath(JPATH_COMPONENT . '/helpers');
+JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 JHtml::stylesheet('com_wissensmatrix/wissensmatrix.css', '', true);
 
+$user      = JFactory::getUser();
+$canView   = $user->authorise('core.view.worker', 'com_wissensmatrix');
 $listOrder = $this->w_state->get('list.ordering');
 $listDirn  = $this->w_state->get('list.direction');
 ?>
@@ -89,7 +91,13 @@ $listDirn  = $this->w_state->get('list.direction');
 					<?php foreach ($this->workers as $worker) : ?>
 						<tr>
 							<td>
-								<a href="<?php echo WissensmatrixHelperRoute::getWorkerRoute($worker->slug); ?>"><?php echo $worker->vorname . ' ' . $worker->name; ?></a>
+								<?php if ($canView or $user->authorise('core.view.worker', 'com_wissensmatrix.category.' . $worker->catid)) : ?>
+									<a href="<?php echo JRoute::_(WissensmatrixHelperRoute::getWorkerRoute($worker->slug)); ?>">
+										<?php echo $worker->vorname . ' ' . $worker->name; ?>
+									</a>
+								<?php else :
+									echo $worker->vorname . ' ' . $worker->name;
+								endif; ?>
 							</td>
 							<td>
 								<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportwbiteam&id=' . $this->item->id . '&teamid=' . $worker->catid); ?>"><?php echo $worker->category_title; ?></a>

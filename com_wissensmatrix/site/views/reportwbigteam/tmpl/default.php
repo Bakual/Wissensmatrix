@@ -3,6 +3,8 @@ defined('_JEXEC') or die;
 
 JHTML::addIncludePath(JPATH_COMPONENT . '/helpers');
 
+$user      = JFactory::getUser();
+$canView   = $user->authorise('core.view.worker', 'com_wissensmatrix');
 $listOrder = $this->w_state->get('list.ordering');
 $listDirn  = $this->w_state->get('list.direction');
 ?>
@@ -121,7 +123,13 @@ $listDirn  = $this->w_state->get('list.direction');
 								<?php foreach ($workers as $worker) : ?>
 									<tr>
 										<td>
-											<a href="<?php echo WissensmatrixHelperRoute::getWorkerRoute($worker->slug); ?>"><?php echo $worker->vorname . ' ' . $worker->name; ?></a>
+											<?php if ($canView or $user->authorise('core.view.worker', 'com_wissensmatrix.category.' . $worker->catid)) : ?>
+												<a href="<?php echo JRoute::_(WissensmatrixHelperRoute::getWorkerRoute($worker->slug)); ?>">
+													<?php echo $worker->vorname . ' ' . $worker->name; ?>
+												</a>
+											<?php else :
+												echo $worker->vorname . ' ' . $worker->name;
+											endif; ?>
 										</td>
 										<td>
 											<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportwbigteam&id=' . $item->wbig_id . '&teamid=' . $worker->catid); ?>"><?php echo $worker->category_title; ?></a>
