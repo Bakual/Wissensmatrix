@@ -34,7 +34,7 @@ class WissensmatrixViewWorker extends JViewLegacy
 		if ($this->item->category_access)
 		{
 			$groups  = $user->getAuthorisedViewLevels();
-			$canView = ($user->authorise('core.edit.worker', 'com_wissensmatrix') or $user->authorise('core.view.worker', 'com_wissensmatrix.category.' . $this->item->catid));
+			$canView = ($user->authorise('wissensmatrix.edit.worker', 'com_wissensmatrix') or $user->authorise('wissensmatrix.view.worker', 'com_wissensmatrix.category.' . $this->item->catid));
 
 			if (!in_array($this->item->category_access, $groups) or !$canView)
 			{

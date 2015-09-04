@@ -40,7 +40,7 @@ class WissensmatrixModelZfwigform extends JModelAdmin
 		{
 			$user = JFactory::getUser();
 
-			return $user->authorise('core.edit.worker', 'com_wissensmatrix.category.' . (int) $catid);
+			return $user->authorise('wissensmatrix.edit.worker', 'com_wissensmatrix.category.' . (int) $catid);
 		}
 		else
 		{
@@ -113,13 +113,13 @@ class WissensmatrixModelZfwigform extends JModelAdmin
 		if ($this->getState('zfwig.id') && !$app->input->get('reload', 0, 'bool'))
 		{
 			// Existing record. Can only edit in selected categories.
-			$form->setFieldAttribute('catid', 'action', 'core.edit.worker');
+			$form->setFieldAttribute('catid', 'action', 'wissensmatrix.edit.worker');
 			$form->setFieldAttribute('fwig_id', 'readonly', 'true');
 		}
 		else
 		{
 			// New record. Can only create in selected categories.
-			$form->setFieldAttribute('catid', 'action', 'core.edit.worker');
+			$form->setFieldAttribute('catid', 'action', 'wissensmatrix.edit.worker');
 
 			// If mit_id is set set the worker as attribute to the fwilist formfield
 			if (!isset($data['mit_id']))

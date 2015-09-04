@@ -4,8 +4,8 @@ defined('_JEXEC') or die;
 JHTML::addIncludePath(JPATH_COMPONENT . '/helpers');
 
 $user      = JFactory::getUser();
-$canView   = $user->authorise('core.view.worker', 'com_wissensmatrix');
-$canEdit   = $user->authorise('core.edit.worker', 'com_wissensmatrix');
+$canView   = $user->authorise('wissensmatrix.view.worker', 'com_wissensmatrix');
+$canEdit   = $user->authorise('wissensmatrix.edit.worker', 'com_wissensmatrix');
 $listOrder = $this->state->get('list.ordering');
 $listDirn  = $this->state->get('list.direction');
 ?>
@@ -99,14 +99,14 @@ $listDirn  = $this->state->get('list.direction');
 					<?php foreach ($this->items as $i => $item) : ?>
 						<tr class="<?php echo ($item->state) ? '' : 'system-unpublished '; ?>cat-list-row<?php echo $i % 2; ?>">
 							<td class="title">
-								<?php if ($canView or $user->authorise('core.view.worker', 'com_wissensmatrix.category.' . $item->catid)) : ?>
+								<?php if ($canView or $user->authorise('wissensmatrix.view.worker', 'com_wissensmatrix.category.' . $item->catid)) : ?>
 									<a href="<?php echo JRoute::_(WissensmatrixHelperRoute::getWorkerRoute($item->slug)); ?>">
 										<?php echo $item->vorname . ' ' . $item->name; ?>
 									</a>
 								<?php else :
 									echo $item->vorname . ' ' . $item->name;
 								endif;
-								if ($canEdit or $user->authorise('core.edit.worker', 'com_wissensmatrix.category.' . $item->catid)) : ?>
+								if ($canEdit or $user->authorise('wissensmatrix.edit.worker', 'com_wissensmatrix.category.' . $item->catid)) : ?>
 									<span class="list-edit pull-left">
 											<?php echo JHtml::_('icon.edit', $item, $this->params, array('type' => 'worker', 'hide_text' => true)); ?>
 										</span>

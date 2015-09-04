@@ -32,7 +32,7 @@ class WissensmatrixViewForm extends JViewLegacy
 		}
 		else
 		{
-			$authorised = ($user->authorise('core.edit.worker', 'com_wissensmatrix') || $user->authorise('core.edit.worker', 'com_wissensmatrix.category.' . $this->item->catid));
+			$authorised = ($user->authorise('wissensmatrix.edit.worker', 'com_wissensmatrix') || $user->authorise('wissensmatrix.edit.worker', 'com_wissensmatrix.category.' . $this->item->catid));
 		}
 
 		if ($authorised !== true)

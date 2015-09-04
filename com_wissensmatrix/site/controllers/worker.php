@@ -85,7 +85,7 @@ class WissensmatrixControllerWorker extends JControllerForm
 			$user = JFactory::getUser();
 
 			// The category has been set. Check the category permissions.
-			if ($user->authorise('core.edit.worker', $this->option . '.category.' . $categoryId))
+			if ($user->authorise('wissensmatrix.edit.worker', $this->option . '.category.' . $categoryId))
 			{
 				return true;
 			}

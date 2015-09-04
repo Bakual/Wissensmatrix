@@ -32,7 +32,7 @@ class JFormFieldTeam extends JFormFieldCategory
 
 		foreach ($options as $i => $option)
 		{
-			if (!$user->authorise('core.view.worker', 'com_wissensmatrix.category.' . $option->value))
+			if (!$user->authorise('wissensmatrix.view.worker', 'com_wissensmatrix.category.' . $option->value))
 			{
 				unset($options[$i]);
 			}

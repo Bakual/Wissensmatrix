@@ -35,7 +35,7 @@ class WissensmatrixViewZfwigform extends JViewLegacy
 		$this->fwis   = $this->fwi_model->getItems();
 		$this->levels = $this->fwi_model->getLevels();
 
-		$authorised = ($user->authorise('core.edit.worker', 'com_wissensmatrix') || $user->authorise('core.edit.worker', 'com_wissensmatrix.category.' . $this->item->worker_catid));
+		$authorised = ($user->authorise('wissensmatrix.edit.worker', 'com_wissensmatrix') || $user->authorise('wissensmatrix.edit.worker', 'com_wissensmatrix.category.' . $this->item->worker_catid));
 
 		if ($authorised !== true)
 		{

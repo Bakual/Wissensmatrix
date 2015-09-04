@@ -26,7 +26,7 @@ class WissensmatrixViewZwbiform extends JViewLegacy
 		$this->form        = $this->get('Form');
 		$this->return_page = $this->get('ReturnPage');
 
-		$authorised = ($user->authorise('core.edit.worker', 'com_wissensmatrix') || $user->authorise('core.edit.worker', 'com_wissensmatrix.category.' . $this->item->worker_catid));
+		$authorised = ($user->authorise('wissensmatrix.edit.worker', 'com_wissensmatrix') || $user->authorise('wissensmatrix.edit.worker', 'com_wissensmatrix.category.' . $this->item->worker_catid));
 
 		if ($authorised !== true)
 		{

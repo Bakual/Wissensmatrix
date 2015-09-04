@@ -42,7 +42,7 @@ class WissensmatrixModelZwbiform extends JModelAdmin
 
 			if ($catid)
 			{
-				return $user->authorise('core.edit.worker', 'com_wissensmatrix.category.' . (int) $catid);
+				return $user->authorise('wissensmatrix.edit.worker', 'com_wissensmatrix.category.' . (int) $catid);
 			}
 			else
 			{
@@ -67,7 +67,7 @@ class WissensmatrixModelZwbiform extends JModelAdmin
 		// Check against the category.
 		if (!empty($record->worker_catid))
 		{
-			return $user->authorise('core.edit.worker', 'com_wissensmatrix.category.' . (int) $record->worker_catid);
+			return $user->authorise('wissensmatrix.edit.worker', 'com_wissensmatrix.category.' . (int) $record->worker_catid);
 		}
 		// Default to component settings if neither article nor category known.
 		else
@@ -101,12 +101,12 @@ class WissensmatrixModelZwbiform extends JModelAdmin
 		if ($this->getState('zwbi.id'))
 		{
 			// Existing record. Can only edit in selected categories.
-			$form->setFieldAttribute('catid', 'action', 'core.edit.worker');
+			$form->setFieldAttribute('catid', 'action', 'wissensmatrix.edit.worker');
 		}
 		else
 		{
 			// New record. Can only create in selected categories.
-			$form->setFieldAttribute('catid', 'action', 'core.edit.worker');
+			$form->setFieldAttribute('catid', 'action', 'wissensmatrix.edit.worker');
 		}
 
 		if (!isset($data['worker_catid']))

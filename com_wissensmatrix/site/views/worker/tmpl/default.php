@@ -6,7 +6,7 @@ JHtml::_('behavior.modal');
 JHtml::stylesheet('com_wissensmatrix/wissensmatrix.css', '', true);
 
 $user      = JFactory::getUser();
-$canEdit   = ($user->authorise('core.edit.worker', 'com_wissensmatrix') or $user->authorise('core.edit.worker', 'com_wissensmatrix.category.' . $this->item->catid));
+$canEdit   = ($user->authorise('wissensmatrix.edit.worker', 'com_wissensmatrix') or $user->authorise('wissensmatrix.edit.worker', 'com_wissensmatrix.category.' . $this->item->catid));
 $listOrder = $this->state_wbi->get('list.ordering');
 $listDirn  = $this->state_wbi->get('list.direction');
 $this->document->addScriptDeclaration('jQuery(function() {

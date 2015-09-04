@@ -1,40 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-	<fieldset name="general"
-			  addfieldpath="/administrator/components/com_wissensmatrix/models/fields">
-		<field name="wbi_id" type="wbilist"
-			   label="COM_WISSENSMATRIX_FIELD_WBI_ID_LABEL" description="COM_WISSENSMATRIX_FIELD_WBI_ID_DESC"
-			   size="1"
-			   class="input-large"
-			   default="0">
+	<fieldset
+		name="general"
+		addfieldpath="/administrator/components/com_wissensmatrix/models/fields"
+		>
+		<field
+			name="wbi_id"
+			type="wbilist"
+			label="COM_WISSENSMATRIX_FIELD_WBI_ID_LABEL"
+			description="COM_WISSENSMATRIX_FIELD_WBI_ID_DESC"
+			size="1"
+			class="input-large"
+			default="0"
+			>
 			<option value="0">COM_WISSENSMATRIX_FIELD_WBI_ID_SELECT</option>
 		</field>
 
-		<field name="status_id" type="list"
-			   label="JSTATUS" description="JFIELD_PUBLISHED_DESC"
-			   size="1"
-			   default="1">
+		<field
+			name="status_id"
+			type="list"
+			label="JSTATUS"
+			description="JFIELD_PUBLISHED_DESC"
+			size="1"
+			default="1"
+			>
 			<option value="1">COM_WISSENSMATRIX_ZWBI_STATE_1</option>
 			<option value="2">COM_WISSENSMATRIX_ZWBI_STATE_2</option>
 			<option value="3">COM_WISSENSMATRIX_ZWBI_STATE_3</option>
 		</field>
 
-		<field name="date" type="calendar"
-			   label="JDATE" description="COM_WISSENSMATRIX_FIELD_DATE_DESC"
-			   format="%Y-%m-%d"
-			   filter="user_utc" />
+		<field
+			name="date"
+			type="calendar"
+			label="JDATE"
+			description="COM_WISSENSMATRIX_FIELD_DATE_DESC"
+			format="%Y-%m-%d"
+			filter="user_utc"
+		/>
 
-		<field name="bemerkung" type="text"
-			   label="COM_WISSENSMATRIX_FIELD_BEMERKUNG_LABEL" description="COM_WISSENSMATRIX_FIELD_BEMERKUNG_DESC" />
+		<field
+			name="bemerkung"
+			type="text"
+			label="COM_WISSENSMATRIX_FIELD_BEMERKUNG_LABEL"
+			description="COM_WISSENSMATRIX_FIELD_BEMERKUNG_DESC"
+		/>
 
-		<field name="id" type="hidden"
-			   label="JGLOBAL_ID" />
+		<field
+			name="id"
+			type="hidden"
+			label="JGLOBAL_ID"
+			/>
 
-		<field name="mit_id" type="hidden"
-			   label="COM_WISSENSMATRIX_WORKER" />
+		<field
+			name="mit_id"
+			type="hidden"
+			label="COM_WISSENSMATRIX_WORKER"
+		/>
 
-		<field name="worker_catid" type="hidden"
-			   label="JCATEGORY" />
-
+		<field
+			name="worker_catid"
+			type="hidden"
+			label="JCATEGORY"
+		/>
 	</fieldset>
 </form>

@@ -4,7 +4,7 @@ defined('_JEXEC') or die;
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 
 $user      = JFactory::getUser();
-$canView   = $user->authorise('core.view.worker', 'com_wissensmatrix');
+$canView   = $user->authorise('wissensmatrix.view.worker', 'com_wissensmatrix');
 $listOrder = $this->w_state->get('list.ordering');
 $listDirn  = $this->w_state->get('list.direction');
 ?>
@@ -92,7 +92,7 @@ $listDirn  = $this->w_state->get('list.direction');
 								endif ?>
 								<tr>
 									<td>
-										<?php if ($canView or $user->authorise('core.view.worker', 'com_wissensmatrix.category.' . $worker->catid)) : ?>
+										<?php if ($canView or $user->authorise('wissensmatrix.view.worker', 'com_wissensmatrix.category.' . $worker->catid)) : ?>
 											<a href="<?php echo JRoute::_(WissensmatrixHelperRoute::getWorkerRoute($worker->slug)); ?>">
 												<?php echo $worker->vorname . ' ' . $worker->name; ?>
 											</a>

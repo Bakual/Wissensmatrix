@@ -49,7 +49,7 @@ class WissensmatrixControllerZwbi extends JControllerForm
 		if ($categoryId)
 		{
 			// If the category has been passed in the data or URL check it.
-			return $user->authorise('core.edit.worker', 'com_wissensmatrix.category.' . $categoryId);
+			return $user->authorise('wissensmatrix.edit.worker', 'com_wissensmatrix.category.' . $categoryId);
 		}
 		else
 		{
@@ -85,7 +85,7 @@ class WissensmatrixControllerZwbi extends JControllerForm
 			$user = JFactory::getUser();
 
 			// The category has been set. Check the category permissions.
-			if ($user->authorise('core.edit.worker', $this->option . '.category.' . $categoryId))
+			if ($user->authorise('wissensmatrix.edit.worker', $this->option . '.category.' . $categoryId))
 			{
 				return true;
 			}

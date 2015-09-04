@@ -10,9 +10,9 @@
 		<action name="core.edit.own" title="JACTION_EDITOWN" description="JACTION_EDITOWN_COMPONENT_DESC" />
 		<action name="core.hit" title="COM_WISSENSMATRIX_ACTION_HIT_LABEL"
 				description="COM_WISSENSMATRIX_ACTION_HIT_DESC" />
-		<action name="core.view.worker" title="COM_WISSENSMATRIX_ACCESS_VIEW_WORKER_LABEL"
+		<action name="wissensmatrix.view.worker" title="COM_WISSENSMATRIX_ACCESS_VIEW_WORKER_LABEL"
 				description="COM_WISSENSMATRIX_ACCESS_VIEW_WORKER_DESC" />
-		<action name="core.edit.worker" title="COM_WISSENSMATRIX_ACCESS_EDIT_WORKER_LABEL"
+		<action name="wissensmatrix.edit.worker" title="COM_WISSENSMATRIX_ACCESS_EDIT_WORKER_LABEL"
 				description="COM_WISSENSMATRIX_ACCESS_EDIT_WORKER_DESC" />
 	</section>
 	<section name="category">
@@ -21,9 +21,9 @@
 		<action name="core.edit" title="JACTION_EDIT" description="COM_CATEGORIES_ACCESS_EDIT_DESC" />
 		<action name="core.edit.state" title="JACTION_EDITSTATE" description="COM_CATEGORIES_ACCESS_EDITSTATE_DESC" />
 		<action name="core.edit.own" title="JACTION_EDITOWN" description="COM_CATEGORIES_ACCESS_EDITOWN_DESC" />
-		<action name="core.view.worker" title="COM_WISSENSMATRIX_ACCESS_VIEW_WORKER_LABEL"
+		<action name="wissensmatrix.view.worker" title="COM_WISSENSMATRIX_ACCESS_VIEW_WORKER_LABEL"
 				description="COM_WISSENSMATRIX_ACCESS_VIEW_WORKER_DESC" />
-		<action name="core.edit.worker" title="COM_WISSENSMATRIX_ACCESS_EDIT_WORKER_LABEL"
+		<action name="wissensmatrix.edit.worker" title="COM_WISSENSMATRIX_ACCESS_EDIT_WORKER_LABEL"
 				description="COM_WISSENSMATRIX_ACCESS_EDIT_WORKER_DESC" />
 	</section>
 </access>

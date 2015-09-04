@@ -6,9 +6,6 @@
 
 defined('JPATH_BASE') or die;
 
-jimport('joomla.html.html');
-jimport('joomla.form.formfield');
-jimport('joomla.form.helper');
 JFormHelper::loadFieldClass('list');
 
 /**
@@ -16,7 +13,7 @@ JFormHelper::loadFieldClass('list');
  * Based on the Bannerlist field from com_banners
  *
  * @package        Wissensmatrix
- * @since          4.0
+ * @since          3.0
  */
 class JFormFieldWbilist extends JFormFieldList
 {
@@ -50,6 +47,7 @@ class JFormFieldWbilist extends JFormFieldList
 		$query->from('#__wissensmatrix_weiterbildung AS wbis');
 		$query->select('wbigs.title_' . $lang . ' AS wbig_title');
 		$query->join('LEFT', '#__wissensmatrix_weiterbildunggruppe AS wbigs ON wbigs.id = wbis.wbig_id');
+
 		if ($mit_id = (int) $this->element['mit_id'])
 		{
 			$subquery = $db->getQuery(true);
@@ -60,6 +58,7 @@ class JFormFieldWbilist extends JFormFieldList
 			$subquery->group('zwbi.wbi_id');
 			$query->select('(' . $subquery . ') as zwbi_count');
 		}
+
 		$query->order('wbig_title ASC, text ASC');
 
 		// Get the options.
@@ -68,6 +67,7 @@ class JFormFieldWbilist extends JFormFieldList
 		$items = $db->loadObjectList();
 
 		$wbig_title = '';
+
 		foreach ($items as $item)
 		{
 			if ($wbig_title != $item->wbig_title)
@@ -76,15 +76,19 @@ class JFormFieldWbilist extends JFormFieldList
 				{
 					$options[] = JHtml::_('select.optgroup', $wbig_title);
 				}
+
 				$options[]  = JHtml::_('select.optgroup', $item->wbig_title);
 				$wbig_title = $item->wbig_title;
 			}
+
 			if ($item->zwbi_count)
 			{
 				$item->text .= ' &rArr; ' . JText::_('COM_WISSENSMATRIX_WBI_ERFASST');
 			}
+
 			$options[] = JHtml::_('select.option', $item->value, $item->text);
 		}
+
 		if ($wbig_title)
 		{
 			$options[] = JHtml::_('select.optgroup', $wbig_title);
