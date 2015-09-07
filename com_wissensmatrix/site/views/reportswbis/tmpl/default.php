@@ -1,7 +1,7 @@
 <?php
 defined('_JEXEC') or die;
 
-JHTML::addIncludePath(JPATH_COMPONENT . '/helpers');
+JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 
 $user       = JFactory::getUser();
 $canEdit    = $user->authorise('core.edit', 'com_wissensmatrix');
@@ -36,7 +36,7 @@ $listDirn   = $this->state->get('list.direction');
 								   title="<?php echo JText::_('COM_WISSENSMATRIX_FILTER_SEARCH_DESC'); ?>"
 								   placeholder="<?php echo JText::_('COM_WISSENSMATRIX_FILTER_SEARCH_DESC'); ?>"/>
 							<button class="btn tip hidden-phone hidden-tablet" type="button"
-									onclick="document.id('filter-search').value='';this.form.submit();" rel="tooltip"
+									onclick="document.getElementById('filter-search').value='';this.form.submit();" rel="tooltip"
 									title="<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>"><i class="icon-remove"></i>
 							</button>
 						</div>
