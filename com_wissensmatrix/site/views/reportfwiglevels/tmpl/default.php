@@ -5,6 +5,22 @@ JHTML::addIncludePath(JPATH_COMPONENT . '/helpers');
 
 $listOrder = $this->w_state->get('list.ordering');
 $listDirn  = $this->w_state->get('list.direction');
+
+$tooltip = JText::_('COM_WISSENSMATRIX_IST') . ' / ' . JText::_('COM_WISSENSMATRIX_SOLL');
+
+$user      = JFactory::getUser();
+$teamCount = count($this->teams);
+
+if ($teamCount > 1)
+{
+	$report     = 'reportfwiglevels';
+	$linkReport = true;
+}
+elseif ($teamCount == 1)
+{
+	$report     = 'reportfwigteam';
+	$linkReport = $user->authorise('wissensmatrix.view.worker', 'com_wissensmatrix.category.' . reset($this->teams)->id);
+}
 ?>
 <div
 	class="category-list<?php echo $this->pageclass_sfx; ?> wm-reportfwiglevels-container<?php echo $this->pageclass_sfx; ?>">
@@ -74,14 +90,16 @@ $listDirn  = $this->w_state->get('list.direction');
 						</tr>
 						</thead>
 						<tbody>
-						<?php $tooltip = JText::_('COM_WISSENSMATRIX_IST') . ' / ' . JText::_('COM_WISSENSMATRIX_SOLL');
-						$report        = (count($this->teams) > 1) ? 'reportfwiglevels' : 'reportfwigteam';
-						foreach ($this->teams as $team) : ?>
+						<?php foreach ($this->teams as $team) : ?>
 							<tr>
 								<td>
-									<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=' . $report . '&id=' . $this->items[0]->fwig_id . '&teamid=' . $team->id); ?>">
+									<?php if ($linkReport) : ?>
+										<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=' . $report . '&id=' . $this->items[0]->fwig_id . '&teamid=' . $team->id); ?>">
+											<?php echo $team->title; ?>
+										</a>
+									<?php else : ?>
 										<?php echo $team->title; ?>
-									</a>
+									<?php endif; ?>
 								</td>
 								<td class="center">
 									<?php echo $team->numitems;
