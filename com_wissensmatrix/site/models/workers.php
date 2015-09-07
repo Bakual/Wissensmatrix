@@ -45,6 +45,8 @@ class WissensmatrixModelWorkers extends JModelList
 	{
 		$user   = JFactory::getUser();
 		$groups = implode(',', $user->getAuthorisedViewLevels());
+		$catids = $user->getAuthorisedCategories('com_wissensmatrix', 'wissensmatrix.view.worker');
+		$catids = implode(',', $catids);
 
 		// Create a new query object.
 		$db    = $this->getDbo();
@@ -67,7 +69,9 @@ class WissensmatrixModelWorkers extends JModelList
 		$query->select('c_workers.title AS category_title');
 		$query->select('CASE WHEN CHAR_LENGTH(c_workers.alias) THEN CONCAT_WS(\':\', c_workers.id, c_workers.alias) ELSE c_workers.id END as catslug');
 		$query->join('LEFT', '#__categories AS c_workers ON c_workers.id = workers.catid');
-		$query->where('(workers.catid = 0 OR (c_workers.access IN (' . $groups . ') AND c_workers.published = 1))');
+		$query->where('c_workers.published = 1');
+		$query->where('c_workers.access IN (' . $groups . ')');
+		$query->where('workers.catid IN (' . $catids . ')');
 
 		// Filter by category
 		if ($categoryId = $this->getState('team.id'))
