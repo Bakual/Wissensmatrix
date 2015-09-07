@@ -177,3 +177,15 @@ CREATE TABLE `#__wissensmatrix_mit_wbi` (
   ENGINE = MyISAM
   AUTO_INCREMENT = 0
   DEFAULT CHARSET = utf8;
+
+CREATE TABLE `#__wissensmatrix_userreport` (
+  `id`    INT(10)      NOT NULL AUTO_INCREMENT,
+  `uid`   VARCHAR(7)   NOT NULL,
+  `hash`  VARCHAR(100) NOT NULL,
+  `date`  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `state` TINYINT(3)   NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+)
+  ENGINE = MyISAM
+  AUTO_INCREMENT = 0
+  DEFAULT CHARSET = utf8;
