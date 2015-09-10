@@ -130,12 +130,6 @@ class WissensmatrixViewWbis extends JViewLegacy
 		);
 
 		JHtmlSidebar::addFilter(
-			JText::_('COM_WISSENSMATRIX_FIELD_RELEVANT_SELECT'),
-			'filter_relevant',
-			JHtml::_('select.options', array(0 => JText::_('COM_WISSENSMATRIX_UNRELEVANT'), 1 => JText::_('COM_WISSENSMATRIX_RELEVANT')), 'value', 'text', $this->state->get('filter.relevant'), true)
-		);
-
-		JHtmlSidebar::addFilter(
 			JText::_('JOPTION_SELECT_CATEGORY'),
 			'filter_category_id',
 			JHtml::_('select.options', JHtml::_('category.options', 'com_wissensmatrix'), 'value', 'text', $this->state->get('filter.category_id'))

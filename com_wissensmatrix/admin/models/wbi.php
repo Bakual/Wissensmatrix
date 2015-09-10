@@ -217,46 +217,6 @@ class WissensmatrixModelWbi extends JModelAdmin
 	}
 
 	/**
-	 * Changing the state of relevant. Copy of the parent function publish
-	 */
-	function relevant(&$pks, $value = 1)
-	{
-		// Initialise variables.
-		$dispatcher = JDispatcher::getInstance();
-		$user       = JFactory::getUser();
-		$table      = $this->getTable();
-		$pks        = (array) $pks;
-
-		// Access checks.
-		foreach ($pks as $i => $pk)
-		{
-			$table->reset();
-
-			if ($table->load($pk))
-			{
-				if (!$this->canEditState($table))
-				{
-					// Prune items that you can't change.
-					unset($pks[$i]);
-					JError::raiseWarning(403, JText::_('JLIB_APPLICATION_ERROR_EDIT_STATE_NOT_PERMITTED'));
-				}
-			}
-		}
-
-		// Attempt to change the state of the records.
-		if (!$table->relevant($pks, $value, $user->get('id')))
-		{
-			$this->setError($table->getError());
-
-			return false;
-		}
-
-		$context = $this->option . '.' . $this->name;
-
-		return true;
-	}
-
-	/**
 	 * Batch copy items to a new category or current.
 	 * Override from modeladmin to adjust title field.
 	 *

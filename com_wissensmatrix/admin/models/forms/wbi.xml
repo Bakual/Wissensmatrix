@@ -88,18 +88,6 @@
 		</field>
 
 		<field
-			name="relevant"
-			type="radio"
-			label="COM_WISSENSMATRIX_FIELD_RELEVANT_LABEL"
-			description="COM_WISSENSMATRIX_FIELD_RELEVANT_DESC"
-			class="btn-group btn-group-yesno"
-			default="0"
-			>
-			<option value="1">JYES</option>
-			<option value="0">JNO</option>
-		</field>
-
-		<field
 			name="refresh"
 			type="text"
 			label="COM_WISSENSMATRIX_FIELD_REFRESH_LABEL"

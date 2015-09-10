@@ -75,7 +75,6 @@ CREATE TABLE `#__wissensmatrix_weiterbildung` (
   `checked_out`      INT(11)      NOT NULL DEFAULT '0',
   `checked_out_time` DATETIME     NOT NULL DEFAULT '0000-00-00 00:00:00',
   `language`         CHAR(7)      NOT NULL DEFAULT '*',
-  `relevant`         TINYINT(1)   NOT NULL,
   PRIMARY KEY (`id`)
 )
   ENGINE = MyISAM

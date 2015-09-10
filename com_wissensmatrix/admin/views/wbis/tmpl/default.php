@@ -149,10 +149,7 @@ endif;
 							<?php echo JHtml::_('grid.id', $i, $item->id); ?>
 						</td>
 						<td class="center">
-							<div class="btn-group">
-								<?php echo JHtml::_('jgrid.published', $item->state, $i, 'wbis.', $canChange); ?>
-								<?php echo JHtml::_('wissensmatrixadministrator.relevant', $item->relevant, $i, $canChange); ?>
-							</div>
+							<?php echo JHtml::_('jgrid.published', $item->state, $i, 'wbis.', $canChange); ?>
 						</td>
 						<td class="nowrap has-context">
 							<div class="pull-left">

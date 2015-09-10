@@ -9,30 +9,6 @@ abstract class JHtmlWissensmatrixAdministrator
 	 * @param    int $value The state value
 	 * @param    int $i
 	 */
-	public static function relevant($value = 0, $i, $canChange = true)
-	{
-		JHtml::_('bootstrap.tooltip');
-
-		// Array of image, task, title, action
-		$states = array(
-			0 => array('star-empty', 'wbis.relevant', 'COM_WISSENSMATRIX_UNRELEVANT', 'COM_WISSENSMATRIX_TOGGLE_TO_RELEVANT'),
-			1 => array('star', 'wbis.unrelevant', 'COM_WISSENSMATRIX_RELEVANT', 'COM_WISSENSMATRIX_TOGGLE_TO_UNRELEVANT'),
-		);
-		$state  = JArrayHelper::getValue($states, (int) $value, $states[1]);
-		$icon   = $state[0];
-		if ($canChange)
-		{
-			$html = '<a href="#" onclick="return listItemTask(\'cb' . $i . '\',\'' . $state[1] . '\')" class="btn btn-micro hasTooltip' . ($value == 1 ? ' active' : '') . '" title="' . JText::_($state[3]) . '"><i class="icon-'
-				. $icon . '"></i></a>';
-		}
-
-		return $html;
-	}
-
-	/**
-	 * @param    int $value The state value
-	 * @param    int $i
-	 */
 	public static function bool($value = 0, $i, $canChange = true)
 	{
 		JHtml::_('bootstrap.tooltip');

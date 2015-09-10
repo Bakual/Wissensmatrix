@@ -32,7 +32,6 @@ class WissensmatrixModelWbis extends JModelList
 				'ordering', 'wbis.ordering',
 				'language', 'wbis.language',
 				'hits', 'wbis.hits',
-				'relevant', 'wbis.relevant',
 				'wbig_title',
 			);
 		}
@@ -58,9 +57,6 @@ class WissensmatrixModelWbis extends JModelList
 
 		$published = $app->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string');
 		$this->setState('filter.state', $published);
-
-		$relevant = $app->getUserStateFromRequest($this->context . '.filter.relevant', 'filter_relevant', '', 'string');
-		$this->setState('filter.relevant', $relevant);
 
 		$wbig = $app->getUserStateFromRequest($this->context . '.filter.wbig', 'filter_wbig', '', 'string');
 		$this->setState('filter.wbig', $wbig);
@@ -121,7 +117,7 @@ class WissensmatrixModelWbis extends JModelList
 				'wbis.id, wbis.catid, wbis.language, ' .
 				'wbis.checked_out, wbis.checked_out_time, ' .
 				'wbis.alias, wbis.created, wbis.created_by, ' .
-				'wbis.state, wbis.relevant, wbis.ordering, wbis.hits'
+				'wbis.state, wbis.ordering, wbis.hits'
 			)
 		);
 		$query->from('`#__wissensmatrix_weiterbildung` AS wbis');
@@ -155,13 +151,6 @@ class WissensmatrixModelWbis extends JModelList
 		else if ($published === '')
 		{
 			$query->where('(wbis.state IN (0, 1))');
-		}
-
-		// Filter by relevant
-		$relevant = $this->getState('filter.relevant');
-		if (is_numeric($relevant))
-		{
-			$query->where('wbis.relevant = ' . (int) $relevant);
 		}
 
 		// Filter by wbig
