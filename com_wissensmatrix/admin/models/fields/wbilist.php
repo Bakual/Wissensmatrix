@@ -46,6 +46,16 @@ class JFormFieldWbilist extends JFormFieldList
 		$query->select('wbis.title_' . $lang . ' AS text');
 		$query->from('#__wissensmatrix_weiterbildung AS wbis');
 
+		// Filter by state
+		if ($filter_state = (int) $this->element['filter_state'])
+		{
+			$query->where('wbis.state = ' . $filter_state);
+		}
+		else
+		{
+			$query->where('wbis.state IN (1,2)');
+		}
+
 		// Join over Weiterbildungsgruppe
 		$query->select('wbigs.title_' . $lang . ' AS wbig_title');
 		$query->join('LEFT', '#__wissensmatrix_weiterbildunggruppe AS wbigs ON wbigs.id = wbis.wbig_id');

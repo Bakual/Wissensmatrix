@@ -87,9 +87,6 @@ class WissensmatrixModelZwbiform extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		// Initialise variables.
-		$app = JFactory::getApplication();
-
 		// Get the form.
 		$form = $this->loadForm('com_wissensmatrix.zwbi', 'zwbi', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form))
@@ -98,31 +95,15 @@ class WissensmatrixModelZwbiform extends JModelAdmin
 		}
 
 		// Determine correct permissions to check.
-		if ($this->getState('zwbi.id'))
+		if (!$this->getState('zwbi.id'))
 		{
-			// Existing record. Can only edit in selected categories.
-			$form->setFieldAttribute('catid', 'action', 'wissensmatrix.edit.worker');
-		}
-		else
-		{
-			// New record. Can only create in selected categories.
-			$form->setFieldAttribute('catid', 'action', 'wissensmatrix.edit.worker');
+			// New record. Only show published wbis.
+			$form->setFieldAttribute('wbi_id', 'filter_state', 1);
 		}
 
 		if (!isset($data['worker_catid']))
 		{
 			$data['worker_catid'] = $form->getValue('worker_catid');
-		}
-
-		// Modify the form based on Edit State access controls.
-		if (!$this->canEditState((object) $data))
-		{
-			// Disable fields for display.
-			$form->setFieldAttribute('state', 'disabled', 'true');
-
-			// Disable fields while saving.
-			// The controller has already verified this is an article you can edit.
-			$form->setFieldAttribute('state', 'filter', 'unset');
 		}
 
 		// If mit_id is set set the worker as attribute to the wbilist formfield

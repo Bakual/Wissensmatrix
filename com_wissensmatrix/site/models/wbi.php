@@ -87,7 +87,7 @@ class WissensmatrixModelWbi extends JModelItem
 				$query->where('(wbi.catid = 0 OR c.published = 1)');
 
 				$query->where('wbi.id = ' . (int) $id);
-				$query->where('wbi.state = 1');
+				$query->where('wbi.state IN (1,2)');
 
 				// Join over users for the author names.
 				$query->select("user.name AS author");

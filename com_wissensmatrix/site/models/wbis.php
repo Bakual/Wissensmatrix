@@ -127,6 +127,11 @@ class WissensmatrixModelWbis extends JModelList
 		{
 			$query->where('wbis.state = ' . (int) $state);
 		}
+		elseif (is_array($state))
+		{
+			$state = \Joomla\Utilities\ArrayHelper::toInteger($state);
+			$query->where('wbis.state IN (' . implode(',', $state) . ')');
+		}
 
 		// Join over Wbigs.
 		$query->select('wbigs.title_' . $lang . ' AS wbig_title, wbigs.id AS wbig_id');
@@ -220,8 +225,8 @@ class WissensmatrixModelWbis extends JModelList
 		$user = JFactory::getUser();
 		if ((!$user->authorise('core.edit.state', 'com_wissensmatrix')) && (!$user->authorise('core.edit', 'com_wissensmatrix')))
 		{
-			// filter on published for those who do not have edit or edit.state rights.
-			$this->setState('filter.state', 1);
+			// filter on published/archived for those who do not have edit or edit.state rights.
+			$this->setState('filter.state', array(1,2));
 		}
 
 		$this->setState('filter.language', $app->getLanguageFilter());
