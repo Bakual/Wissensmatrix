@@ -197,7 +197,7 @@ $this->document->addScriptDeclaration('jQuery(function() {
 					$uri    = JRoute::_('index.php?option=com_wissensmatrix&view=close&tmpl=component');
 					$url    = 'index.php?option=com_wissensmatrix&task=zwbi.add&tmpl=component&return=' . base64_encode($uri) . '&a_id=0&mit_id=' . $this->item->id . '&catid=' . $this->item->catid;
 					$text   = '<i class="icon-plus"></i> ' . JText::_('JNEW') . ' &#160;';
-					$button = JHtml::_('link', JRoute::_($url), $text, array('class' => 'modal btn btn-primary', 'rel' => "{handler: 'iframe', size: {x: 400, y: 400}}")); ?>
+					$button = JHtml::_('link', JRoute::_($url), $text, array('class' => 'modal btn btn-primary', 'rel' => "{handler: 'iframe', size: {x: 600, y: 500}}")); ?>
 					<span class="hasTooltip"
 						  title="<?php echo JText::_('COM_WISSENSMATRIX_CREATE_WBI'); ?>"><?php echo $button; ?></span>
 				<?php endif; ?>
