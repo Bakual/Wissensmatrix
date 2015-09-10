@@ -22,3 +22,10 @@
 .clr {
 	clear: both;
 }
+
+span.icon-radio-checked::before {
+	color: #378137;
+}
+span.icon-radio-unchecked::before {
+	color: #942a25;
+}
