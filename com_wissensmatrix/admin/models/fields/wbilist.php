@@ -45,9 +45,13 @@ class JFormFieldWbilist extends JFormFieldList
 		$query->select('wbis.id AS value');
 		$query->select('wbis.title_' . $lang . ' AS text');
 		$query->from('#__wissensmatrix_weiterbildung AS wbis');
+		$query->where('wbis.relevant = 1');
+
+		// Join over Weiterbildungsgruppe
 		$query->select('wbigs.title_' . $lang . ' AS wbig_title');
 		$query->join('LEFT', '#__wissensmatrix_weiterbildunggruppe AS wbigs ON wbigs.id = wbis.wbig_id');
 
+		// Check if already assigned to a worker
 		if ($mit_id = (int) $this->element['mit_id'])
 		{
 			$subquery = $db->getQuery(true);
