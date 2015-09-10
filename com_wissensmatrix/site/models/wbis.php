@@ -82,7 +82,8 @@ class WissensmatrixModelWbis extends JModelList
 		$query->select('c_wbis.title AS category_title');
 		$query->select('CASE WHEN CHAR_LENGTH(c_wbis.alias) THEN CONCAT_WS(\':\', c_wbis.id, c_wbis.alias) ELSE c_wbis.id END as catslug');
 		$query->join('LEFT', '#__categories AS c_wbis ON c_wbis.id = wbis.catid');
-		$query->where('(wbis.catid = 0 OR (c_wbis.access IN (' . $groups . ') AND c_wbis.published = 1))');
+		$query->where('c_wbis.access IN (' . $groups . ')');
+		$query->where('c_wbis.published = 1');
 
 		// Filter by category
 		if ($categoryId = $this->getState('category.id'))
@@ -149,7 +150,7 @@ class WissensmatrixModelWbis extends JModelList
 		{
 			if (is_array($workerId))
 			{
-				JArrayHelper::toInteger($workerId);
+				\Joomla\Utilities\ArrayHelper::toInteger($workerId);
 				$query->where('mit_id IN (' . implode(',', $workerId) . ')');
 				$query->select('count(1) as mit_count');
 				$query->group('zwbi.wbi_id');

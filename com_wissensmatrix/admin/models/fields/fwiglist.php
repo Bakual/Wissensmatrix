@@ -52,7 +52,8 @@ class JFormFieldFwiglist extends JFormFieldList
 		$query->select('fwigs.title_' . $lang . ' AS text');
 		$query->from('#__wissensmatrix_fachwissengruppe AS fwigs');
 		$query->join('LEFT', '#__categories AS c_fwigs ON c_fwigs.id = fwigs.catid');
-		$query->where('(fwigs.catid = 0 OR (c_fwigs.access IN (' . $groups . ') AND c_fwigs.published = 1))');
+		$query->where('c_fwigs.access IN (' . $groups . ')');
+		$query->where('c_fwigs.published = 1');
 		$query->order('text ASC');
 
 		if ($mit_id = (int) $this->element['mit_id'])

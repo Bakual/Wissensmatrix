@@ -51,7 +51,6 @@ class WissensmatrixModelWbigs extends JModelList
 		$app    = JFactory::getApplication();
 		$params = $app->getParams();
 		$this->setState('params', $params);
-		$jinput = $app->input;
 
 		// Category filter (priority on request so subcategories work)
 		// Team in this case, not used but selection has to be saved in userstate
@@ -70,8 +69,8 @@ class WissensmatrixModelWbigs extends JModelList
 		$search = $app->getUserStateFromRequest($this->context . '.filter.search', 'filter-search');
 		$this->setState('filter.search', $search);
 
-		$published = $app->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string');
-		$this->setState('filter.state', $published);
+		// Only show published groups
+		$this->setState('filter.state', 1);
 
 		$categoryId = $app->getUserStateFromRequest($this->context . '.filter.category_id', 'filter_category_id', '');
 		$this->setState('filter.category_id', $categoryId);
@@ -149,7 +148,8 @@ class WissensmatrixModelWbigs extends JModelList
 		// Join over the categories.
 		$query->select('c.title AS category_title');
 		$query->join('LEFT', '#__categories AS c ON c.id = wbigs.catid');
-		$query->where('(wbigs.catid = 0 OR (c.access IN (' . $groups . ') AND c.published = 1))');
+		$query->where('c.access IN (' . $groups . ')');
+		$query->where('c.published = 1');
 
 		// Filter by published state
 		$published = $this->getState('filter.state');

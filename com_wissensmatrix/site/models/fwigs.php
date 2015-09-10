@@ -129,7 +129,8 @@ class WissensmatrixModelFwigs extends JModelList
 		$query->select('c_fwigs.title AS category_title');
 		$query->select('CASE WHEN CHAR_LENGTH(c_fwigs.alias) THEN CONCAT_WS(\':\', c_fwigs.id, c_fwigs.alias) ELSE c_fwigs.id END as catslug');
 		$query->join('LEFT', '#__categories AS c_fwigs ON c_fwigs.id = fwigs.catid');
-		$query->where('(fwigs.catid = 0 OR (c_fwigs.access IN (' . $groups . ') AND c_fwigs.published = 1))');
+		$query->where('c_fwigs.access IN (' . $groups . ')');
+		$query->where('c_fwigs.published = 1');
 
 		// Filter by category
 		if ($categoryId = $this->getState('category.id'))

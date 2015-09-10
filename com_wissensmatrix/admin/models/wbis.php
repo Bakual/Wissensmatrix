@@ -210,6 +210,7 @@ class WissensmatrixModelWbis extends JModelList
 
 		$query->select('id AS value, title_de AS text');
 		$query->from('#__wissensmatrix_weiterbildunggruppe');
+		$query->where('state = 1');
 		$query->order('title_de');
 
 		// Get the options.

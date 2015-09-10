@@ -69,7 +69,7 @@ class WissensmatrixModelWorker extends JModelItem
 				$query->select('c.title AS category_title, c.access AS category_access');
 				$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as catslug');
 				$query->join('LEFT', '#__categories AS c on c.id = worker.catid');
-				$query->where('(worker.catid = 0 OR c.published = 1)');
+				$query->where('c.published = 1');
 
 				$query->where('worker.id = ' . (int) $id);
 				$query->where('worker.state = 1');
