@@ -116,6 +116,10 @@ class WissensmatrixModelWorkers extends JModelList
 		{
 			$query->where('workers.state = ' . (int) $state);
 		}
+		else
+		{
+			$query->where('workers.catid = ' . (int) $categoryId);
+		}
 
 		// Filter by wbi (needed in wbi reports)
 		if ($wbiId = $this->getState('wbi.id'))
