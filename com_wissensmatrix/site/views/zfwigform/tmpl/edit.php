@@ -68,6 +68,9 @@ $id = (JFactory::getApplication()->input->get('reload', false, 'bool')) ? 0 : $t
 							<?php if ($id) : ?>
 								<th><?php echo JText::_('COM_WISSENSMATRIX_FIELD_TEMPLATE_LABEL'); ?></th>
 							<?php endif; ?>
+							<?php if ($this->user->authorise('wissensmatrix.testing', 'com_wissensmatrix')) : ?>
+								<th><?php echo JText::_('COM_WISSENSMATRIX_RESPONSIBILITY'); ?></th>
+							<?php endif; ?>
 						</tr>
 						<?php foreach ($this->fwis as $fwi):
 							$istsoll = $this->fwi_model->getIstSoll($fwi->id, $this->item->mit_id); ?>
@@ -77,6 +80,9 @@ $id = (JFactory::getApplication()->input->get('reload', false, 'bool')) ? 0 : $t
 								<td><?php echo JHtml::_('select.genericlist', $this->levels, 'jform[fwis][' . $fwi->id . '][soll]', 'class="input-medium"', 'id', 'title', ($id) ? $istsoll['soll_id'] : $istsoll['template_id']); ?></td>
 								<?php if ($id) : ?>
 									<td><?php echo $istsoll['template']; ?></td>
+								<?php endif; ?>
+								<?php if ($this->user->authorise('wissensmatrix.testing', 'com_wissensmatrix')) : ?>
+									<td><?php echo JHtml::_('select.genericlist', $this->responsibilities, 'jform[fwis][' . $fwi->id . '][responsibility]', 'class="input-medium"', 'value', 'text', $istsoll['responsibility']); ?></td>
 								<?php endif; ?>
 							</tr>
 						<?php endforeach; ?>

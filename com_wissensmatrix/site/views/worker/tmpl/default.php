@@ -216,10 +216,11 @@ $this->document->addScriptDeclaration('jQuery(function() {
 
 			<div class="clearfix"></div>
 			<span class="pull-right">&nbsp;</span>
-			<span
-				class="input-small center pull-right badge badge-info"><?php echo JText::_('COM_WISSENSMATRIX_SOLL'); ?></span>
-			<span
-				class="input-small center pull-right badge badge-info"><?php echo JText::_('COM_WISSENSMATRIX_IST'); ?></span>
+			<?php if ($this->user->authorise('wissensmatrix.testing', 'com_wissensmatrix')) : ?>
+				<span class="input-small center pull-right badge badge-info"><?php echo JText::_('COM_WISSENSMATRIX_RESPONSIBILITY'); ?></span>
+			<?php endif; ?>
+			<span class="input-small center pull-right badge badge-info"><?php echo JText::_('COM_WISSENSMATRIX_SOLL'); ?></span>
+			<span class="input-small center pull-right badge badge-info"><?php echo JText::_('COM_WISSENSMATRIX_IST'); ?></span>
 
 			<div class="fwig">
 				<?php $fwig = ''; ?>
@@ -232,7 +233,7 @@ $this->document->addScriptDeclaration('jQuery(function() {
 					<?php echo $item->fwig_title; ?>
 					<?php if ($canEdit and !$this->print) : ?>
 						&nbsp;
-						<?php echo JHtml::_('icon.editz', $item, $this->params, array('type' => 'fwig', 'class' => 'btn btn-primary btn-mini', 'mit_id' => $this->item->id, 'width' => 800, 'height' => 600)); ?>
+						<?php echo JHtml::_('icon.editz', $item, $this->params, array('type' => 'fwig', 'class' => 'btn btn-primary btn-mini', 'mit_id' => $this->item->id, 'width' => 1000, 'height' => 600)); ?>
 						<?php echo JHtml::_('icon.deletez', $item, $this->params, array('type' => 'fwig', 'class' => 'btn btn-danger btn-mini', 'mit_id' => $this->item->id)); ?>
 					<?php endif; ?>
 				</h4>
@@ -241,6 +242,11 @@ $this->document->addScriptDeclaration('jQuery(function() {
 					<?php endif; ?>
 					<li id="fwi<?php echo $i; ?>"
 						class="fwi <?php echo ($item->state) ? '' : 'system-unpublished '; ?>">
+						<?php if ($this->user->authorise('wissensmatrix.testing', 'com_wissensmatrix')) : ?>
+							<span class="input-small center badge pull-right">
+								<?php echo JText::_('COM_WISSENSMATRIX_RESPONSIBILITY_' . $item->responsibility); ?>
+							</span>
+						<?php endif; ?>
 						<span class="input-small center zfwi-soll badge pull-right">
 							<?php echo $item->soll_title; ?>
 						</span>

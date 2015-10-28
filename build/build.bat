@@ -20,3 +20,4 @@ cd ../build/packages/
 copy ..\..\pkg_wissensmatrix.xml
 zip pkg_wissensmatrix.zip *
 del pkg_wissensmatrix.xml
+exit

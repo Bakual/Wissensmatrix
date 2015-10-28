@@ -109,8 +109,8 @@ class JHtmlIcon
 		$class = isset($attribs['class']) ? $attribs['class'] : '';
 
 		// Set default dimensions
-		$width  = isset($attribs['width']) ? $attribs['width'] : 400;
-		$height = isset($attribs['height']) ? $attribs['height'] : 400;
+		$width  = isset($attribs['width']) ? $attribs['width'] : 600;
+		$height = isset($attribs['height']) ? $attribs['height'] : 600;
 
 		// Ignore if in a popup window.
 		if ($params && $params->get('popup'))

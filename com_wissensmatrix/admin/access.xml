@@ -14,6 +14,8 @@
 				description="COM_WISSENSMATRIX_ACCESS_VIEW_WORKER_DESC" />
 		<action name="wissensmatrix.edit.worker" title="COM_WISSENSMATRIX_ACCESS_EDIT_WORKER_LABEL"
 				description="COM_WISSENSMATRIX_ACCESS_EDIT_WORKER_DESC" />
+		<action name="wissensmatrix.testing" title="COM_WISSENSMATRIX_ACCESS_TESTING_LABEL"
+				description="COM_WISSENSMATRIX_ACCESS_TESTING_DESC" />
 	</section>
 	<section name="category">
 		<action name="core.create" title="JACTION_CREATE" description="COM_CATEGORIES_ACCESS_CREATE_DESC" />

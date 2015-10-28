@@ -145,6 +145,7 @@ class WissensmatrixModelFwis extends JModelList
 			$query->select('zfwi.id as zfwi_id, zfwi.mit_id');
 			$query->select('ist_level.value as ist, ist_level.title as ist_title');
 			$query->select('soll_level.value as soll, soll_level.title as soll_title');
+			$query->select('zfwi.responsibility');
 			$query->join('LEFT', '#__wissensmatrix_mit_fwi AS zfwi ON zfwi.fwi_id = fwis.id');
 			$query->join('LEFT', '#__wissensmatrix_erfahrung AS ist_level ON zfwi.ist = ist_level.id');
 			$query->join('LEFT', '#__wissensmatrix_erfahrung AS soll_level ON zfwi.soll = soll_level.id');
@@ -400,6 +401,7 @@ class WissensmatrixModelFwis extends JModelList
 		// Select required fields from the table.
 		$query->select('zfwis.ist as ist_id, ist_level.value as ist, ist_level.title as ist_title');
 		$query->select('zfwis.soll as soll_id, soll_level.value as soll, soll_level.title as soll_title');
+		$query->select('zfwis.responsibility');
 		$query->from('`#__wissensmatrix_mit_fwi` AS zfwis');
 		$query->join('LEFT', '#__wissensmatrix_erfahrung AS ist_level ON zfwis.ist = ist_level.id');
 		$query->join('LEFT', '#__wissensmatrix_erfahrung AS soll_level ON zfwis.soll = soll_level.id');
@@ -407,6 +409,7 @@ class WissensmatrixModelFwis extends JModelList
 		$query->where('zfwis.fwi_id = ' . (int) $fwi);
 		$db->setQuery($query);
 		$item = $db->loadAssoc();
+
 		if (!$item)
 		{
 			$item = array('ist' => 0, 'ist_id' => 0, 'ist_title' => '-', 'soll' => 0, 'soll_id' => 0, 'soll_title' => '-');

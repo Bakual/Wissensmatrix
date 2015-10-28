@@ -13,6 +13,8 @@ class WissensmatrixViewZfwigform extends JViewLegacy
 
 	protected $return_page;
 
+	protected $responsibilities = array();
+
 	protected $state;
 
 	public function display($tpl = null)
@@ -34,6 +36,14 @@ class WissensmatrixViewZfwigform extends JViewLegacy
 		$fwi_state->set('list.direction', 'ASC');
 		$this->fwis   = $this->fwi_model->getItems();
 		$this->levels = $this->fwi_model->getLevels();
+
+		for ($i = 0; $i <= 3; $i++)
+		{
+			$this->responsibilities[] = array(
+				'value' => $i,
+				'text'  => JText::_('COM_WISSENSMATRIX_RESPONSIBILITY_' . $i)
+			);
+		}
 
 		$authorised = ($user->authorise('wissensmatrix.edit.worker', 'com_wissensmatrix') || $user->authorise('wissensmatrix.edit.worker', 'com_wissensmatrix.category.' . $this->item->worker_catid));
 

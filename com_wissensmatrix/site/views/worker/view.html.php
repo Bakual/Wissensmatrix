@@ -17,7 +17,8 @@ class WissensmatrixViewWorker extends JViewLegacy
 		}
 
 		// Initialise variables.
-		$user = JFactory::getUser();
+		$user       = JFactory::getUser();
+		$this->user = $user;
 
 		// Get some data from the model
 		$this->item = $this->get('Item');

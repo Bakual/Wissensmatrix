@@ -277,7 +277,7 @@ class WissensmatrixModelZfwigform extends JModelAdmin
 	{
 		$db      = JFactory::getDbo();
 		$mit_id  = (int) $data['mit_id'];
-		$columns = array('mit_id', 'fwi_id', 'ist', 'soll');
+		$columns = array('mit_id', 'fwi_id', 'ist', 'soll', 'responsibility');
 		require_once(JPATH_COMPONENT . '/models/fwis.php');
 		$fwi_model = new WissensmatrixModelFwis;
 		$levels    = $fwi_model->getLevels();
@@ -297,7 +297,8 @@ class WissensmatrixModelZfwigform extends JModelAdmin
 				$query = $db->getQuery(true);
 				$query->insert('#__wissensmatrix_mit_fwi');
 				$query->columns($db->quoteName($columns));
-				$query->values($mit_id . ',' . (int) $fwi . ',' . (int) $values['ist'] . ',' . (int) $values['soll']);
+				$query->values($mit_id . ',' . (int) $fwi . ',' . (int) $values['ist']
+					. ',' . (int) $values['soll'] . ',' . (int) $values['responsibility']);
 				$db->setQuery($query);
 				$result = $db->execute();
 			}
