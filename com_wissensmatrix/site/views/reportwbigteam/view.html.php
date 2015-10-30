@@ -1,6 +1,5 @@
 <?php
 defined('_JEXEC') or die;
-jimport('joomla.application.component.view');
 
 /**
  * HTML View class for the Wissensmatrix Component
@@ -20,6 +19,7 @@ class WissensmatrixViewReportwbigteam extends JViewLegacy
 		$this->w_state->set('list.limit', 0);
 		$this->parent = $this->workermodel->getParent();
 		$workers      = $this->workermodel->getItems();
+		$ids          = array();
 		foreach ($workers as $worker)
 		{
 			$ids[] = $worker->id;
