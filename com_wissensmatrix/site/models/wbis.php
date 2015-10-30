@@ -150,7 +150,7 @@ class WissensmatrixModelWbis extends JModelList
 		{
 			if (is_array($workerId))
 			{
-				\Joomla\Utilities\ArrayHelper::toInteger($workerId);
+				$workerId = \Joomla\Utilities\ArrayHelper::toInteger($workerId);
 				$query->where('mit_id IN (' . implode(',', $workerId) . ')');
 				$query->select('count(1) as mit_count');
 				$query->group('zwbi.wbi_id');
