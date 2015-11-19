@@ -118,7 +118,15 @@ class WissensmatrixModelWorkers extends JModelList
 		}
 		else
 		{
-			$query->where('workers.state = 1');
+			$query->where('workers.state IN (0,1)');
+		}
+
+		// Filter by responsibility to lower the amount of workers (needed in responsibilesfwi report)
+		if ($this->getState('filter.responsible'))
+		{
+			$query->join('LEFT', '#__wissensmatrix_mit_fwi AS zfwi ON zfwi.mit_id = workers.id');
+			$query->where('zfwi.responsibility > 0');
+			$query->group('workers.id');
 		}
 
 		// Filter by wbi (needed in wbi reports)
