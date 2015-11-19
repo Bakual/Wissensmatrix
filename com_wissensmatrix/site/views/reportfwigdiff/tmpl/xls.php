@@ -24,7 +24,7 @@ foreach ($this->items as $item) :
 	$search = array(':', '\\', '/', '?', '*', '[', ']');
 	$title  = str_replace($search, '_', $item->title);
 	if (strlen($title) > 31) :
-		$title = utf8_substr($title, 0, 28) . '...';
+		$title = substr($title, 0, 28) . '...';
 	endif;
 	$xls->getActiveSheet()->setTitle($title);
 

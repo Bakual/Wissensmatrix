@@ -16,7 +16,7 @@ $xls->getDefaultStyle()->getFont()->setSize(10);
 $search = array(':', '\\', '/', '?', '*', '[', ']');
 $title  = str_replace($search, '_', JText::_('COM_WISSENSMATRIX_LEVELS'));
 if (strlen($title) > 31) :
-	$title = utf8_substr($title, 0, 28) . '...';
+	$title = substr($title, 0, 28) . '...';
 endif;
 $xls->getActiveSheet()->setTitle($title);
 
