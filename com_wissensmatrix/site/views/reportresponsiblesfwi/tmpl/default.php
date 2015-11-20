@@ -3,11 +3,12 @@ defined('_JEXEC') or die;
 
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 JHtml::stylesheet('com_wissensmatrix/wissensmatrix.css', '', true);
+Jhtml::_('bootstrap.popover');
 
 $user      = JFactory::getUser();
 $canView   = $user->authorise('wissensmatrix.view.worker', 'com_wissensmatrix');
-$listOrder = $this->w_state->get('list.ordering');
-$listDirn  = $this->w_state->get('list.direction');
+$listOrder = $this->state->get('list.ordering');
+$listDirn  = $this->state->get('list.direction');
 ?>
 <div
 	class="category-list<?php echo $this->pageclass_sfx; ?> wm-reportresponsiblesfwi-container<?php echo $this->pageclass_sfx; ?>">
@@ -32,7 +33,7 @@ $listDirn  = $this->w_state->get('list.direction');
 								echo JHtml::_('select.options', JHtml::_('wissensmatrixcategory.options', 'com_wissensmatrix', $config), 'value', 'text', $this->state->get('team.id', 0)); ?>
 							</select>
 							<?php if ($this->parent) : ?>
-								<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportresponsiblesfwi&id=' . $this->item->id . '&teamid=' . $this->parent->id); ?>"
+								<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportresponsiblesfwi&id=' . $this->fwi_id . '&teamid=' . $this->parent->id); ?>"
 								   class="btn addon"
 								   title="<?php JText::printf('COM_WISSENSMATRIX_GET_PARENT_TEAM', $this->parent->title); ?>"
 								   rel="tooltip"><i class="icon-arrow-up"></i></a>
@@ -42,14 +43,10 @@ $listDirn  = $this->w_state->get('list.direction');
 				</div>
 			<?php endif; ?>
 			<div class="clearfix"></div>
-			<h3>
-				<?php echo JText::_('COM_WISSENSMATRIX_FWI') . ': ' . $this->item->title; ?>
-				<small><?php echo JText::_('COM_WISSENSMATRIX_FWIG'); ?>: <?php echo $this->item->fwig_title; ?>
-				</small>
-			</h3>
-			<?php if (!count($this->workers)) : ?>
-				<div
-					class="no_entries alert alert-error"><?php echo JText::sprintf('COM_WISSENSMATRIX_NO_ENTRIES', JText::_('COM_WISSENSMATRIX_WORKERS')); ?></div>
+			<?php if (!count($this->items)) : ?>
+				<div class="no_entries alert alert-error">
+					<?php echo JText::sprintf('COM_WISSENSMATRIX_NO_ENTRIES', JText::_('COM_WISSENSMATRIX_WORKERS')); ?>
+				</div>
 			<?php else : ?>
 				<table class="table table-striped table-hover table-condensed">
 					<thead>
@@ -58,33 +55,44 @@ $listDirn  = $this->w_state->get('list.direction');
 							<?php echo JHTML::_('grid.sort', 'COM_WISSENSMATRIX_VORNAME', 'vorname', $listDirn, $listOrder); ?>
 							<?php echo JHTML::_('grid.sort', 'COM_WISSENSMATRIX_NACHNAME', 'name', $listDirn, $listOrder); ?>
 						</th>
+						<th class="center">
+							<?php echo JHTML::_('grid.sort', 'COM_WISSENSMATRIX_FWI', 'fwi_title', $listDirn, $listOrder); ?>
+						</th>
 						<th class="hidden-phone">
 							<?php echo JHTML::_('grid.sort', 'COM_WISSENSMATRIX_TEAM', 'category_title', $listDirn, $listOrder); ?>
 						</th>
 						<th class="center">
-							<?php echo JText::_('COM_WISSENSMATRIX_RESPONSIBILITY'); ?>
+							<?php echo JHTML::_('grid.sort', 'COM_WISSENSMATRIX_RESPONSIBILITY', 'responsibility', $listDirn, $listOrder); ?>
 						</th>
 					</tr>
 					</thead>
 					<tbody>
-					<?php foreach ($this->workers as $worker) : ?>
-						<?php $istsoll = $this->model->getIstSoll($this->item->id, $worker->id); ?>
-						<?php if (!$istsoll['responsibility']) continue; ?>
+					<?php foreach ($this->items as $item) : ?>
 						<tr>
 							<td>
-								<?php if ($canView or $user->authorise('wissensmatrix.view.worker', 'com_wissensmatrix.category.' . $worker->catid)) : ?>
-									<a href="<?php echo JRoute::_(WissensmatrixHelperRoute::getWorkerRoute($worker->slug)); ?>">
-										<?php echo $worker->vorname . ' ' . $worker->name; ?>
+								<?php if ($canView or $user->authorise('wissensmatrix.view.worker', 'com_wissensmatrix.category.' . $item->catid)) : ?>
+									<a href="<?php echo JRoute::_(WissensmatrixHelperRoute::getWorkerRoute($item->slug)); ?>">
+										<?php echo $item->vorname . ' ' . $item->name; ?>
 									</a>
 								<?php else :
-									echo $worker->vorname . ' ' . $worker->name;
+									echo $item->vorname . ' ' . $item->name;
 								endif; ?>
 							</td>
 							<td>
-								<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportresponsiblesfwi&id=' . $this->item->id . '&teamid=' . $worker->catid); ?>"><?php echo $worker->category_title; ?></a>
+								<a
+									href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportresponsiblesfwi&id=' . $item->fwi_id); ?>"
+									title="<?php echo JText::_('COM_WISSENSMATRIX_FWIG'); ?>"
+									data-content="<?php echo $item->fwig_title; ?>"
+									data-placement="top"
+									class="hasPopover" >
+									<?php echo $item->fwi_title; ?>
+								</a>
+							</td>
+							<td>
+								<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportresponsiblesfwi' . '&teamid=' . $item->catid); ?>"><?php echo $item->category_title; ?></a>
 							</td>
 							<td class="center">
-								<?php echo JText::_('COM_WISSENSMATRIX_RESPONSIBILITY_' . $istsoll['responsibility']); ?>
+								<?php echo JText::_('COM_WISSENSMATRIX_RESPONSIBILITY_' . $item->responsibility); ?>
 							</td>
 						</tr>
 					<?php endforeach; ?>

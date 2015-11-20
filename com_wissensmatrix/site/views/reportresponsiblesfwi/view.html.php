@@ -8,21 +8,36 @@ class WissensmatrixViewReportresponsiblesfwi extends JViewLegacy
 {
 	function display($tpl = null)
 	{
+		$app = JFactory::getApplication();
+
 		// Get the model
 		$this->model = $this->getModel();
 
 		// Get some data from the model
 		$this->state = $this->get('State');
-		$this->item  = $this->get('Item');
+		$this->state->set('list.start', 0);
+		$this->state->set('list.limit', 0);
+		$this->state->set('filter.responsible', true);
+
+		$this->fwi_id = $app->input->get('id', 0, 'INT');
+
+		if ($this->fwi_id)
+		{
+			$this->state->set('filter.fwi_id', $this->fwi_id);
+		}
+
+		$this->items  = $this->get('Items');
+		$this->parent = $this->get('Parent');
 
 		// Get Workers for selected teams
-		$this->workermodel = $this->getModel('Workers');
+/*		$this->workermodel = $this->getModel('Workers');
 		$this->w_state     = $this->workermodel->getState();
 		$this->w_state->set('list.start', 0);
 		$this->w_state->set('list.limit', 0);
 		$this->w_state->set('filter.responsible', 1);
+		$this->w_state->set('filter.fwi_id', $this->item->id);
 		$this->workers = $this->workermodel->getItems();
-		$this->parent  = $this->workermodel->getParent();
+		$this->parent  = $this->workermodel->getParent(); */
 
 		$this->params = $this->state->get('params');
 

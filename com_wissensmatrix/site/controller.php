@@ -59,11 +59,15 @@ class WissensmatrixController extends JControllerLegacy
 				$view->setModel($this->getModel('workers'));
 				break;
 			case 'reportfwiteam':
-			case 'reportresponsiblesfwi':
 				$viewLayout = $this->input->get('layout', 'default');
 				$view       = $this->getView($viewName, $format, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
 				$view->setModel($this->getModel('fwi'), true);
 				$view->setModel($this->getModel('workers'));
+				break;
+			case 'reportresponsiblesfwi':
+				$viewLayout = $this->input->get('layout', 'default');
+				$view       = $this->getView($viewName, $format, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
+				$view->setModel($this->getModel('workers'), true);
 				break;
 			case 'reportsfwis':
 				$viewLayout = $this->input->get('layout', 'default');

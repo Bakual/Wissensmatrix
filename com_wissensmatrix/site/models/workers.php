@@ -35,6 +35,7 @@ class WissensmatrixModelWorkers extends JModelList
 				'category_title', 'c_workers.category_title',
 				'zwbi_status_id', 'date', 'zwbi_refresh',
 				'refresh',
+				'responsibility', 'fwi_title'
 			);
 		}
 
@@ -121,12 +122,30 @@ class WissensmatrixModelWorkers extends JModelList
 			$query->where('workers.state IN (0,1)');
 		}
 
-		// Filter by responsibility to lower the amount of workers (needed in responsibilesfwi report)
+		// Extend query for responsibilesfwi report)
 		if ($this->getState('filter.responsible'))
 		{
+			// Join the zfwi table
 			$query->join('LEFT', '#__wissensmatrix_mit_fwi AS zfwi ON zfwi.mit_id = workers.id');
+			$query->select('zfwi.responsibility');
 			$query->where('zfwi.responsibility > 0');
-			$query->group('workers.id');
+
+			// Create title from active language
+			$lang = substr(JFactory::getLanguage()->getTag(), 0, 2);
+
+			// Join the fwi table
+			$query->join('LEFT', '#__wissensmatrix_fachwissen AS fwis ON zfwi.fwi_id = fwis.id');
+			$query->select('fwis.`title_' . $lang . '` AS fwi_title');
+			$query->select('fwis.`id` AS fwi_id');
+
+			// Join the fwig table
+			$query->join('LEFT', '#__wissensmatrix_fachwissengruppe AS fwigs ON fwis.fwig_id = fwigs.id');
+			$query->select('fwigs.`title_' . $lang . '` AS fwig_title');
+
+			if ($fwi_id = (int) $this->getState('filter.fwi_id'))
+			{
+				$query->where('zfwi.fwi_id = ' . $fwi_id);
+			}
 		}
 
 		// Filter by wbi (needed in wbi reports)

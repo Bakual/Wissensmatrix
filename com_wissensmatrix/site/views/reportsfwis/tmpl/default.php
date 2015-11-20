@@ -84,6 +84,11 @@ $listDirn   = $this->state->get('list.direction');
 						<th class="reports">
 							<?php echo JText::_('COM_WISSENSMATRIX_TEAMS'); ?>
 						</th>
+						<?php if ($user->authorise('wissensmatrix.testing', 'com_wissensmatrix')) : ?>
+							<th class="reports">
+								<?php echo JText::_('COM_WISSENSMATRIX_RESPONSIBILITY'); ?>
+							</th>
+						<?php endif; ?>
 					</tr>
 					</thead>
 					<!-- Begin Data -->
@@ -102,6 +107,12 @@ $listDirn   = $this->state->get('list.direction');
 								<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportfwiteam&id=' . $item->id); ?>"><img
 										src="media/com_wissensmatrix/images/black_view.gif"></a>
 							</td>
+							<?php if ($user->authorise('wissensmatrix.testing', 'com_wissensmatrix')) : ?>
+								<td class="reports">
+									<a href="<?php echo JRoute::_('index.php?option=com_wissensmatrix&view=reportresponsiblesfwi&id=' . $item->id); ?>"><img
+											src="media/com_wissensmatrix/images/black_view.gif"></a>
+								</td>
+							<?php endif; ?>
 						</tr>
 					<?php endforeach; ?>
 					</tbody>
