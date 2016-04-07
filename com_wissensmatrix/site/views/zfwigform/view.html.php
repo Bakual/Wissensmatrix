@@ -34,6 +34,8 @@ class WissensmatrixViewZfwigform extends JViewLegacy
 		$fwi_state->set('fwig.id', $this->state->get('zfwig.id'));
 		$fwi_state->set('list.ordering', 'fwis.title_de');
 		$fwi_state->set('list.direction', 'ASC');
+		$fwi_state->set('list.limit', 0);
+		$fwi_state->set('list.start', 0);
 		$this->fwis   = $this->fwi_model->getItems();
 		$this->levels = $this->fwi_model->getLevels();
 
