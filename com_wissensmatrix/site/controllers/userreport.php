@@ -76,8 +76,8 @@ class WissensmatrixControllerUserreport extends JControllerLegacy
 		// Set sender from Global Configuration
 		$config = JFactory::getConfig();
 		$sender = array(
-			$config->get('config.mailfrom'),
-			$config->get('config.fromname'),
+			$config->get('mailfrom'),
+			$config->get('fromname'),
 		);
 		$mailer->setSender($sender);
 
