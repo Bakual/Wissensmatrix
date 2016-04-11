@@ -3,7 +3,7 @@ defined('_JEXEC') or die;
 
 JHtml::_('bootstrap.tooltip');
 ?>
-<form action="<?php echo JRoute::_('index.php'); ?>" method="post" id="userreport-form" class="form-inline">
+<form action="<?php echo JRoute::_(htmlspecialchars(JUri::getInstance()->toString())); ?>" method="post" id="userreport-form" class="form-inline">
 	<div class="userdata">
 		<div id="form-userreport-uid" class="control-group">
 			<div class="controls">
