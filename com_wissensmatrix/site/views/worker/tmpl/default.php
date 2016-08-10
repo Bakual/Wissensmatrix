@@ -208,7 +208,7 @@ $this->document->addScriptDeclaration('jQuery(function() {
 			</form>
 		</div>
 		<div class="tab-pane" id="tab_fwis">
-			<a href="media/com_wissensmatrix/docs/kriterien_<?php echo substr(JFactory::getLanguage()->getTag(), 0, 1); ?>.pdf"
+			<a href="docs/kriterien_<?php echo substr(JFactory::getLanguage()->getTag(), 0, 1); ?>.pdf"
 			   target="_new" class="btn btn-info btn-small pull-left hasTooltip"
 			   title="<?php echo JText::_('COM_WISSENSMATRIX_KRITERIEN_TIP'); ?>">
 				<i class="icon-out-2"> </i> <?php echo JText::_('COM_WISSENSMATRIX_KRITERIEN'); ?>
@@ -232,7 +232,6 @@ $this->document->addScriptDeclaration('jQuery(function() {
 				<h4>
 					<?php echo $item->fwig_title; ?>
 					<?php if ($canEdit and !$this->print) : ?>
-						&nbsp;
 						<?php echo JHtml::_('icon.editz', $item, $this->params, array('type' => 'fwig', 'class' => 'btn btn-primary btn-mini', 'mit_id' => $this->item->id, 'width' => 1000, 'height' => 600)); ?>
 						<?php echo JHtml::_('icon.deletez', $item, $this->params, array('type' => 'fwig', 'class' => 'btn btn-danger btn-mini', 'mit_id' => $this->item->id)); ?>
 					<?php endif; ?>
