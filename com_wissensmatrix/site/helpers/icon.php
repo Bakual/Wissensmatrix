@@ -16,7 +16,7 @@ class JHtmlIcon
 
 		$button = JHtml::_('link', JRoute::_($url), $text, 'class="btn btn-primary"');
 
-		$output = '<span class="hasTip" title="' . JText::_('COM_WISSENSMATRIX_CREATE_WORKER') . '">' . $button . '</span>';
+		$output = '<span class="hasTooltip" title="' . JText::_('COM_WISSENSMATRIX_CREATE_WORKER') . '">' . $button . '</span>';
 
 		return $output;
 	}
@@ -52,7 +52,7 @@ class JHtmlIcon
 			return;
 		}
 
-		JHtml::_('behavior.tooltip');
+		JHtml::_('bootstrap.tooltip');
 
 		// Show checked_out icon if the item is checked out by a different user
 		if (property_exists($item, 'checked_out') && property_exists($item, 'checked_out_time') && $item->checked_out > 0 && $item->checked_out != $user->get('id'))
@@ -62,7 +62,7 @@ class JHtmlIcon
 			$date         = JHtml::_('date', $item->checked_out_time);
 			$tooltip      = JText::_('JLIB_HTML_CHECKED_OUT') . ' :: ' . JText::sprintf('COM_WISSENSMATRIX_CHECKED_OUT_BY', $checkoutUser->name) . ' <br /> ' . $date;
 
-			return '<span class="hasTip" title="' . htmlspecialchars($tooltip, ENT_COMPAT, 'UTF-8') . '">' . $button . '</span>';
+			return '<span class="hasTooltip" title="' . htmlspecialchars($tooltip, ENT_COMPAT, 'UTF-8') . '">' . $button . '</span>';
 		}
 
 		$url = 'index.php?option=com_wissensmatrix&task=worker.edit&a_id=' . $item->id . '&return=' . base64_encode($uri);
@@ -90,7 +90,7 @@ class JHtmlIcon
 		}
 
 		$icon = $item->state ? 'edit' : 'eye-close';
-		$text = '<i class="hasTip icon-' . $icon . ' tip" title="' . JText::_('COM_WISSENSMATRIX_EDIT_ITEM') . ' :: ' . $overlib . '"></i>';
+		$text = '<i class="hasTooltip icon-' . $icon . ' tip" title="' . JText::_('COM_WISSENSMATRIX_EDIT_ITEM') . ' :: ' . $overlib . '"></i>';
 		if (empty($attribs['hide_text']))
 		{
 			$text .= ' ' . JText::_('JGLOBAL_EDIT');
@@ -103,7 +103,7 @@ class JHtmlIcon
 
 	public static function editz($item, $params, $attribs = array())
 	{
-		$uri = JRoute::_('index.php?option=com_wissensmatrix&view=close&tmpl=component');
+		$uri = 'index.php?option=com_wissensmatrix&view=close&tmpl=component';
 
 		$id    = ($attribs['type'] == 'wbi') ? $item->zwbi_id : $item->fwig_id;
 		$class = isset($attribs['class']) ? $attribs['class'] : '';
@@ -124,7 +124,7 @@ class JHtmlIcon
 			return;
 		}
 
-		JHtml::_('behavior.tooltip');
+		JHtml::_('bootstrap.tooltip');
 
 		$url = 'index.php?option=com_wissensmatrix&task=z' . $attribs['type'] . '.edit&tmpl=component&a_id=' . $id . '&return=' . base64_encode($uri);
 		if (isset($attribs['mit_id']))
@@ -133,7 +133,7 @@ class JHtmlIcon
 		}
 
 		$icon = $item->state ? 'edit' : 'eye-close';
-		$text = '<i class="hasTip icon-' . $icon . ' tip" title="' . JText::_('COM_WISSENSMATRIX_EDIT_ITEM') . '"></i>';
+		$text = '<i class="hasTooltip icon-' . $icon . ' tip" title="' . JText::_('COM_WISSENSMATRIX_EDIT_ITEM') . '"></i>';
 		if (empty($attribs['hide_text']))
 		{
 			$text .= ' ' . JText::_('JGLOBAL_EDIT');
@@ -157,12 +157,12 @@ class JHtmlIcon
 			return;
 		}
 
-		JHtml::_('behavior.tooltip');
+		JHtml::_('bootstrap.tooltip');
 
 		$session = JFactory::getSession();
 		$url     = 'index.php?option=com_wissensmatrix&task=z' . $attribs['type'] . '.delete&mit_id=' . $item->mit_id . '&a_id=' . $id . '&return=' . base64_encode($uri) . '&' . $session->getName() . '=' . $session->getId() . '&' . JSession::getFormToken() . '=1';
 
-		$text = '<i class="hasTip icon-remove tip" title="' . JText::_('COM_WISSENSMATRIX_DELETE_ITEM') . '"></i>';
+		$text = '<i class="hasTooltip icon-remove tip" title="' . JText::_('COM_WISSENSMATRIX_DELETE_ITEM') . '"></i>';
 		if (empty($attribs['hide_text']))
 		{
 			$text .= ' ' . JText::_('JACTION_DELETE');
