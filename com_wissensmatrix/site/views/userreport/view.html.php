@@ -13,12 +13,15 @@ class WissensmatrixViewUserreport extends JViewLegacy
 
 		// Get and sanitize hash
 		$hash = $app->input->get->get('hash');
+
 		if (!$hash || !preg_match('/^[0-9a-f]{32}$/', $hash))
 		{
 			$app->redirect(JURI::root(), JText::_('COM_WISSENSMATRIX_USERREPORT_HASH_INVALID'), 'error');
 		}
+
 		// Get and sanitize uid
 		$uid = strtoupper($app->input->get->get('mit'));
+
 		if (!$uid || !preg_match('/^U\d{6}/', $uid))
 		{
 			$app->redirect(JURI::root(), JText::sprintf('COM_WISSENSMATRIX_USERREPORT_USERID_INVALID', $uid), 'error');
@@ -65,6 +68,7 @@ class WissensmatrixViewUserreport extends JViewLegacy
 		$worker = $model->getWorkerByUid($uid);
 		$state->set('worker.id', $worker->id);
 		$this->item = $this->get('Item');
+
 		if (!$this->item)
 		{
 			$app->redirect(JURI::root(), JText::_('JGLOBAL_RESOURCE_NOT_FOUND'), 'error');
@@ -75,6 +79,9 @@ class WissensmatrixViewUserreport extends JViewLegacy
 		$this->state_wbi = $wbi_model->getState();
 		$this->state_wbi->set('worker.id', $worker->id);
 		$this->state_wbi->set('userreport', 'true');
+		$this->state_wbi->set('list.start', 0);
+		$this->state_wbi->set('list.limit', 0);
+		$this->state_wbi->set('filter.search', '');
 		$this->wbis = $wbi_model->getItems();
 
 		// Get fwis data from the fwis model
@@ -82,6 +89,9 @@ class WissensmatrixViewUserreport extends JViewLegacy
 		$this->state_fwi = $fwi_model->getState();
 		$this->state_fwi->set('worker.id', $worker->id);
 		$this->state_fwi->set('userreport', 'true');
+		$this->state_fwi->set('list.start', 0);
+		$this->state_fwi->set('list.limit', 0);
+		$this->state_fwi->set('filter.search', '');
 		$this->fwis = $fwi_model->getItems();
 
 		// Check for errors.
