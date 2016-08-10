@@ -12,6 +12,8 @@ cd ../mod_wissensmatrix_legend/
 zip -r ../build/packages/mod_wissensmatrix_legend.zip *
 cd ../mod_wissensmatrix_userreport/
 zip -r ../build/packages/mod_wissensmatrix_userreport.zip *
+cd ../mod_wissensmatrix_birthday/
+zip -r ../build/packages/mod_wissensmatrix_birthday.zip *
 REM Plugins
 cd ../plg_user_wissensmatrix/
 zip -r ../build/packages/plg_user_wissensmatrix.zip *
