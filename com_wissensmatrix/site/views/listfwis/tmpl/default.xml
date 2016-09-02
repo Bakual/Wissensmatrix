@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_WISSENSMATRIX_LISTFWIS_VIEW_DEFAULT_TITLE">
+		<message><![CDATA[COM_WISSENSMATRIX_LISTFWIS_VIEW_DEFAULT_DESC]]></message>
+	</layout>
+	<fields name="request">
+		<fieldset name="request">
+			<field name="format" type="hidden"
+				label="COM_WISSENSMATRIX_FIELD_FORMAT_LABEL"
+				description="COM_WISSENSMATRIX_FIELD_FORMAT_DESC"
+				required="true"
+				default="xls"
+			/>
+		</fieldset>
+	</fields>
+</metadata>

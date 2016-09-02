@@ -107,9 +107,15 @@ class WissensmatrixController extends JControllerLegacy
 				$view->setModel($this->getModel('workers'));
 				break;
 			case 'zfwigform':
+			case 'listfwis':
 				$viewLayout = $this->input->get('layout', 'default');
 				$view       = $this->getView($viewName, $format, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
-				$view->setModel($this->getModel('fwis'));
+				$view->setModel($this->getModel('fwis'), true);
+				break;
+			case 'listwbis':
+				$viewLayout = $this->input->get('layout', 'default');
+				$view       = $this->getView($viewName, $format, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
+				$view->setModel($this->getModel('wbis'), true);
 				break;
 		}
 
