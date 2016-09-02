@@ -52,3 +52,5 @@ ul.wbi span.list-edit.pull-left {
 /* amChart */
 #chartdiv {
 	height: 350px;
+	padding-top: 0;
+}
