@@ -42,11 +42,11 @@ $i = 1;
 foreach ($this->items as $item) :
 	$i++;
 	$xls->getActiveSheet()->SetCellValue('A' . $i, $item->title);
-	$xls->getActiveSheet()->SetCellValue('B' . $i, $this->manko[$item->id]->mit_count);
+	$xls->getActiveSheet()->SetCellValue('B' . $i, isset($this->manko[$item->id]) ? $this->manko[$item->id]->mit_count : 0);
 	$xls->getActiveSheet()->SetCellValue('C' . $i, '=ROUND(B' . $i . '/F' . $i . ', 2)');
-	$xls->getActiveSheet()->SetCellValue('D' . $i, $this->potential[$item->id]->mit_count);
+	$xls->getActiveSheet()->SetCellValue('D' . $i, isset($this->potential[$item->id]) ? $this->potential[$item->id]->mit_count : 0);
 	$xls->getActiveSheet()->SetCellValue('E' . $i, '=ROUND(D' . $i . '/F' . $i . ', 2)');
-	$xls->getActiveSheet()->SetCellValue('F' . $i, $this->workers[$item->id]->mit_count);
+	$xls->getActiveSheet()->SetCellValue('F' . $i, isset($this->workers[$item->id]) ? $this->workers[$item->id]->mit_count : 0);
 endforeach;
 
 // Total is calculated by Excel
