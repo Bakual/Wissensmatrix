@@ -255,10 +255,12 @@ class WissensmatrixControllerZfwig extends JControllerForm
 		$append = parent::getRedirectToListAppend();
 
 		$id = $this->input->get('mit_id', 0, 'int');
+
 		if ($id)
 		{
 			$append .= '&id=' . $id;
 		}
+
 		$append .= '#fwis';
 
 		return $append;
