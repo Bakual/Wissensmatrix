@@ -437,6 +437,31 @@ class WissensmatrixModelFwis extends JModelList
 	}
 
 	/**
+	 * Get the ist value for a given Fachwissen for all Worker.
+	 *
+	 * @fwi        int        The id of the Fachwissen
+	 *
+	 * @return    mixed    An array with worker id and corresponding ist values.
+	 * @since      3.0
+	 */
+	public function getIst($fwi)
+	{
+		// Create a new query object.
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true);
+
+		// Select required fields from the table.
+		$query->select('zfwis.mit_id, ist_level.value');
+		$query->from('`#__wissensmatrix_mit_fwi` AS zfwis');
+		$query->join('LEFT', '#__wissensmatrix_erfahrung AS ist_level ON zfwis.ist = ist_level.id');
+		$query->where('zfwis.fwi_id = ' . (int) $fwi);
+		$query->order('zfwis.mit_id ASC');
+		$db->setQuery($query);
+
+		return $db->loadAssocList('mit_id');
+	}
+
+	/**
 	 * Counts the workers in a given Team, Fachwissen and Level.
 	 *
 	 * @fwi        int        The id of the Fachwissen

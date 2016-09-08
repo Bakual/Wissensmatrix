@@ -142,7 +142,7 @@ $this->document->addScriptDeclaration('jQuery(function() {
 						</select>
 					</div>
 				</div>
-				<a href="<?php echo $this->params->get('wbi_link'); ?>"
+				<a href="<?php echo $this->params->get('wbi_link') . substr(JFactory::getLanguage()->getTag(), 0, 2); ?>"
 				   target="_new" class="btn btn-info btn-small pull-left hasTooltip"
 				   title="<?php echo JText::_('COM_WISSENSMATRIX_INTRANET_WEITERBILDUNG_TIP'); ?>">
 					<i class="icon-out-2"> </i> <?php echo JText::_('COM_WISSENSMATRIX_INTRANET_WEITERBILDUNG'); ?>
@@ -177,7 +177,7 @@ $this->document->addScriptDeclaration('jQuery(function() {
 								<span
 									class="<?php echo ($item->zwbi_refresh < 0) ? ' label label-important" title="' . JText::_('COM_WISSENSMATRIX_REFRESH_UP') : ''; ?>">
 									<?php echo JText::_('JDATE'); ?>:
-									<?php echo JHtml::date($item->date, JText::_('DATE_FORMAT_LC3')); ?>
+									<?php echo JHTML::date($item->date, JText::_('DATE_FORMAT_LC3')); ?>
 								</span>
 								<?php if ($item->refresh) : ?>
 									| <?php JText::printf('COM_WISSENSMATRIX_REFRESH_TEXT', $item->refresh); ?>

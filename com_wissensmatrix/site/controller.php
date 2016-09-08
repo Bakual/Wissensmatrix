@@ -53,6 +53,7 @@ class WissensmatrixController extends JControllerLegacy
 			case 'reportfwigteam':
 			case 'reportfwiglevels':
 			case 'reportfwigdiff':
+			case 'exportsnow':
 				$viewLayout = $this->input->get('layout', 'default');
 				$view       = $this->getView($viewName, $format, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
 				$view->setModel($this->getModel('fwis'), true);
