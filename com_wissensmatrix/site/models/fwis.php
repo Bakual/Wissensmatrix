@@ -172,6 +172,12 @@ class WissensmatrixModelFwis extends JModelList
 			$query->where('fwis.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
 		}
 
+		// TESTING SNOW
+		if (!JFactory::getUser()->authorise('wissensmatrix.testing', 'com_wissensmatrix'))
+		{
+			$query->where('fwigs.snow = 0');
+		}
+
 		// Add the list ordering clause.
 		if ($workerId)
 		{

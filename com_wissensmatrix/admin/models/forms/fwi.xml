@@ -61,6 +61,14 @@
 			>
 			<option value="">COM_WISSENSMATRIX_FIELD_FWIG_ID_SELECT</option>
 		</field>
+
+		<field name="snow" type="radio"
+			label="SNOW" description="SNOW"
+			class="btn-group btn-group-yesno"
+			default="0">
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
 	</fieldset>
 
 	<fieldset name="info">

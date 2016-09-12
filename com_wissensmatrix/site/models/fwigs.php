@@ -182,6 +182,12 @@ class WissensmatrixModelFwigs extends JModelList
 			$query->where('fwigs.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
 		}
 
+		// TESTING SNOW
+		if (!JFactory::getUser()->authorise('wissensmatrix.testing', 'com_wissensmatrix'))
+		{
+			$query->where('fwigs.snow = 0');
+		}
+
 		// Add the list ordering clause.
 		$orderCol  = $this->state->get('list.ordering');
 		$orderDirn = $this->state->get('list.direction');

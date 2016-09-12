@@ -135,6 +135,12 @@ class WissensmatrixViewFwigs extends JViewLegacy
 		);
 
 		JHtmlSidebar::addFilter(
+			JText::_('COM_WISSENSMATRIX_FIELD_SNOW_SELECT'),
+			'filter_snow',
+			JHtml::_('select.options', array(0 => JText::_('COM_WISSENSMATRIX_UNSNOW'), 1 => JText::_('COM_WISSENSMATRIX_SNOW')), 'value', 'text', $this->state->get('filter.snow'), true)
+		);
+
+		JHtmlSidebar::addFilter(
 			JText::_('JOPTION_SELECT_CATEGORY'),
 			'filter_category_id',
 			JHtml::_('select.options', JHtml::_('category.options', 'com_wissensmatrix'), 'value', 'text', $this->state->get('filter.category_id'))

@@ -56,6 +56,12 @@ class JFormFieldFwiglist extends JFormFieldList
 		$query->where('c_fwigs.published = 1');
 		$query->order('text ASC');
 
+		// TESTING SNOW
+		if (!$user->authorise('wissensmatrix.testing', 'com_wissensmatrix'))
+		{
+			$query->where('fwigs.snow = 0');
+		}
+
 		if ($mit_id = (int) $this->element['mit_id'])
 		{
 			$subquery = $db->getQuery(true);

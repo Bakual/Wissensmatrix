@@ -30,6 +30,7 @@ class WissensmatrixModelFwis extends JModelList
 				'ordering', 'fwis.ordering',
 				'language', 'fwis.language',
 				'hits', 'fwis.hits',
+				'snow', 'fwis.snow',
 				'fwig_title',
 			);
 		}
@@ -58,6 +59,9 @@ class WissensmatrixModelFwis extends JModelList
 
 		$fwig = $app->getUserStateFromRequest($this->context . '.filter.fwig', 'filter_fwig', '', 'string');
 		$this->setState('filter.fwig', $fwig);
+
+		$snow = $app->getUserStateFromRequest($this->context . '.filter.snow', 'filter_snow', '', 'string');
+		$this->setState('filter.snow', $snow);
 
 		$categoryId = $app->getUserStateFromRequest($this->context . '.filter.category_id', 'filter_category_id', '');
 		$this->setState('filter.category_id', $categoryId);
@@ -115,7 +119,7 @@ class WissensmatrixModelFwis extends JModelList
 				'fwis.id, fwis.catid, fwis.language, ' .
 				'fwis.checked_out, fwis.checked_out_time, ' .
 				'fwis.alias, fwis.created, fwis.created_by, ' .
-				'fwis.state, fwis.ordering, fwis.hits'
+				'fwis.state, fwis.ordering, fwis.hits, fwis.snow'
 			)
 		);
 		$query->from('`#__wissensmatrix_fachwissen` AS fwis');
@@ -156,6 +160,13 @@ class WissensmatrixModelFwis extends JModelList
 		if (is_numeric($fwig))
 		{
 			$query->where('fwis.fwig_id = ' . (int) $fwig);
+		}
+
+		// Filter by snow.
+		$snow = $this->getState('filter.snow');
+		if (is_numeric($snow))
+		{
+			$query->where('fwigs.snow = ' . (int) $snow);
 		}
 
 		// Filter by category.

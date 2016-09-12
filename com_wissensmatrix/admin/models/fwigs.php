@@ -31,6 +31,7 @@ class WissensmatrixModelFwigs extends JModelList
 				'language', 'fwigs.language',
 				'hits', 'fwigs.hits',
 				'bool', 'fwigs.bool',
+				'snow', 'fwigs.snow',
 			);
 		}
 
@@ -58,6 +59,9 @@ class WissensmatrixModelFwigs extends JModelList
 
 		$bool = $app->getUserStateFromRequest($this->context . '.filter.bool', 'filter_bool', '', 'string');
 		$this->setState('filter.bool', $bool);
+
+		$snow = $app->getUserStateFromRequest($this->context . '.filter.snow', 'filter_snow', '', 'string');
+		$this->setState('filter.snow', $snow);
 
 		$categoryId = $app->getUserStateFromRequest($this->context . '.filter.category_id', 'filter_category_id', '');
 		$this->setState('filter.category_id', $categoryId);
@@ -115,7 +119,7 @@ class WissensmatrixModelFwigs extends JModelList
 				'fwigs.id, fwigs.catid, fwigs.language, ' .
 				'fwigs.checked_out, fwigs.checked_out_time, ' .
 				'fwigs.alias, fwigs.created, fwigs.created_by, ' .
-				'fwigs.state, fwigs.bool, fwigs.ordering, fwigs.hits'
+				'fwigs.state, fwigs.bool, fwigs.snow, fwigs.ordering, fwigs.hits'
 			)
 		);
 		$query->from('`#__wissensmatrix_fachwissengruppe` AS fwigs');
@@ -152,6 +156,13 @@ class WissensmatrixModelFwigs extends JModelList
 		if (is_numeric($bool))
 		{
 			$query->where('fwigs.bool = ' . (int) $bool);
+		}
+
+		// Filter by snow.
+		$snow = $this->getState('filter.snow');
+		if (is_numeric($snow))
+		{
+			$query->where('fwigs.snow = ' . (int) $snow);
 		}
 
 		// Filter by category.
