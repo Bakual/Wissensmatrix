@@ -194,7 +194,7 @@ $this->document->addScriptDeclaration('jQuery(function() {
 					<?php endforeach; ?>
 				</ul>
 				<?php if ($canEdit and !$this->print) :
-					$uri    = JRoute::_('index.php?option=com_wissensmatrix&view=close&tmpl=component');
+					$uri    = JRoute::_('index.php?option=com_wissensmatrix&view=close&tmpl=component', false);
 					$url    = 'index.php?option=com_wissensmatrix&task=zwbi.add&tmpl=component&return=' . base64_encode($uri) . '&a_id=0&mit_id=' . $this->item->id . '&catid=' . $this->item->catid;
 					$text   = '<i class="icon-plus"></i> ' . JText::_('JNEW') . ' &#160;';
 					$button = JHtml::_('link', JRoute::_($url), $text, array('class' => 'modal btn btn-primary', 'rel' => "{handler: 'iframe', size: {x: 600, y: 500}}")); ?>
@@ -263,7 +263,7 @@ $this->document->addScriptDeclaration('jQuery(function() {
 				</ul>
 			</div>
 			<?php if ($canEdit and !$this->print) :
-				$uri    = JRoute::_('index.php?option=com_wissensmatrix&view=close&tmpl=component');
+				$uri    = JRoute::_('index.php?option=com_wissensmatrix&view=close&tmpl=component', false);
 				$url    = 'index.php?option=com_wissensmatrix&task=zfwig.add&tmpl=component&return=' . base64_encode($uri) . '&a_id=0&mit_id=' . $this->item->id . '&catid=' . $this->item->catid;
 				$text   = '<i class="icon-plus"></i> ' . JText::_('JNEW') . ' &#160;';
 				$button = JHtml::_('link', JRoute::_($url), $text, array('class' => 'modal btn btn-primary', 'rel' => "{handler: 'iframe', size: {x: 800, y: 600}}")); ?>
