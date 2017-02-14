@@ -84,7 +84,7 @@ $params = $this->state->get('params');
 				</div>
 				<div class="well">
 					<?php echo JText::_('COM_WISSENSMATRIX_WBI_NOT_PRESENT'); ?>
-					<a href="mailto:Thomas Hunziker &lt;thomi.hunziker@sbb.ch&gt;?cc=Urs Sattler &lt;urs.sattler@sbb.ch&gt;&amp;subject=Wissensmatrix%20-%20Neuen%20Kurs%20erfassen">
+					<a href="mailto:Thomas Hunziker &lt;thomi.hunziker@sbb.ch&gt;?subject=Wissensmatrix%20-%20Neuen%20Kurs%20erfassen">
 						<i class="icon-mail"> </i>
 					</a>
 				</div>
