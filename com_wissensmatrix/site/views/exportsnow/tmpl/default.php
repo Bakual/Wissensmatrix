@@ -17,6 +17,8 @@ $count = count($this->workers);
 
 // Format Cells
 $xls->getActiveSheet()->getStyle('A1:' . $this->num2alpha(count($this->workers) + 1) . '1')->getFont()->setBold(true);
+$xls->getActiveSheet()->getStyle('C2:' . $this->num2alpha(count($this->workers) + 1) . '2')->getAlignment()->setTextRotation(90);
+$xls->getActiveSheet()->getStyle('C2:' . $this->num2alpha(count($this->workers) + 1) . '2')->getAlignment()->setHorizontal('center');
 $xls->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
 $xls->getActiveSheet()->getColumnDimension('B')->setWidth(50);
 
@@ -28,10 +30,12 @@ $j = 1;
 foreach ($this->workers as $worker) :
 	$j++;
 	$xls->getActiveSheet()->SetCellValue($this->num2alpha($j) . '1', $worker->uid);
+	$xls->getActiveSheet()->SetCellValue($this->num2alpha($j) . '2', $worker->category_title);
 endforeach;
 
+
 // Adding Rows
-$i = 1;
+$i = 2;
 foreach ($this->items AS $item) :
 	$i++;
 	$xls->getActiveSheet()->SetCellValue('A' . $i, $item->fwig_title);
